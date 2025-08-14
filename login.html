@@ -9,27 +9,30 @@
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: rgb(248, 249, 250);
-    }
-  </style>
+  <link rel="stylesheet" href="css/login.css">
 </head>
 
 <body>
   <main class="mt-5">
-    <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+    <form id="loginId" action="my-profile.html">
+      <img src="/img/login.png" class="login__image">
+      <div class="form__group">
+        <label for="usuarioId">Usuario</label>
+          <input type="text" class="user__name" id="usuarioId" required>
+        <label for="passwordId">Contraseña</label>
+          <input type="password" class="user__password" id="passwordId" required>
+          <p>¿Aún no tienes cuenta? <br><a href="#">Regístrate</a></p>
+          <p class="error__msg"></p>
       </div>
-    </div>
+      <button type="submit" class="submit__button login__button">Ingresar</button>
+    </form>
   </main>
   <footer class="text-muted">
     <div class="container">
       <p class="float-end">
         <a href="#">Volver arriba</a>
       </p>
-      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a></p>
+      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank" rel="noopener noreferer nofollow">Jovenes a Programar</a></p>
     </div>
   </footer>
   <script src="js/login.js"></script>
