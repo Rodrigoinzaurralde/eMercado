@@ -1,10 +1,15 @@
-
+function validarEmail(email){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 document.querySelector('.login__button').addEventListener('click', function(event){
     event.preventDefault();
     const user = document.querySelector('.user__name').value.trim();
     const password = document.querySelector('.user__password').value.trim();
     const errorMsg = document.querySelector('.error__msg');
-    if(user && password && password.length >=8 ){
+    if(!validarEmail(user)){
+        errorMsg.classList.add('error__pass');
+        errorMsg.textContent = 'El email no tiene un formato válido';
+    }else if(user && password && password.length >=8 ){
         localStorage.setItem('user', user);
         window.location.href = 'index.html';
     }else if(!user || !password){
