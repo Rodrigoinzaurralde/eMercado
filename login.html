@@ -15,12 +15,12 @@
 <body>
   <main class="mt-5">
     <form id="loginId" action="my-profile.html">
-      <img src="/img/login.png" class="login__image">
+      <img src="img/login.png" class="login__image">
       <div class="form__group">
         <label for="usuarioId">Usuario</label>
-          <input type="text" class="user__name" id="usuarioId" required>
+          <input type="text" class="user__name" id="usuarioId" aria-label="Usuario" required>
         <label for="passwordId">Contraseña</label>
-          <input type="password" class="user__password" id="passwordId" required>
+          <input type="password" class="user__password" id="passwordId" aria-label="Contraseña" required>
           <p>¿Aún no tienes cuenta? <br><a href="#">Regístrate</a></p>
           <p class="error__msg"></p>
       </div>
@@ -32,7 +32,7 @@
       <p class="float-end">
         <a href="#">Volver arriba</a>
       </p>
-      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank" rel="noopener noreferer nofollow">Jovenes a Programar</a></p>
+      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank" rel="noopener noreferrer nofollow">Jovenes a Programar</a></p>
     </div>
   </footer>
   <script src="js/login.js"></script>
