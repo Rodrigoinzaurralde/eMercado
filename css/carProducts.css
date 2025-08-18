@@ -1,0 +1,64 @@
+body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+#subtituloAutosId{
+    margin: 20px;
+    font-size: 2.8em;
+}
+.auto__item{
+    border: none;
+    
+}
+.car__card {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    padding: 10px;
+    background: #fff;
+    border: none;
+    box-shadow: 0 0 10px #262626;
+}
+
+.car__img {
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+.car__info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.car__name {
+    margin: 0 0 85px 0;
+}
+
+.car__desc {
+    margin-bottom: 110px;
+}
+
+.car__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: auto;
+}
+
+.car__cost {
+    font-weight: 600;
+}
+
+.car__sold {
+    font-size: 0.9em;
+    color: #000;
+    margin-right: 10px;
+}
+.car__card:hover{
+    transform: scale(1.01);
+    transition: transform 0.2s;
+    cursor: pointer;
+}

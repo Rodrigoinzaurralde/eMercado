@@ -6,9 +6,9 @@ document.querySelector('.login__button').addEventListener('click', function(even
     const errorMsg = document.querySelector('.error__msg');
     if(user && password && password.length >=8 ){
         localStorage.setItem('user', user);
-        window.location.href = 'my-profile.html';
+        window.location.href = 'index.html';
     }else if(!user || !password){
-        errorMsg.classList.remove('error__pass')
+        errorMsg.classList.remove('error__pass');
         errorMsg.textContent = 'Rellena todos los datos';
     }else{
         errorMsg.classList.add('error__pass');
