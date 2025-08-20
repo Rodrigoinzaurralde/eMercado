@@ -8,7 +8,7 @@ document.querySelector('.login__button').addEventListener('click', function(even
     const errorMsg = document.querySelector('.error__msg');
     if(!validarEmail(user)){
         errorMsg.classList.add('error__pass');
-        errorMsg.textContent = 'El email no tiene un formato válido';
+        errorMsg.textContent = 'El usuario no tiene un formato válido';
     }else if(user && password && password.length >=8 ){
         localStorage.setItem('user', user);
         window.location.href = 'index.html';
