@@ -58,6 +58,6 @@ label{
 .error__pass{
     font-size: 1em;
 }
-label[for="usuarioId"]:has(+ input:invalid:focus) {
+label[for="usuarioId"]:has(+ input:invalid:focus) , label[for="passwordId"]:has(+ input:invalid:focus){
     color:#B90000;
 }
