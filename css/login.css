@@ -61,3 +61,23 @@ label{
 label[for="usuarioId"]:has(+ input:invalid:focus) , label[for="passwordId"]:has(+ input:invalid:focus){
     color:#B90000;
 }
+@media only screen and (max-width: 400px){
+    body,html{
+        width: 100vw;
+        overflow-x: hidden;
+    }
+    #loginId{
+        width: 90%;
+        padding: 1em;
+        margin: 20px auto;
+    }
+    .form__group{
+    width: 90%;
+    box-sizing: border-box;
+}
+.login__image{
+    height: 120px;
+    width: auto;
+    margin: auto;
+}
+}
