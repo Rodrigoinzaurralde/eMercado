@@ -188,3 +188,52 @@ a.custom-card:hover {
 .checked {
   color: orange;
 }
+
+/*----Usuario y Desplegable----*/
+#boton-desplegable{
+  background-color: #343a41;
+  color:#dadada;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 10px;
+}
+.perfil-container{
+  display: block;
+  position: absolute;
+  top: auto;
+  right: 4%;
+  width: auto;
+}
+@media only screen and (max-width:650px) {
+  .perfil-container{
+    right: 8%;
+  }
+  .jumbotron{
+    background-position: 19%;
+    background-size: 270%;
+  }
+}
+@media only screen and (max-width:1024px) and (min-height:1000px){
+  .jumbotron{
+    background-position: 20%;
+    background-size: 270%;
+  }
+}
+.menu-desplegable{
+  display: grid;
+  align-content: center;
+  justify-content: center;
+  width: 150px;
+  background-color: #343a41;
+  padding: 10px;
+  border-radius: 10px;
+  position: fixed;
+  z-index: 10;
+}
+.menu-desplegable a{
+  color: #9c9e98;
+  margin: 5px;
+}
+.menu-desplegable a:hover{
+  color: #fff;
+}
