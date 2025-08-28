@@ -12,3 +12,13 @@ document.addEventListener("DOMContentLoaded", function(){
         window.location = "products.html"
     });
 });
+
+/*document.getElementById("userId").addEventListener("change",function(){
+    if(this.value === "cerrarSesion"){
+        localStorage.clear();
+        window.location.href = "login.html";
+    }
+    if(this.value === "perfil"){
+        window.location.href = "my-profile.html";
+    }
+})*/
