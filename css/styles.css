@@ -200,9 +200,10 @@ a.custom-card:hover {
 .perfil-container{
   display: block;
   position: absolute;
-  top: auto;
+  top: 1%;
   right: 4%;
   width: auto;
+  z-index: 20;
 }
 @media only screen and (max-width:650px) {
   .perfil-container{
@@ -220,20 +221,29 @@ a.custom-card:hover {
   }
 }
 .menu-desplegable{
-  display: grid;
-  align-content: center;
-  justify-content: center;
-  width: 150px;
+  display: none;
+  flex-direction: column;
+  width: 100%;
   background-color: #343a41;
   padding: 10px;
-  border-radius: 10px;
-  position: fixed;
+  border-radius: 0px 0px 10px 10px;
+  position: absolute;
   z-index: 10;
 }
 .menu-desplegable a{
   color: #9c9e98;
+  text-decoration: none;
   margin: 5px;
 }
 .menu-desplegable a:hover{
   color: #fff;
+}
+
+#perfil::before{
+  content: "👤";
+  padding-right: 5px;
+}
+#closeSession::before{
+  content: "📴";
+  padding-right: 5px;
 }
