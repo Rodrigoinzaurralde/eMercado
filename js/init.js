@@ -10,20 +10,25 @@ const EXT_TYPE = ".json";
 if(!localStorage.getItem('user')){
   window.location.href = 'login.html';
 }
-/*-----Desplegable del Usuario-----*/
+
+/*----------------------Desplegable del Usuario---------------------*/
 document.getElementById("boton-desplegable").innerHTML = `${localStorage.user}`;
 const menu = document.getElementById("menu-desplegable");
 const botonMenu = document.getElementById("boton-desplegable");
 botonMenu.addEventListener("click", function(){
 if(menu.style.display === "none"){
-    menu.style.display = "grid";
+    menu.style.display = "flex";
+    botonMenu.style = "border-radius: 10px 10px 0px 0px;";
 }else{
     menu.style.display = "none";
+    botonMenu.removeAttribute("style");
 }
 })
 document.getElementById("closeSession").addEventListener("click", ()=>{
   localStorage.clear();
 });
+//-----------------------------------------------------------------------------
+
 
 let showSpinner = function(){
   document.getElementById("spinner-wrapper").style.display = "block";
