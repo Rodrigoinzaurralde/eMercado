@@ -58,9 +58,32 @@ label{
 .error__pass{
     font-size: 1em;
 }
-label[for="usuarioId"]:has(+ input:invalid:focus) , label[for="passwordId"]:has(+ input:invalid:focus){
+label[for="usuarioId"]:has(+ input:invalid:focus){
     color:#B90000;
 }
+.input-group-text {
+    border: none;
+    border-right: 1.7px solid #000;
+    border-bottom: 1.7px solid #000;
+    background-color: #FFDEAD;
+    height: 4.9vh;
+    border-top: 1.7px solid #000;
+    border-bottom-right-radius: 7px;
+}
+
+.user__password{
+    border: 1.7px solid #000;
+}
+.bi {
+    cursor: pointer;
+}
+.user__password{
+    border-right: none;
+}
+.form__group .user__password:focus{
+    border-right: none !important;
+}
+
 @media only screen and (max-width: 400px){
     body,html{
         width: 100vw;
@@ -74,10 +97,10 @@ label[for="usuarioId"]:has(+ input:invalid:focus) , label[for="passwordId"]:has(
     .form__group{
     width: 90%;
     box-sizing: border-box;
-}
-.login__image{
-    height: 120px;
-    width: auto;
-    margin: auto;
-}
+    }
+    .login__image{
+        height: 120px;
+        width: auto;
+        margin: auto;
+    }
 }

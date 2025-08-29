@@ -21,4 +21,33 @@ document.querySelector('.login__button').addEventListener('click', function(even
     }
 });
 
+const passwordInput = document.getElementById('passwordId');
+const passwordLabel = document.querySelector('label[for="passwordId"]');
+
+function updateLabelColor() {
+    if (!passwordInput.checkValidity() && passwordInput === document.activeElement) {
+    passwordLabel.style.color = '#B90000';
+    } else {
+    passwordLabel.style.color = '';
+    }
+}
+passwordInput.addEventListener('focus', updateLabelColor);
+passwordInput.addEventListener('input', updateLabelColor);
+passwordInput.addEventListener('blur', updateLabelColor);
+
+document.querySelector('.input-group-text').addEventListener('click', function(){
+    const passwordInput = document.getElementById('passwordId');
+    const icon = this.querySelector('i');
+    if(passwordInput.type === 'password'){
+        passwordInput.type = 'text';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+    } else{
+        passwordInput.type = 'password';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+    }
+});
+
+
 

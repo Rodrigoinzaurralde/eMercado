@@ -1,9 +1,12 @@
 body{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    height: 100vh;
+    background-color: #f8f9fa;
 }
 #subtituloAutosId{
     margin: 20px;
     font-size: 2.8em;
+    color: #212529;
 }
 .auto__item{
     border: none;
@@ -12,22 +15,25 @@ body{
 .car__card {
     display: flex;
     align-items: flex-start;
+    flex-wrap: wrap;
     margin-bottom: 40px;
-    padding: 10px;
+    padding: 5px;
     background: #fff;
     border: none;
     box-shadow: 0 0 10px #262626;
 }
 
 .car__img {
+    display: flex;
     width: 100%;
-    max-width: 480px;
+    max-width: 500px;
     height: auto;
-    margin-right: 15px;
+    margin-right: 10px;
     object-fit: cover;
 }
 
 .car__info {
+    max-width: 470px;
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -61,4 +67,65 @@ body{
     transform: scale(1.01);
     transition: transform 0.2s;
     cursor: pointer;
+}
+
+@media only screen and (max-width: 991px){
+    .car__card{
+        width: 70%;
+        display: flex;
+        align-items:center;
+        margin: auto;
+        padding: 10px;
+        margin-bottom: 40px;
+    }
+    .car__name{
+        text-align: center;
+        padding: 11px;
+        margin:10px 10px;
+        font-size: 1.1em;
+        font-weight: 600;
+    }
+    #subtituloAutosId{
+        text-align: center;
+    }
+    .car__desc{
+        margin: 10px 20px 20px 20px;
+        text-align: center;
+    }
+    .car__sold{
+        font-size: 0.7em;
+    }
+    .car__cost{
+        font-size: 0.7em;
+    }
+}
+@media only screen and (max-width: 400px){
+    .car__card{
+        width: 100%;
+    }
+    .car__name, .car__desc {
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 0.9em;
+    }
+    .car__cost {
+        font-weight: 600;
+        font-size: 0.6em;
+
+    }
+    .car__sold{
+        font-size: 0.6em;
+    }
+    #subtituloAutosId{
+        text-align: center;
+        font-size: 2.5em;
+    }
+    .car__name{
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size:1em;
+    }
+    .car__bottom{
+        margin-top: 10px;
+    }
 }

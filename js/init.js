@@ -10,7 +10,7 @@ const EXT_TYPE = ".json";
 if(!localStorage.getItem('user')){
   window.location.href = 'login.html';
 }
-/*-----Desplegable del Usuario-----*/
+
 document.getElementById("boton-desplegable").innerHTML = `${localStorage.user}`;
 const menu = document.getElementById("menu-desplegable");
 const botonMenu = document.getElementById("boton-desplegable");
