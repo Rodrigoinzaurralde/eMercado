@@ -41,17 +41,17 @@ eMercado/
 ## Notas técnicas
 
 - El proyecto utiliza [Bootstrap](https://getbootstrap.com/) para estilos base.
-- Los datos se obtienen de la [API pública de eMercado](https://japceibal.github.io/emercado-api/).
+- Los datos se obtienen de la [API de eMercado](https://japceibal.github.io/emercado-api/).
 - El login y la sesión se gestionan con `localStorage`.
 - El diseño es responsive, adaptándose a pantallas de menos de 991px y 400px.
 
 ## Autores
 
-Iara Carballo
-Julio Sosa
-Lucas Velazquez
-Tacuebé Pereira
-Rodrigo Inzaurralde
+- Iara Carballo -
+- Julio Sosa -
+- Lucas Velazquez -
+- Tacuebé Pereira - 
+- Rodrigo Inzaurralde - 
 
 ---
 
