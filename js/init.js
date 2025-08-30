@@ -10,11 +10,6 @@ const EXT_TYPE = ".json";
 if(!localStorage.getItem('user')){
   window.location.href = 'login.html';
 }
-
-<<<<<<< HEAD
-=======
-/*----------------------Desplegable del Usuario---------------------*/
->>>>>>> f97991fbb5e2401db5c850003efa671e763fd613
 document.getElementById("boton-desplegable").innerHTML = `${localStorage.user}`;
 const menu = document.getElementById("menu-desplegable");
 const botonMenu = document.getElementById("boton-desplegable");
