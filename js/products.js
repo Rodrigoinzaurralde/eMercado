@@ -28,6 +28,21 @@ document.getElementById("rangeFilterCount").addEventListener("click", ()=>{
     });
 })
 
+document.getElementById("clearRangeFilter").addEventListener("click", ()=>{
+    minPrecio = undefined;
+    maxPrecio = undefined;
+    document.getElementById("rangeFilterPriceMin").value = "";
+    document.getElementById("rangeFilterPriceMax").value = "";
+
+    fetch(URL)
+    .then(response => response.json())
+    .then(data => {
+        showCars(data.products);
+    })
+    .catch(error => {
+    console.error('Error en la obtención de los datos', error);
+    });
+})
 
 function showCars(autos){
     let divCar = document.querySelector('.auto__item');
