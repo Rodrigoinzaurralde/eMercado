@@ -4,18 +4,38 @@ const URL = `https://japceibal.github.io/emercado-api/cats_products/${catID}.jso
 fetch(URL)
 .then(response => response.json())
 .then(data => {
-        showCars(data.products);
+    showCars(data.products);
 })
 .catch(error => {
-    console.error('Error en la obtención de los datos', error);
+console.error('Error en la obtención de los datos', error);
 });
+
+let minPrecio = undefined;
+let maxPrecio = undefined;
+document.getElementById("rangeFilterCount").addEventListener("click", ()=>{
+    minPrecio = document.getElementById("rangeFilterPriceMin").value;
+    maxPrecio = document.getElementById("rangeFilterPriceMax").value;
+    minPrecio = minPrecio !== "" ? parseInt(minPrecio) : undefined;
+    maxPrecio = maxPrecio !== "" ? parseInt(maxPrecio) : undefined;
+
+    fetch(URL)
+    .then(response => response.json())
+    .then(data => {
+        showCars(data.products);
+    })
+    .catch(error => {
+    console.error('Error en la obtención de los datos', error);
+    });
+})
+
 
 function showCars(autos){
     let divCar = document.querySelector('.auto__item');
     divCar.innerHTML = "";
     const monedaUsuario = localStorage.getItem('monedaUsuario') || 'USD';
     for(let i=0; i < autos.length; i++){
-        let autoDiv = document.createElement('div');
+        if((minPrecio === undefined || autos[i].cost >= minPrecio)&&(maxPrecio === undefined || autos[i].cost <= maxPrecio)){ //Filtro de precios
+            let autoDiv = document.createElement('div');
         autoDiv.className = 'car__card';
         autoDiv.innerHTML = `
             <img src='${autos[i].image}' alt='${autos[i].name}' class='car__img'>
@@ -34,4 +54,8 @@ function showCars(autos){
     });
     divCar.appendChild(autoDiv);
     }
+    }
+        
 }
+
+
