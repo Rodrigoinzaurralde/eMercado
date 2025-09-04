@@ -189,6 +189,16 @@ a.custom-card:hover {
   color: orange;
 }
 
+.envio-msg {
+    background: #eaf7e6;
+    color: #2d7a2d;
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    text-align: center;
+}
+
 /*----Usuario y Desplegable----*/
 #boton-desplegable{
   background-color: #343a41;
