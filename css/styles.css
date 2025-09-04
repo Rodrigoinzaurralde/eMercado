@@ -233,7 +233,9 @@ a.custom-card:hover {
 .menu-desplegable{
   display: none;
   flex-direction: column;
+  float: left;
   width: 100%;
+  min-width: 125px;
   background-color: #343a41;
   padding: 10px;
   border-radius: 0px 0px 10px 10px;
@@ -247,13 +249,4 @@ a.custom-card:hover {
 }
 .menu-desplegable a:hover{
   color: #fff;
-}
-
-#perfil::before{
-  content: "👤";
-  padding-right: 5px;
-}
-#closeSession::before{
-  content: "📴";
-  padding-right: 5px;
 }

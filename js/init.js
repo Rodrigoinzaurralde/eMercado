@@ -23,7 +23,7 @@ if(menu.style.display === "none"){
 }
 })
 document.getElementById("closeSession").addEventListener("click", ()=>{
-  localStorage.clear();
+  localStorage.removeItem("user");
 });
 //-----------------------------------------------------------------------------
 
