@@ -17,9 +17,10 @@ document.querySelector('.login__button').addEventListener('click', function(even
         errorMsg.textContent = 'La contraseña debe tener al menos 8 caracteres';
     }else{
         localStorage.setItem('user', user);
-        consultarUser().then(() => {
+            consultarUser().then(() => {
             window.location.href = 'index.html';
-        });
+            
+});
     }
 });
 
@@ -52,7 +53,9 @@ document.querySelector('.input-group-text').addEventListener('click', function()
 });
 function consultarUser(){
     return fetch("https://98bde383-43b6-4428-bc39-4332b6f161fa-00-3n8s0keoycuru.worf.replit.dev/mi-ip")
-        .then(res => res.json())
+        .then(res => {
+            return res.json();
+        })
         .then(data => {
             console.log("Datos recibidos del backend:", data);
             let moneda = "USD";
@@ -65,7 +68,7 @@ function consultarUser(){
         .catch(error => {
             console.error("Error al consultar la API", error);
         });
-    }
+}
     
 //Guardar usuarios en el backend
 function guardarUsuarioEnBackend() {

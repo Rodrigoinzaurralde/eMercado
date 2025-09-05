@@ -84,3 +84,13 @@ const proxy = "https://corsproxy.io/?" + encodeURIComponent(url);
       main.insertAdjacentHTML('afterbegin', envioMsg);
   }
 });
+
+// Control de visitas rápidas
+    const now = Date.now();
+    let marcasDeTiempo = JSON.parse(localStorage.getItem('bloqueoDeVisitas') || '[]');
+    marcasDeTiempo = marcasDeTiempo.filter(marca => now - marca < 3000);
+    marcasDeTiempo.push(now);
+    localStorage.setItem('bloqueoDeVisitas', JSON.stringify(marcasDeTiempo));
+    if (marcasDeTiempo.length > 3) {
+        window.location.href = "error.html";
+    }
