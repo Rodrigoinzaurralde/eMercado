@@ -8,8 +8,9 @@ const CART_BUY_URL = "https://japceibal.github.io/emercado-api/cart/buy.json";
 const EXT_TYPE = ".json";
 
 if(!localStorage.getItem('user')){
-  window.location.href = 'login.html';
+    window.location.href = 'login.html';
 }
+
 document.getElementById("boton-desplegable").innerHTML = `${localStorage.getItem('user')}`;
 const menu = document.getElementById("menu-desplegable");
 const botonMenu = document.getElementById("boton-desplegable");
@@ -66,21 +67,6 @@ const url = "http://ip-api.com/json/?fields=61439";
 const proxy = "https://corsproxy.io/?" + encodeURIComponent(url);
 */
 
-fetch("https://98bde383-43b6-4428-bc39-4332b6f161fa-00-3n8s0keoycuru.worf.replit.dev/mi-ip")
-  .then(res => res.json())
-  .then(data => {
-    console.log("Datos recibidos del backend:", data);
-    let moneda = "USD";
-    localStorage.setItem("monedaUsuario", moneda);
-    localStorage.setItem("countryCode", data.countryCode);
-    localStorage.setItem("city", data.city || "sin_ciudad")
-    console.log("País detectado:", data.country, "Moneda:", moneda);
-    guardarUsuarioEnBackend();
-  })
-  .catch(error => {
-    console.error("Error al consultar la API", error);
-  });
-  
   window.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.endsWith('index.html')) {
       const ciudad = localStorage.getItem('city')?.toLowerCase() || '';
@@ -98,30 +84,3 @@ fetch("https://98bde383-43b6-4428-bc39-4332b6f161fa-00-3n8s0keoycuru.worf.replit
       main.insertAdjacentHTML('afterbegin', envioMsg);
   }
 });
-
-//Guardar usuarios en el backend
-function guardarUsuarioEnBackend() {
-    const usuario = localStorage.getItem('user');
-    const ciudad = localStorage.getItem('city') || 'sin_ciudad';
-    const pais = localStorage.getItem('countryCode') || 'sin_pais';
-
-    fetch("https://98bde383-43b6-4428-bc39-4332b6f161fa-00-3n8s0keoycuru.worf.replit.dev/guardar-usuario", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-API-KEY": "1234"
-        },
-        body: JSON.stringify({
-            usuario: usuario,
-            ciudad: ciudad,
-            pais: pais
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        console.log("Respuesta al guardar usuario:", data);
-    })
-    .catch(error => {
-        console.error("Error al guardar usuario:", error);
-    });
-}

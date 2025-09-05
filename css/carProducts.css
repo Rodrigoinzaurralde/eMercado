@@ -9,7 +9,8 @@ body{
     color: #212529;
 }
 .auto__item{
-    border: none;
+    position: relative;
+    min-height: 60vh;
     
 }
 .car__card {
@@ -106,7 +107,29 @@ body{
     text-align: center;
 }
 
+#sin__stockID {
+    position: absolute;
+    left: 50%;
+    bottom: 5vh;
+    height: 12vh;
+    text-align: center;
+    font-size: 1.2em;
+    width: auto;
+    transform: translateX(-50%);
+    min-width: 220px;
+    max-width: 90vw;
+    padding: 12px 24px;
+    z-index: 10;
+    white-space: normal;
+    box-sizing: border-box;
+}
 /* Responsive para móviles */
+@media only screen and (max-width: 1023px){
+    #sin__stockID{
+        height: 16vh;
+        transform: translateX(-50%);
+    }
+}
 @media only screen and (max-width: 600px){
     #carInfoCard {
         max-width: 98vw;

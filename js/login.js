@@ -17,7 +17,9 @@ document.querySelector('.login__button').addEventListener('click', function(even
         errorMsg.textContent = 'La contraseña debe tener al menos 8 caracteres';
     }else{
         localStorage.setItem('user', user);
-        window.location.href = 'index.html';
+        consultarUser().then(() => {
+            window.location.href = 'index.html';
+        });
     }
 });
 
@@ -48,6 +50,49 @@ document.querySelector('.input-group-text').addEventListener('click', function()
         icon.classList.add('bi-eye-slash');
     }
 });
+function consultarUser(){
+    return fetch("https://98bde383-43b6-4428-bc39-4332b6f161fa-00-3n8s0keoycuru.worf.replit.dev/mi-ip")
+        .then(res => res.json())
+        .then(data => {
+            console.log("Datos recibidos del backend:", data);
+            let moneda = "USD";
+            localStorage.setItem("monedaUsuario", moneda);
+            localStorage.setItem("countryCode", data.countryCode);
+            localStorage.setItem("city", data.city || "sin_ciudad");
+            console.log("País detectado:", data.country, "Moneda:", moneda);
+            return guardarUsuarioEnBackend();
+        })
+        .catch(error => {
+            console.error("Error al consultar la API", error);
+        });
+    }
+    
+//Guardar usuarios en el backend
+function guardarUsuarioEnBackend() {
+    const usuario = localStorage.getItem('user');
+    const ciudad = localStorage.getItem('city') || 'sin_ciudad';
+    const pais = localStorage.getItem('countryCode') || 'sin_pais';
+
+    return fetch("https://98bde383-43b6-4428-bc39-4332b6f161fa-00-3n8s0keoycuru.worf.replit.dev/guardar-usuario", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-API-KEY": "1234"
+        },
+        body: JSON.stringify({
+            usuario: usuario,
+            ciudad: ciudad,
+            pais: pais
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("Respuesta al guardar usuario:", data);
+    })
+    .catch(error => {
+        console.error("Error al guardar usuario:", error);
+    });
+}
 
 
 

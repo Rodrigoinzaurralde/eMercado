@@ -3,20 +3,20 @@ const URL = `https://japceibal.github.io/emercado-api/products/${productID}.json
 fetch(URL)
 .then(response => response.json())
 .then(data => {
-        showCar(data);
+        showProducts(data);
 })
 .catch(error => {
     console.error('Error en la obtención de los datos', error);
 });
 
-function showCar(auto){
+function showProducts(products){
     let divCar = document.querySelector('.auto__item');
     divCar.innerHTML = "";
     const monedaUsuario = localStorage.getItem('monedaUsuario') || 'USD';
 
-    let carouselInner = auto.images.map((img, idx) => `
+    let carouselInner = products.images.map((img, idx) => `
         <div class="carousel-item${idx === 0 ? ' active' : ''}">
-            <img src="${img}" class="d-block w-100 car__img" alt="${auto.name}">
+            <img src="${img}" class="d-block w-100 car__img" alt="${products.name}">
         </div>
     `).join('');
 
@@ -40,11 +40,11 @@ function showCar(auto){
     autoDiv.innerHTML = `
         ${carousel}
         <div class="car__info">
-            <h3 class="car__name">${auto.name}</h3>
-            <p class="car__desc">${auto.description}</p>
+            <h3 class="car__name">${products.name}</h3>
+            <p class="car__desc">${products.description}</p>
             <div class="car__bottom">
-                <span class="car__cost">Precio: ${auto.cost} ${monedaUsuario}</span>
-                <span class="car__sold">Vendidos: ${auto.soldCount}</span>
+                <span class="car__cost">Precio: ${products.cost} ${products.currency}</span>
+                <span class="car__sold">Vendidos: ${products.soldCount}</span>
             </div>
         </div>
     `;
