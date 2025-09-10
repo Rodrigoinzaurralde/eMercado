@@ -1,3 +1,9 @@
+:root {
+  --main-font: Verdana, Geneva, Tahoma, sans-serif;
+  --main-backColor: #f8f9fa;
+  --main-shadow: 0 0 10px #262626;
+  --nav-bg-color: #f09100;
+}
 .jumbotron,
 .card-body,
 .container,
@@ -8,7 +14,6 @@
 .jumbotron .display-4 {
   font-weight: bold;
 }
-
 nav a {
   text-decoration: none;
 }
@@ -194,59 +199,240 @@ a.custom-card:hover {
     color: #2d7a2d;
     padding: 10px 16px;
     border-radius: 8px;
-    margin-bottom: 16px;
     font-weight: 600;
     text-align: center;
 }
+/*Barra de navegación*/
+.navbar{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 55px;
+  background-color: var(--nav-bg-color);
+}
+.navbar .box-nav{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 100%;
+}
+.navbar-toggle{
+  display: none;
+}
+.nav-container{
+  display: flex;
+  height: 50px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.nav-container ul{
+  display: flex;
+  justify-content: space-around;
+  gap:25px;
+  align-items: center;
+  width: 100%;
+}
+.nav-container ul li{
+  float: left;
+  list-style: none;
+}
 
-/*----Usuario y Desplegable----*/
+.navbar-link{
+  color: white;
+}
+.navbar-link:hover{
+  color: #FFF;
+  border-bottom: 1px solid #FFF;
+}
+/*-- Usuario y Desplegable --*/
 #boton-desplegable{
-  background-color: #343a41;
-  color:#dadada;
+  background-color: #f09100;
+  color: white;
   padding: 5px 10px;
   border: none;
   border-radius: 10px;
+  box-shadow: 1px 1px 10px#b35905b0;
+}
+#boton-desplegable:hover{
+  background-color: #f79b11;
 }
 .perfil-container{
-  display: block;
-  position: absolute;
-  top: 1%;
-  right: 4%;
-  width: auto;
-  z-index: 20;
+  width: 100%;
 }
-@media only screen and (max-width:650px) {
-  .perfil-container{
-    right: 8%;
-  }
-  .jumbotron{
+.usuario-desplegable{
+  flex-direction: column;
+  width: inherit;
+  min-width: 140px;
+  background-color: #F09100;
+  padding: 10px;
+  border-radius: 0px 0px 10px 10px;
+  position: fixed;
+  z-index: 100;
+}
+.usuario-desplegable a{
+  color: #000000;
+  text-decoration: none;
+  margin: 5px;
+}
+.usuario-desplegable a:hover{
+  color: #fff;
+}
+
+/*--- Barra de busqueda ---*/
+.findProduct{
+  display: flex; 
+  flex: 0;
+  justify-content: center;
+  align-items: center;
+  margin: 1px 10px;
+}
+#findProductId{
+  width: 200px;
+  background-color: #ffffff8c;
+}
+#addon-wrapping{
+  background-color: #ffffff8c;
+}
+#findProductId:focus{
+  border: none;
+  outline: 2px solid #343a41;
+  box-shadow: none;
+}
+#findProductId::placeholder{
+  color: #212529;
+}
+.live-results, .mobile-results {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1050;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  max-height: 220px;
+  overflow-y: auto;
+  box-shadow: 0 4px 16px #0002;
+}
+.live-results.active, .mobile-results.active {
+  display: block;
+}
+.live-results .result-item, .mobile-results .result-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.live-results .result-item:hover, .mobile-results .result-item:hover {
+  background: #f1f1f1;
+}
+
+/*Menu hamburguesa*/
+.navbar-button, #nav-close-button{
+  display: none;
+  color: white;
+  border: none;
+  margin: 10px;
+  border-radius: 2px;
+  background-color: #F09100;
+  box-shadow: 1px 1px 5px #a76a0e;
+  font-size: 1.4em;
+}
+.navbar-button:hover{
+  background-color: #f79b11;
+}
+.navbar-button:active{
+  box-shadow: inset 1px 1px 5px #a76a0e;
+}
+#mobile-p-search{
+  display: none;
+  width: 100%;
+  padding: 5px 5%;
+  margin: 0;
+  background-color: #F09100;
+}
+#mobile-navbar{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  background-color: #db8708cc;
+  font-size: 1.5em;
+  list-style: none;
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1500;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  transition: 0.3s;
+}
+.navmobile-link{
+  color: white;
+  text-decoration: none;
+}
+li:has(.navmobile-link){
+  padding: 10px;
+  margin: 10px 0px;
+}
+.navmobile-link:hover{
+  color: #FFF;
+  border-bottom: 1px solid #FFF;
+} 
+
+.close-mobile:hover{
+  color: #d67010;
+}
+.mobile-list-links{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 25% 10%;
+}
+.close-mobile{
+  margin: 3% 15%;
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+  width: 40px;
+  border: none;
+  background: none;
+}
+
+
+
+/*-- Responsive --*/
+@media only screen and (max-width:750px) {
+  .jumbotron{ /*Fondo del inicio*/
     background-position: 19%;
     background-size: 270%;
   }
+  #mobile-p-search{
+    display: flex;
+  }
+  .navbar-button{
+    display:flex;
+  }
+  .nav-container ul li, #product-search{
+    display: none;
+  }
+  .nav-container ul{
+    width:min-content;
+  }
+  #findProductId{
+    width: 80%;
+  }
+  .navbar{
+    justify-content: space-between;
+  }
+
 }
 @media only screen and (max-width:1024px) and (min-height:1000px){
-  .jumbotron{
+  .jumbotron{ /*Fondo del inicio*/
     background-position: 20%;
     background-size: 270%;
   }
 }
-.menu-desplegable{
-  display: none;
-  flex-direction: column;
-  float: left;
-  width: 100%;
-  min-width: 125px;
-  background-color: #343a41;
-  padding: 10px;
-  border-radius: 0px 0px 10px 10px;
-  position: absolute;
-  z-index: 10;
-}
-.menu-desplegable a{
-  color: #9c9e98;
-  text-decoration: none;
-  margin: 5px;
-}
-.menu-desplegable a:hover{
-  color: #fff;
-}
+

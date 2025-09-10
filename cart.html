@@ -7,42 +7,76 @@
   <title>eMercado - Todo lo que busques está aquí</title>
   <link rel="icon" href="img/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
 </head>
 
 <body>
-  <div class="perfil-container">
-      <button id="boton-desplegable"></button> <!--Desafíate 02-->
-      <div id="menu-desplegable" class="menu-desplegable">
-        <a href="my-profile.html" id="perfil">Mi Perfil</a>
-        <a href="" id="closeSession">Cerrar Sesión</a>
-      </div>
-  </div>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
-    <div class="container">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav w-100 justify-content-between">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Inicio</a>
+  <nav class="navbar">
+    
+    <div class="box-nav">
+      <div class="nav-container">
+        
+      
+        <ul>
+          <div style="display: flex; justify-content: flex-start;">
+            <button class="navbar-button" type="button">
+              <span class="nav-button">&#9776;</span>
+            </button>
+          </div>
+          
+          <li>
+            <a class="navbar-link active" href="index.html">Inicio</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="categories.html">Categorías</a>
+          <li>
+            <a class="navbar-link" href="categories.html">Categorías</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sell.html">Vender</a>
+          <li>
+            <a class="navbar-link" href="sell.html">Vender</a>
           </li>
-          <li class="nav-item">
+          <li>
+            
           </li>
+          <div id="product-search" class="input-group flex-nowrap findProduct" style="position:relative;">
+            <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
+            <input id="findProductId" type="text" class="form-control" placeholder="Buscar producto..." aria-label="Buscar producto" aria-describedby="addon-wrapping">
+            <div id="liveResults" class="live-results"></div>
+          </div>
+            <div class="perfil-container">
+              <button id="boton-desplegable"></button> 
+              <div id="usuario-desplegable" class="usuario-desplegable" style="display: none;">
+                <a href="my-profile.html" id="perfil">Mi Perfil</a>
+                <a href="" id="closeSession">Cerrar Sesión</a>
+              </div>
+            </div>
         </ul>
-      </div>
     </div>
   </nav>
+  <div id="mobile-p-search" class="input-group flex-nowrap findProduct" style="position:relative;">
+    <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
+    <input type="text" class="form-control" placeholder="Buscar producto..." aria-label="Buscar producto" aria-describedby="addon-wrapping">
+    <div class="mobile-results"></div>
+  </div>
+  <div id="mobile-navbar">
+    <button class="close-mobile"> &times; </button>
+    <div class="mobile-list-links">
+      
+      
+      <li>
+        <a class="navmobile-link active" href="index.html">Inicio</a>
+      </li>
+      <li>
+        <a class="navmobile-link" href="categories.html">Categorías</a>
+      </li>
+      <li>
+        <a class="navmobile-link" href="sell.html">Vender</a>
+      </li>
+    </div>
+  </div>
+
+  
   <main>
     <div class="container">
       <div class="alert alert-danger text-center" role="alert">

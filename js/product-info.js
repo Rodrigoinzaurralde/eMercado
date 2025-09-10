@@ -12,8 +12,6 @@ fetch(URL)
 function showProducts(products){
     let divCar = document.querySelector('.auto__item');
     divCar.innerHTML = "";
-    const monedaUsuario = localStorage.getItem('monedaUsuario') || 'USD';
-
     let carouselInner = products.images.map((img, idx) => `
         <div class="carousel-item${idx === 0 ? ' active' : ''}">
             <img src="${img}" class="d-block w-100 car__img" alt="${products.name}">

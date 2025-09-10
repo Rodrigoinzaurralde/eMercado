@@ -1,11 +1,13 @@
 const catID = localStorage.getItem('catID') || '101'
 const URL = `https://japceibal.github.io/emercado-api/cats_products/${catID}.json`;
+let productos = [];
 
 function extraerDatos(){
     fetch(URL)
     .then(response => response.json())
     .then(data => {
-        showProducts(data.products, data.catName);
+        productos = data.products;
+        showProducts(productos, data.catName);
     })
     .catch(error => {
     console.error('Error en la obtención de los datos', error);
@@ -13,15 +15,38 @@ function extraerDatos(){
 }
 extraerDatos();
 
+
+
 let minPrecio = undefined;
 let maxPrecio = undefined;
 document.getElementById("rangeFilterCount").addEventListener("click", ()=>{
     minPrecio = document.getElementById("rangeFilterPriceMin").value;
     maxPrecio = document.getElementById("rangeFilterPriceMax").value;
-    minPrecio = minPrecio !== "" ? parseInt(minPrecio) : undefined;
-    maxPrecio = maxPrecio !== "" ? parseInt(maxPrecio) : undefined;
+    minPrecio = minPrecio !== "" ? Math.max(0, parseInt(minPrecio)) : undefined;
+    maxPrecio = maxPrecio !== "" ? Math.max(0, parseInt(maxPrecio)) : undefined;
     extraerDatos();
 })
+
+//De mayor a menor
+document.getElementById('sortAsc').addEventListener('click', ()=>{
+    let titulo = document.getElementById('subtituloAutosId');
+    const sortedByMaxPrice = [...productos].sort((a, b) => b.cost - a.cost);
+    showProducts(sortedByMaxPrice, titulo.textContent);
+});
+
+//De menor a mayor
+document.getElementById('sortDesc').addEventListener('click', () => {
+    let titulo = document.getElementById('subtituloAutosId');
+    const sortedByMinPrice = [...productos].sort((a, b) => a.cost - b.cost);
+    showProducts(sortedByMinPrice, titulo.textContent);
+});
+
+//Por cantidad
+document.getElementById('sortByCount').addEventListener('click', ()=>{
+    let titulo = document.getElementById('subtituloAutosId');
+    const sortedByCount = [...productos].sort((a, b)=> b.soldCount - a.soldCount); 
+    showProducts(sortedByCount, titulo.textContent);
+});
 
 document.getElementById("clearRangeFilter").addEventListener("click", ()=>{
     minPrecio = undefined;
@@ -45,7 +70,7 @@ function showProducts(products, catName){
             let autoDiv = document.createElement('div');
         autoDiv.className = 'car__card';
         autoDiv.innerHTML = `
-            <img src='${products[i].image}' alt='${products[i].name}' class='car__img'>
+            <img src='${products[i].image}' alt='${products[i].name}' class='car__img' loading="lazy">
             <div class="car__info">
                 <h3 class="car__name">${products[i].name}</h3>
                 <p class="car__desc">${products[i].description}</p>
