@@ -103,13 +103,13 @@ window.addEventListener('DOMContentLoaded', () => {
       const ciudad = localStorage.getItem('city')?.toLowerCase() || '';
       let envioMsg = '';
       if (ciudad === 'montevideo' || ciudad === 'canelones') {
-          envioMsg = '<div class="envio-msg">Envíos gratis</div>';
-      } else if (ciudad === 'maldonado'){
+          envioMsg = '<div class="envio-msg">Envíos gratis en Montevideo y Canelones</div>';
+      } else if (ciudad === 'maldonado' || ciudad === 'rocha'){
           envioMsg = '<div class="envio-msg">Envíos a partir de 500 pesos uruguayos</div>';
       }else if(ciudad === 'rivera' || ciudad === 'artigas'){
           envioMsg = '<div class="envio-msg">Envíos a partir de 700 pesos uruguayos</div>';
       }else{
-          envioMsg = '<div class="envio-msg">Envíos a partir de 300 pesos uruguayos</div>'
+          envioMsg = '<div class="envio-msg">Consulte por costo de envíos en su zona</div>'
       }
       const main = document.querySelector('main') || document.body;
       main.insertAdjacentHTML('afterbegin', envioMsg);
@@ -204,5 +204,22 @@ if (isMobile()) {
         window.location.href = "error.html";
     }
 
-// Responsive del buscador
+// Limpiar localStorage tras 10 min de inactividad
+let inactividad;
+function resetInactividad(){
+  clearTimeout(inactividad);
+  inactividad = setTimeout(() =>{
+    localStorage.clear();
+    window.location.href = 'login.html';
+  }, 10 * 60 * 1000)
+}
+
+//Eventos que reinician el contador de inactividad
+['mousemove', 'keydown', 'scroll', 'click'].forEach(e => {
+  window.addEventListener(e, resetInactividad);
+});
+
+resetInactividad();
+
+
 
