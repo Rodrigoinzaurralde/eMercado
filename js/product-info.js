@@ -1,3 +1,19 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import { getFirestore, collection, addDoc, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+// Configuración de Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyDztICeC_2I7lEd7PLYtIxsZ0FmYtDIWEI",
+    authDomain: "comentarios-351d5.firebaseapp.com",
+    projectId: "comentarios-351d5",
+    storageBucket: "comentarios-351d5.firebasestorage.app",
+    messagingSenderId: "214528495023",
+    appId: "1:214528495023:web:40dea55ef34a476c1cf35a",
+    measurementId: "G-HD1RQ5B6GW"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 // Obtener el productID desde la URL o localStorage
 function getProductId() {
     const params = new URLSearchParams(window.location.search);
@@ -12,6 +28,37 @@ const url_comments = `https://japceibal.github.io/emercado-api/products_comments
 let promedioValoraciones = null;
 let productoGlobal = null;
 let comentariosGlobal = null;
+async function cargarComentariosFirestore() {
+    const q = query(
+        collection(db, "comentarios"),
+        where("productID", "==", productID),
+        orderBy("dateTime", "desc")
+    );
+    const querySnapshot = await getDocs(q);
+    let firestoreComments = [];
+    querySnapshot.forEach((doc) => {
+        firestoreComments.push(doc.data());
+    });
+
+    // Cargar comentarios de la API
+    let apiComments = [];
+    try {
+        const response = await fetch(url_comments);
+        apiComments = await response.json();
+    } catch (e) {
+        console.error("Error cargando comentarios de la API", e);
+    }
+// combino comentarios de dbFirestone y la api
+    comentariosGlobal = [...firestoreComments, ...apiComments];
+
+    mostrarComentarios(comentariosGlobal);
+    mostrarResumenScores(comentariosGlobal);
+
+    // Si el producto ya está cargado, mostrarlo
+    if (productoGlobal) {
+        showProducts(productoGlobal);
+    }
+}
 
 // Fetch producto
 fetch(URL)
@@ -19,29 +66,10 @@ fetch(URL)
     .then(data => {
         productoGlobal = data;
         mostrarProductosRelacionados(data);
-        // Si los comentarios ya están, muestra el producto
-        if (comentariosGlobal !== null) {
-            showProducts(productoGlobal);
-        }
+        showProducts(productoGlobal); // Mostrar el producto inmediatamente
     })
     .catch(error => {
         console.error('Error en la obtención de los datos', error);
-    });
-
-// Fetch comentarios
-fetch(url_comments)
-    .then(response => response.json())
-    .then(comments => {
-        comentariosGlobal = comments;
-        mostrarComentarios(comments);
-        mostrarResumenScores(comments);
-        // Si el producto ya está, muestra el producto
-        if (productoGlobal !== null) {
-            showProducts(productoGlobal);
-        }
-    })
-    .catch(error => {
-        console.error('Error en la obtención de los comentarios', error);
     });
 
 function showProducts(products){
@@ -134,21 +162,53 @@ function mostrarProductosRelacionados(product){
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Interacción de estrellas
-    const stars = document.querySelectorAll('.star-rating .bi-star');
-    let selected = -1;
+    // Interacción de estrellas para el formulario de comentario
+    const stars = document.querySelectorAll('.resenias .bi-star');
+    let comentarioScore = 0;
     stars.forEach((star, idx) => {
         star.addEventListener('mouseover', () => {
             stars.forEach((s, i) => s.classList.toggle('selected', i <= idx));
         });
         star.addEventListener('mouseout', () => {
-            stars.forEach((s, i) => s.classList.toggle('selected', i <= selected));
+            stars.forEach((s, i) => s.classList.toggle('selected', i < comentarioScore));
         });
         star.addEventListener('click', () => {
-            selected = idx;
-            stars.forEach((s, i) => s.classList.toggle('selected', i <= selected));
+            comentarioScore = idx + 1;
+            stars.forEach((s, i) => s.classList.toggle('selected', i < comentarioScore));
         });
     });
+
+    // Enviar comentario a Firestore
+    document.getElementById('botonComentarioID').addEventListener('click', async function() {
+        const texto = document.getElementById('comentarioID').value.trim();
+        if (comentarioScore === 0 || texto === "") {
+            alert("Debes seleccionar una calificación y escribir un comentario.");
+            return;
+        }
+        const usuario = localStorage.getItem('user') || 'Usuario';
+        const fecha = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+        const nuevoComentario = {
+            user: usuario,
+            dateTime: fecha,
+            description: texto,
+            score: comentarioScore,
+            productID: productID
+        };
+
+        await addDoc(collection(db, "comentarios"), nuevoComentario);
+
+        // Recarga los comentarios desde Firestore
+        cargarComentariosFirestore();
+
+        // Limpia el formulario
+        document.getElementById('comentarioID').value = "";
+        comentarioScore = 0;
+        stars.forEach(s => s.classList.remove('selected'));
+    });
+
+    // Al cargar la página, carga los comentarios desde Firestore
+    cargarComentariosFirestore();
 
     // Listeners para el modal
     document.querySelector('.close-modal').addEventListener('click', function() {
