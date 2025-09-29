@@ -11,7 +11,7 @@
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/carProducts.css">
+  <link rel="stylesheet" href="css/product-info.css">
 </head>
 
 <body>
@@ -73,11 +73,36 @@
   </div>
 
 
-  <main>
-    <div class="container">
-      <div class="auto__item"></div>
+<main>
+  <div class="container">
+    <div class="imagenes__product"></div>
+  <div class="resenias">
+    <p>Déjanos tu reseña</p>
+    <div class="star-rating">
+      <i class="bi bi-star" data-value="1"></i>
+      <i class="bi bi-star" data-value="2"></i>
+      <i class="bi bi-star" data-value="3"></i>
+      <i class="bi bi-star" data-value="4"></i>
+      <i class="bi bi-star" data-value="5"></i>
     </div>
-  </main>
+    <p>Comentario:</p>
+    <textarea name="Comentario" id="comentarioID" placeholder="Escribe tu experiencia con el producto" rows="10"></textarea>
+    <input type="button" value="Enviar" id="botonComentarioID">
+  </div>
+  </div>
+  <div class="product__description">
+    <h3 class="title"></h3>
+    <p class="opinions"></p>
+    <button id="botonGuardarID"><i class="bi bi-heart"></i>Guardar</button>
+    <button id="botonAniadirID">Añadir</button>
+    <div class="description">
+      <p class="item__description"></p>
+    </div>
+    <div class="cant__resenias"></div>
+    <div class="resenias_de_usuarios"></div>
+  </div>
+  <div class="productos__relacionados"></div>
+</main>
   <footer class="text-muted">
     <div class="container">
       <p class="float-end">
@@ -93,6 +118,10 @@
       <div></div>
       <div></div>
     </div>
+  </div>
+  <div id="image-modal" class="image-modal" style="display:none;">
+    <span class="close-modal">&times;</span>
+    <img id="modal-img" src="" alt="Zoom imagen" />
   </div>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>

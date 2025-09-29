@@ -52,7 +52,7 @@ document.querySelector('.input-group-text').addEventListener('click', function()
     }
 });
 function consultarUser(){
-    return fetch("https://98bde383-43b6-4428-bc39-4332b6f161fa-00-3n8s0keoycuru.worf.replit.dev/mi-ip")
+    return fetch("https://backend-ip-api.onrender.com/mi-ip")
         .then(res => {
             return res.json();
         })
@@ -101,7 +101,7 @@ function guardarUsuarioEnBackend(lat , long) {
     const ciudad = localStorage.getItem('city') || 'sin_ciudad';
     const pais = localStorage.getItem('countryCode') || 'sin_pais';
 
-    return fetch("https://98bde383-43b6-4428-bc39-4332b6f161fa-00-3n8s0keoycuru.worf.replit.dev/guardar-usuario", {
+    return fetch("https://backend-ip-api.onrender.com/guardar-usuario", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
