@@ -248,25 +248,34 @@ progress::-webkit-progress-value {
 .imagen {
     cursor: zoom-in;
 }
+.imagenes-carrusel {
+    display: none;
+}
 
 /* RESPONSIVE PARA TABLETS Y MÓVILES */
-@media (max-width: 900px) {
+
+@media (max-width: 1600px) {
+    html{
+        box-sizing: border-box;
+    }
     main {
         display: block !important;
-        padding: 15px;
-        grid-template-columns: none;
-        grid-template-rows: none;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
         gap: 20px;
+        box-sizing: border-box;
+    }
+    nav {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
     }
 
     .imagenes__product {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 15px 0 !important;
-        padding: 15px !important;
-        box-sizing: border-box;
-        flex-wrap: wrap;
-        justify-content: center;
+        display: none !important;
+    }
+    .imagenes-carrusel {
+        display: block !important;
     }
 
     .product__description {
@@ -317,8 +326,8 @@ progress::-webkit-progress-value {
     }
 
     .imagen {
-        width: calc(50% - 10px) !important;
-        max-width: calc(50% - 10px) !important;
+        width: 48% !important;
+        max-width: 48% !important;
         min-width: 120px;
         height: auto;
     }
@@ -345,8 +354,8 @@ progress::-webkit-progress-value {
     }
 
     .title {
-        font-size: 2em !important;
-        letter-spacing: 2px;
+        grid-area: title;
+        width: 100%;
     }
 
     .cost__product {
