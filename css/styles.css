@@ -327,7 +327,9 @@ a.custom-card:hover {
 .live-results .result-item:hover, .mobile-results .result-item:hover {
   background: #f1f1f1;
 }
-
+.search-label{
+  cursor: pointer;
+}
 /*Menu hamburguesa*/
 .navbar-button, #nav-close-button{
   display: none;

@@ -161,7 +161,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
   
-  function buscadorMobile(){
+  function buscadorMobile(){ //Función para asignar id al buscador mobile
   const normalSearch = document.getElementById("product-search");
   const estilo = window.getComputedStyle(normalSearch);
   const mobileInput = document.querySelector("#mobile-p-search input");
@@ -173,25 +173,24 @@ window.addEventListener('DOMContentLoaded', () => {
     normalInput.id = "";
     resultadoMobile.id = "liveResults";
     resltadoInput.id = "";
-    console.log("id asignado a mobile-p-search y a .mobile-results");
-    console.log(mobileInput, resultadoMobile);
-  } else {
+  } else if(!window.innerWidth < 750){
     mobileInput.id = "";
     resultadoMobile.id = "";
     normalInput.id = "findProductId";
     resltadoInput.id = "liveResults";
-    console.log("product-search tiene el id");
   }
   asignarEventosBuscador();
 }
 
+// Detectar si es mobile y se aplica el buscador mobile
 function isMobile() {
-  return /Mobi|iPhone|BlackBerry|iPad|iPod|Android/i.test(navigator.userAgent) ;
+  return /Mobi|iPhone|BlackBerry|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 750;
 }
 if (isMobile()) {
   window.addEventListener("load", buscadorMobile);
+  window.addEventListener("resize", buscadorMobile);
 }
-  asignarEventosBuscador();
+asignarEventosBuscador();
 });
 
 // Control de visitas rápidas

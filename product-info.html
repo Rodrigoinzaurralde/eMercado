@@ -12,6 +12,7 @@
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
   <link rel="stylesheet" href="css/product-info.css">
+  <link rel="stylesheet" href="css/preload.css">
 </head>
 
 <body>
@@ -98,8 +99,25 @@
     <div class="description">
       <p class="item__description"></p>
     </div>
-    <div class="cant__resenias"></div>
-    <div class="resenias_de_usuarios"></div>
+    <div class="cant__resenias">
+      <div class="preload">
+        <div class="card-calificaciones">
+          <div class="line loading"></div>
+          <div class="line loading"></div>
+          <div class="line loading"></div>
+          <div class="line loading"></div>
+          <div class="line loading"></div>
+          <div class="line loading"></div>
+        </div>
+    </div>
+    </div>
+    <div class="resenias_de_usuarios">
+      <div class="preload">
+        <div class="card-resenias">
+          <div class="line loading"></div>
+        </div>
+    </div>
+    </div>
   </div>
   <div class="productos__relacionados"></div>
 </main>
@@ -126,6 +144,7 @@
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
   <script type="module" src="js/product-info.js"></script>
+  <script src="js/preload.js"></script>
 </body>
 
 </html>
