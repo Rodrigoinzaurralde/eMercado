@@ -20,7 +20,7 @@ function getProductId() {
     return params.get('id') || localStorage.getItem('productID');
 }
 const productID = getProductId();
-localStorage.setItem('productID', productID); // Mantener actualizado
+localStorage.setItem('productID', productID);
 
 const URL = `https://japceibal.github.io/emercado-api/products/${productID}.json`;
 const url_comments = `https://japceibal.github.io/emercado-api/products_comments/${productID}.json`;
@@ -48,7 +48,7 @@ async function cargarComentariosFirestore() {
     } catch (e) {
         console.error("Error cargando comentarios de la API", e);
     }
-// combino comentarios de dbFirestone y la api
+// combino comentarios de dbFirestone y la API
     comentariosGlobal = [...firestoreComments, ...apiComments];
 
     mostrarComentarios(comentariosGlobal);
@@ -66,7 +66,7 @@ fetch(URL)
     .then(data => {
         productoGlobal = data;
         mostrarProductosRelacionados(data);
-        showProducts(productoGlobal); // Mostrar el producto inmediatamente
+        showProducts(productoGlobal);
     })
     .catch(error => {
         console.error('Error en la obtención de los datos', error);
@@ -84,8 +84,7 @@ function showProducts(products){
     let promedioHTML = promedioValoraciones ? ` | <span class='promedio'>Promedio: ${promedioValoraciones} ⭐</span>` : '';
     soldCount.innerHTML = `<p><span class='cost__product'>${products.cost} ${products.currency}</span> (${products.soldCount} vendidos) ${promedioHTML}</p>`;
     description.innerHTML = `<h4>Descripción: </h4>${products.description}`;
-
-    // Asigna el listener de zoom a las imágenes recién agregadas
+    // zoom imagenes
     document.querySelectorAll('.imagenes__product img').forEach(img => {
         img.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -95,6 +94,7 @@ function showProducts(products){
             modal.style.display = 'flex';
         });
     });
+    mostrarCarruselBootstrap(products.images);
 }
 
 function mostrarResumenScores(comments) {
@@ -161,8 +161,54 @@ function mostrarProductosRelacionados(product){
     });
 }
 
+function mostrarCarruselBootstrap(imagenes) {
+    const carruselContainer = document.getElementById('imagenes-carrusel-container');
+    if (!carruselContainer) return;
+    carruselContainer.innerHTML = '';
+    if (window.innerWidth > 1024 || !imagenes || imagenes.length === 0) return;
+
+    let indicators = '';
+    let items = '';
+imagenes.forEach((img, idx) => {
+    const esActivo = idx === 0;
+    const clase = esActivo ? 'class="active"' : '';
+    const ariaCurrent = esActivo ? 'true' : 'false';
+    const label = `Slide ${idx + 1}`;
+
+    indicators += `<button type="button" data-bs-target="#imagenesCarrusel" data-bs-slide-to="${idx}" ${clase} aria-current="${ariaCurrent}" aria-label="${label}"></button>`;
+
+    const itemClase = esActivo ? 'carousel-item active' : 'carousel-item';
+    items += `<div class="${itemClase}">
+        <img src="${img}" class="d-block w-100" alt="Imagen ${idx + 1}">
+    </div>`;
+});
+
+    carruselContainer.innerHTML = `
+        <div id="imagenesCarrusel" class="carousel slide imagenes-carrusel" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                ${indicators}
+            </div>
+            <div class="carousel-inner">
+                ${items}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#imagenesCarrusel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#imagenesCarrusel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+    `;
+}
+window.addEventListener('resize', () => {
+    if (productoGlobal) {
+        mostrarCarruselBootstrap(productoGlobal.images);
+    }
+});
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Interacción de estrellas para el formulario de comentario
     const stars = document.querySelectorAll('.resenias .bi-star');
     let comentarioScore = 0;
     stars.forEach((star, idx) => {
@@ -198,14 +244,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
         await addDoc(collection(db, "comentarios"), nuevoComentario);
 
-        // Recarga los comentarios desde Firestore
         cargarComentariosFirestore();
 
-        // Limpia el formulario
         document.getElementById('comentarioID').value = "";
         comentarioScore = 0;
         stars.forEach(s => s.classList.remove('selected'));
     });
+
+    function moverTituloMovil() {
+    const title = document.querySelector('.title');
+    const description = document.querySelector('.product__description')
+    const carrusel = document.getElementById('imagenes-carrusel-container');
+    if (!title || !carrusel) return;
+
+    if (window.innerWidth <= 1024) {
+        // Mueve el título debajo del carrusel
+        carrusel.insertAdjacentElement('afterend', title);
+        title.insertAdjacentElement('afterend', description);
+    }
+}
+window.addEventListener('resize', moverTituloMovil);
+document.addEventListener('DOMContentLoaded', moverTituloMovil);
 
     // Al cargar la página, carga los comentarios desde Firestore
     cargarComentariosFirestore();
