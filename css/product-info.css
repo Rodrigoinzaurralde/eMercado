@@ -254,7 +254,7 @@ progress::-webkit-progress-value {
 
 /* RESPONSIVE PARA TABLETS Y MÓVILES */
 
-@media (max-width: 1600px) {
+@media (max-width: 1300px) {
     html{
         box-sizing: border-box;
     }

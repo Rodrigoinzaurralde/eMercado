@@ -389,9 +389,10 @@ li:has(.navmobile-link){
 }
 .mobile-list-links{
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  justify-content: center;
-  padding: 25% 10%;
+  align-items: center;
+  padding: 25% 15%;
 }
 .close-mobile{
   margin: 3% 15%;

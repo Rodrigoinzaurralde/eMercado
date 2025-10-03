@@ -165,7 +165,7 @@ function mostrarCarruselBootstrap(imagenes) {
     const carruselContainer = document.getElementById('imagenes-carrusel-container');
     if (!carruselContainer) return;
     carruselContainer.innerHTML = '';
-    if (window.innerWidth > 1024 || !imagenes || imagenes.length === 0) return;
+    if (window.innerWidth > 1300 || !imagenes || imagenes.length === 0) return;
 
     let indicators = '';
     let items = '';
