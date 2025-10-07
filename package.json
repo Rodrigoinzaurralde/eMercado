@@ -1,0 +1,14 @@
+{
+  "name": "emercado",
+  "version": "1.0.0",
+  "description": "Script de análisis de código",
+  "main": "excel_converter.js",
+  "type": "module",
+  "scripts": {
+    "excel-review": "node excel_converter.js" 
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "xlsx": "^0.18.5"
+  }
+}
