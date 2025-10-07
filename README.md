@@ -15,9 +15,9 @@ eMercado es una aplicación web para la compra y venta de productos, desarrollad
 
 ## 🛡️ Metodología de QA y Seguridad (Security by Design)
 
-Este proyecto emplea un sistema híbrido de Ingeniería de Prompts (Copilot Pro) y Node.js para garantizar la seguridad (*Security by Design*) y el rendimiento del código JavaScript.
+Este proyecto emplea un sistema híbrido de Ingeniería de Prompts (Copilot) y Node.js para garantizar la seguridad (*Security by Design*) y el rendimiento del código JavaScript.
 
-* **Estándar de Seguridad:** Las revisiones automáticas se basan en un prompt estructurado con las reglas del **OWASP Top 10** (2021) y el principio de Seguridad por Defecto.
+* **Estándar de Seguridad:** Las revisiones automáticas se basan en un prompt estructurado con las reglas del **OWASP Top 10** y el principio de Seguridad por Defecto.
 * **Herramienta de Análisis:** Se utiliza el archivo **`TEST_PROMPT.md`** como coordinador de las reglas para la IA.
 * **Automatización de Informes:** Los hallazgos se convierten automáticamente a un formato profesional de hoja de cálculo (.xlsx).
 
@@ -64,7 +64,7 @@ eMercado/
 
 - El proyecto utiliza [Bootstrap](https://getbootstrap.com/) para estilos base.
 - Los datos se obtienen de la [API de eMercado](https://japceibal.github.io/emercado-api/).
-- **Control de Sesión:** El login y la sesión se gestionan con `localStorage`. Se realiza un análisis continuo para garantizar que **solo datos no sensibles** persistan en `localStorage`, como parte de la mitigación del riesgo A02 (Fallos Criptográficos) de OWASP.
+- **Control de Sesión:** El login y la sesión se gestionan con `localStorage`.
 - El diseño es responsive, adaptándose a pantallas de menos de 991px y 400px.
 
 ---
@@ -74,7 +74,7 @@ eMercado/
 - Iara Carballo -
 - Julio Sosa -
 - Lucas Velazquez -
-- Tacuebé Pereira -
+- Tacuabé Pereira -
 - Rodrigo Inzaurralde -
 
 Si tienes dudas o sugerencias sobre el código o la metodología de QA, puedes abrir un issue en el repositorio.
