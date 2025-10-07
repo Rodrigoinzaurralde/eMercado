@@ -1,2 +1,11 @@
 # Ignore Visual Studio Code settings
 .vscode/
+# Dependencias de Node.js
+/node_modules
+
+# Archivos de output temporales y generados
+review_raw_output.md
+*.xlsx
+
+# Archivos de configuración y seguridad
+.env
