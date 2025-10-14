@@ -8,6 +8,7 @@ const CART_BUY_URL = "https://japceibal.github.io/emercado-api/cart/buy.json";
 const EXT_TYPE = ".json";
 let todosLosProductos = [];
 
+
 if(!localStorage.getItem('user')){
     window.location.href = 'login.html';
 }
@@ -160,6 +161,37 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+// Botón switch modo claro/oscuro
+const nav = document.querySelector("nav");
+if (nav) {
+  const switchContainer = document.createElement("label");
+  switchContainer.className = "switch-container";
+
+  const switchInput = document.createElement("input");
+  switchInput.type = "checkbox";
+  switchInput.className = "switch-input";
+
+  const switchSlider = document.createElement("span");
+  switchSlider.className = "switch-slider";
+
+  switchContainer.appendChild(switchInput);
+  switchContainer.appendChild(switchSlider);
+  nav.appendChild(switchContainer);
+
+  // Restaurar modo desde localStorage
+  if (localStorage.getItem("modoOscuro") === "true") {
+    document.body.classList.add("dark-mode");
+    switchInput.checked = true;
+  }
+
+  // Alternar modo
+  switchInput.addEventListener("change", () => {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem("modoOscuro", switchInput.checked);
+  });
+}
+
+
   
   function buscadorMobile(){ //Función para asignar id al buscador mobile
   const normalSearch = document.getElementById("product-search");
@@ -181,6 +213,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   asignarEventosBuscador();
 }
+
 
 // Detectar si es mobile y se aplica el buscador mobile
 function isMobile() {
