@@ -330,6 +330,203 @@ a.custom-card:hover {
 .search-label{
   cursor: pointer;
 }
+/* Botón modo oscuro/claro */
+.modo-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-left: 10px;
+  color: #fff; /* Ajustá al color de tu nav */
+  transition: transform 0.2s ease;
+}
+
+.modo-btn:hover {
+  transform: scale(1.1);
+}
+
+/* === Switch redondeado modo claro/oscuro === */
+.switch-container {
+  position: relative;
+  width: 50px;
+  height: 26px;
+  margin-left: 12px;
+  display: inline-block;
+}
+
+.switch-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: 0.4s;
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "☀️";
+  height: 22px; width: 22px;
+  left: 2px; bottom: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+
+.switch-input:checked + .switch-slider {
+  background-color: #f09100;
+}
+
+.switch-input:checked + .switch-slider:before {
+  transform: translateX(24px);
+  content: "🌙";
+}
+
+/* === Modo oscuro mejorado === */
+.dark-mode {
+  --main-backColor: #121212;
+  --card-bg: #1f1f1f;
+  --text-color: #f0f0f0;
+  --text-color2: #141414;
+  --nav-bg-color: #1b1b1b;
+  --accent-color: #f09100;
+  background-color: var(--main-backColor) !important;
+  color: var(--text-color) !important;
+}
+
+/* Fondo general */
+.dark-mode body,
+.dark-mode main,
+.dark-mode .container {
+  background-color: var(--main-backColor) !important;
+  color: var(--text-color) !important;
+}
+
+/* Navbar */
+.dark-mode nav,
+.dark-mode .navbar {
+  background-color: var(--nav-bg-color) !important;
+}
+
+.dark-mode .navbar-link,
+.dark-mode .navmobile-link {
+  color: var(--text-color) !important;
+}
+
+.dark-mode .navbar-link:hover {
+  color: var(--accent-color) !important;
+}
+
+/* Tarjetas, alertas, jumbotron */
+.dark-mode .card,
+.dark-mode .card-body,
+.dark-mode .alert,
+.dark-mode .jumbotron {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border: 1px solid #333 !important;
+  box-shadow: none !important;
+}
+
+/* Inputs y botones */
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background-color: #2a2a2a !important;
+  color: #f0f0f0 !important;
+  border: 1px solid #555 !important;
+}
+
+.dark-mode button {
+  background-color: var(--accent-color) !important;
+  color: #fff !important;
+  border: none;
+}
+
+.dark-mode button:hover {
+  background-color: #ffb74d !important;
+}
+
+/* Resultados y buscadores */
+.dark-mode .live-results,
+.dark-mode .mobile-results {
+  background-color: #252525 !important;
+  color: #fff;
+  border: 1px solid #444;
+}
+
+.dark-mode .result-item:hover {
+  background-color: #333 !important;
+}
+
+/* Footer y textos */
+.dark-mode footer {
+  background-color: #1a1a1a;
+  color: #aaa;
+}
+
+.dark-mode h1, 
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode p,
+.dark-mode span {
+  color: var(--text-color) !important;
+}
+
+
+.dark-mode .cant__resenias,
+.dark-mode .resenias,
+.dark-mode .description,
+.dark-mode .resenias_de_usuarios,
+.dark-mode .imagenes__product,
+.dark-mode .productos__relacionados,
+.dark-mode .comentario,
+.dark-mode .carousel-inner,
+.dark-mode .carousel,
+.dark-mode .imagenes-carrusel {
+  background-color: #232323 !important; /* Un gris oscuro, pero no negro */
+  color: #f0f0f0 !important;
+  border-color: #333 !important;
+}
+
+.dark-mode .comentario {
+  background-color: #2d2d2d !important;
+}
+
+.dark-mode .card-calificaciones,
+.dark-mode .card-resenias {
+  background-color: #232323 !important;
+}
+
+.dark-mode .preload .line.loading {
+  background: #333 !important;
+}
+
+/* Si tienes bordes blancos, oscurecerlos también: */
+.dark-mode .cant__resenias,
+.dark-mode .resenias,
+.dark-mode .description,
+.dark-mode .resenias_de_usuarios,
+.dark-mode .imagenes__product,
+.dark-mode .productos__relacionados,
+.dark-mode .comentario {
+  border: 1px solid #444 !important;
+}
+
+
 /*Menu hamburguesa*/
 .navbar-button, #nav-close-button{
   display: none;
@@ -438,4 +635,123 @@ li:has(.navmobile-link){
     background-size: 270%;
   }
 }
+
+/* Modo oscuro para categorías y componentes Bootstrap */
+.dark-mode .list-group,
+.dark-mode .list-group-item,
+.dark-mode .btn,
+.dark-mode .btn-light,
+.dark-mode .form-control,
+.dark-mode .input-group-text {
+  background-color: #232323 !important;
+  color: #f0f0f0 !important;
+  border-color: #444 !important;
+}
+
+.dark-mode .btn-link {
+  color: #f09100 !important;
+}
+
+.dark-mode .btn-link:hover {
+  color: #ffb74d !important;
+}
+
+.dark-mode .list-group-item.active,
+.dark-mode .list-group-item.active:focus,
+.dark-mode .list-group-item.active:hover {
+  background-color: #444 !important;
+  color: #fff !important;
+  border-color: #f09100 !important;
+}
+
+.dark-mode .form-control:focus {
+  background-color: #232323 !important;
+  color: #fff !important;
+  border-color: #f09100 !important;
+  box-shadow: 0 0 0 0.2rem #f0910080 !important;
+}
+
+.dark-mode .input-group-text {
+  background-color: #232323 !important;
+  color: #f0f0f0 !important;
+  border-color: #444 !important;
+}
+
+.dark-mode .lead,
+.dark-mode .text-center,
+.dark-mode .text-end,
+.dark-mode .font-weight-normal {
+  color: #f0f0f0 !important;
+}
+
+.dark-mode .container,
+.dark-mode .row {
+  background-color: transparent !important;
+}
+
+/* Opcional: para los radios de orden */
+.dark-mode .btn-check:checked + .btn-light,
+.dark-mode .btn-light:active,
+.dark-mode .btn-light.active {
+  background-color: #444 !important;
+  color: #fff !important;
+  border-color: #f09100 !important;
+}
+
+/* Modo oscuro para productos y tarjetas */
+.dark-mode .auto__item,
+.dark-mode .card
+.dark-mode .card-body,
+.dark-mode .product-card,
+.dark-mode .product-card .card,
+.dark-mode .product-card .card-body {
+  background-color: #232323 !important;
+  color: #252424 !important;
+  border-color: #444 !important;
+  box-shadow: 0 2px 8px #0004;
+}
+.dark-mode .car__card{
+  background-color: #303030 !important;
+}
+
+/* Botones y filtros */
+.dark-mode .btn,
+.dark-mode .btn-light,
+.dark-mode .form-control,
+.dark-mode .input-group-text {
+  background-color: #232323 !important;
+  color: #f0f0f0 !important;
+  border-color: #444 !important;
+}
+
+.dark-mode .btn-link {
+  color: #f09100 !important;
+}
+.dark-mode .btn-link:hover {
+  color: #ffb74d !important;
+}
+
+/* Filtros y contenedores */
+.dark-mode .container-all-filters,
+.dark-mode .buttons {
+  background: transparent !important;
+}
+
+/* Mejor contraste para títulos en tarjetas */
+.dark-mode .card h4,
+.dark-mode .product-card h4,
+.dark-mode .auto__item h4 {
+  color: #ffe082 !important; /* Amarillo claro */
+  font-weight: bold !important;
+  text-shadow: 0 1px 4px #0008;
+}
+
+/* Mejor contraste para subtítulos */
+.dark-mode .card h5,
+.dark-mode .product-card h5,
+.dark-mode .auto__item h5 {
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+/* Mejor contraste para subtítulos */
 
