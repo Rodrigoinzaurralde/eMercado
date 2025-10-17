@@ -131,7 +131,7 @@ function mostrarComentarios(comments){
     comments.forEach(comment =>{
         let imgSrc = (comment.user === usuarioActual && imagenPerfilActual)
         ? imagenPerfilActual
-        : 'https://i.imgur.com/DKqWBPS.png'
+        : '../img/blank-profile.png';
         resenias.innerHTML += `
             <div class="comentario">
                 <div class="comentario-header">
