@@ -179,7 +179,7 @@ profileImg.appendChild(canvas);
 let divUbicacion = document.querySelector(".ubicacionActual");
 let ubicacion = localStorage.getItem('city');
 divUbicacion.innerHTML = '';
-divUbicacion.innerHTML = `Su ubicación actual es: ${ubicacion}`;
+divUbicacion.innerHTML = `Dirección de envío registrada: ${ubicacion}`;
 
 
 btnTomarFoto.addEventListener('click', mostrarCamara);
