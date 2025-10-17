@@ -126,10 +126,18 @@ function mostrarComentarios(comments){
         resenias.innerHTML += '<p>No existen reseñas para este producto.</p>';
         return;
     }
+    const usuarioActual = localStorage.getItem('user');
+    const imagenPerfilActual = localStorage.getItem('profileImg');
     comments.forEach(comment =>{
+        let imgSrc = (comment.user === usuarioActual && imagenPerfilActual)
+        ? imagenPerfilActual
+        : '/img/blank-profile.png'
         resenias.innerHTML += `
             <div class="comentario">
-                <p><strong>${comment.user}</strong> - ${comment.dateTime}</p>
+                <div class="comentario-header">
+                    <img src="${imgSrc}" class="comentario-avatar">
+                    <p><strong>${comment.user}</strong> - ${comment.dateTime}</p>
+                </div>
                 <p>${comment.description}</p>
                 <p>Calificación: ${comment.score} ⭐</p>
             </div>
@@ -233,6 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         const usuario = localStorage.getItem('user') || 'Usuario';
         const fecha = new Date().toISOString().replace('T', ' ').substring(0, 19);
+        const imagenPerfil = localStorage.getItem('profileImg') || null;
 
         const nuevoComentario = {
             user: usuario,
@@ -279,3 +288,5 @@ document.addEventListener('DOMContentLoaded', moverTituloMovil);
         }
     });
 });
+
+console.log(localStorage.getItem('profileImg'));

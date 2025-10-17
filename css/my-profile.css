@@ -21,7 +21,7 @@ body{
     border-radius: 20px;
 }
 
-#subirImg , #tomarFoto, #borrarID , #restablecerID, #guardarCambios, #cancelar, #editar{
+#subirImg , #tomarFoto, #borrarID , #restablecerID, #guardarCambios, #cancelar, #editar, .btn-sacarFoto, .btn-cerrarCamara{
     background-color: #F09100;
     width: 135px;
     height: 40px;
@@ -36,14 +36,14 @@ body{
     margin-top: 16px;
 }
 .botones-secundarios::before {
-  content: "";
-  display: block;
-  position: relative;
-  top: -8px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #ccc;
+    content: "";
+    display: block;
+    position: relative;
+    top: -8px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #ccc;
 }
 .caract-img{
     color: #A19999;
@@ -102,4 +102,17 @@ main{
     flex-wrap: wrap;
     justify-content: center;
     font-family: Arial, Helvetica, sans-serif;
+    color: #000;
+}
+.btn-sacarFoto, .btn-cerrarCamara{
+    display: flex;
+    width: 100px;
+    flex-wrap: nowrap;
+    font-size: 0.8em;
+}
+.botones-camara {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
 }

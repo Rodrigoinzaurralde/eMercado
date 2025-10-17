@@ -16,9 +16,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
     const cameraInput = document.getElementById('cameraInput');
     const profileImg = document.querySelector('.profile-img');
     const img = localStorage.profileImg;
-        profileImg.style.backgroundImage = img;
+    if(img){
+        profileImg.style.backgroundImage = `url(${img})`;
         profileImg.style.backgroundSize = 'cover';
         profileImg.style.backgroundPosition = 'center';
+    }
 
     const btnEditar = document.getElementById("editar");
     const btnGuardar = document.getElementById("guardarCambios");
@@ -38,7 +40,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
         reader.onload = (event) => {
         // Insertar la imagen como background del div
-        localStorage.setItem("profileImg", `url(${event.target.result})`);
+        localStorage.setItem("profileImg", event.target.result);
         profileImg.style.backgroundImage = `url(${event.target.result})`;
         profileImg.style.backgroundSize = 'cover';
         profileImg.style.backgroundPosition = 'center';
@@ -47,10 +49,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
         reader.readAsDataURL(file);
         }
-        });
-
-        btnTomarFoto.addEventListener('click', () => {
-            cameraInput.click();
         });
 
         cameraInput.addEventListener('change', (e) => {
@@ -99,5 +97,91 @@ document.addEventListener("DOMContentLoaded", ()=>{
         
     }
     botonesPerfil();
-    
+
+    const btnBorrar = document.getElementById("borrarID");
+
+    btnBorrar.addEventListener("click", () => {
+    localStorage.removeItem("profileImg");
+    profileImg.style.backgroundImage = "";
+});
+//Tomar foto en tiempo real
+let video, canvas, btnCapturar, btnCerrarCamara;
+function mostrarCamara() {
+    if (!video) {
+        video = document.createElement('video');
+        video.autoplay = true;
+        video.style.width = "100%";
+        video.style.maxWidth = "160px";
+        video.style.borderRadius = "20px";
+        video.setAttribute('playsinline', '');
+
+        btnCapturar = document.createElement('button');
+        btnCapturar.textContent = "Tomar Foto";
+        //btnCapturar.style.marginRight = "8px";
+        btnCapturar.className = "btn-camara";
+        btnCapturar.classList.add("btn-sacarFoto");
+
+        btnCerrarCamara = document.createElement('button');
+        btnCerrarCamara.textContent = "Cerrar Cámara";
+        btnCerrarCamara.className = "btn-camara";
+        btnCerrarCamara.classList.add("btn-cerrarCamara");
+        canvas = document.createElement('canvas');
+        canvas.style.display = "none";
+    }
+
+    profileImg.innerHTML = "";
+    profileImg.appendChild(video);
+    const divBotonesCamara = document.createElement('div');
+    divBotonesCamara.className = "botones-camara";
+    divBotonesCamara.appendChild(btnCapturar);
+    divBotonesCamara.appendChild(btnCerrarCamara);
+
+profileImg.appendChild(divBotonesCamara);
+profileImg.appendChild(canvas);
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+        })
+        .catch(err => {
+            alert("No se pudo acceder a la cámara: " + err.message);
+        });
+
+    btnCapturar.onclick = () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        const fotoDataUrl = canvas.toDataURL('image/png');
+        localStorage.setItem("profileImg", fotoDataUrl);
+        profileImg.style.backgroundImage = `url(${fotoDataUrl})`;
+        profileImg.style.backgroundSize = 'cover';
+        profileImg.style.backgroundPosition = 'center';
+        canvas.style.display = "none";
+        if (video.srcObject) {
+            video.srcObject.getTracks().forEach(track => track.stop());
+        }
+        profileImg.innerHTML = "";
+    };
+
+    btnCerrarCamara.onclick = () => {
+        if (video.srcObject) {
+            video.srcObject.getTracks().forEach(track => track.stop());
+        }
+        profileImg.innerHTML = "";
+        const img = localStorage.profileImg;
+        if (img) {
+            profileImg.style.backgroundImage = img;
+            profileImg.style.backgroundSize = 'cover';
+            profileImg.style.backgroundPosition = 'center';
+        }
+    };
+}
+let divUbicacion = document.querySelector(".ubicacionActual");
+let ubicacion = localStorage.getItem('city');
+divUbicacion.innerHTML = '';
+divUbicacion.innerHTML = `Su ubicación actual es: ${ubicacion}`;
+
+
+btnTomarFoto.addEventListener('click', mostrarCamara);
+
 });
