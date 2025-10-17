@@ -10,9 +10,54 @@ document.addEventListener("DOMContentLoaded", ()=>{
     const apellido = localStorage.getItem("lastname");
     const telefono = localStorage.getItem("phoneNumber");
 
+    const btnSubirFoto = document.getElementById("subirImg");
+    const btnTomarFoto = document.getElementById("tomarFoto");
+    const fileInput = document.getElementById('fileInput');
+    const cameraInput = document.getElementById('cameraInput');
+    const profileImg = document.querySelector('.profile-img');
+    const img = localStorage.profileImg;
+        profileImg.style.backgroundImage = img;
+        profileImg.style.backgroundSize = 'cover';
+        profileImg.style.backgroundPosition = 'center';
+
     const btnEditar = document.getElementById("editar");
     const btnGuardar = document.getElementById("guardarCambios");
     const btnCancelar = document.getElementById("cancelar");
+
+    function subirFoto(){
+        btnSubirFoto.addEventListener('click', () => {
+        fileInput.click();
+        });
+
+        // Al seleccionar una imagen
+        fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+
+        if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+        // Insertar la imagen como background del div
+        localStorage.setItem("profileImg", `url(${event.target.result})`);
+        profileImg.style.backgroundImage = `url(${event.target.result})`;
+        profileImg.style.backgroundSize = 'cover';
+        profileImg.style.backgroundPosition = 'center';
+        
+        };
+
+        reader.readAsDataURL(file);
+        }
+        });
+
+        btnTomarFoto.addEventListener('click', () => {
+            cameraInput.click();
+        });
+
+        cameraInput.addEventListener('change', (e) => {
+            insertarImagen(e.target.files[0]);
+        });
+    }
+    subirFoto();
 
     function contenidoPerfil(){
         if (user !== ""){
