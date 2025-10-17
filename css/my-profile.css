@@ -21,7 +21,7 @@ body{
     border-radius: 20px;
 }
 
-#subirImg , #tomarFoto, #borrarID , #restablecerID, #guardarCambios, #cancelar{
+#subirImg , #tomarFoto, #borrarID , #restablecerID, #guardarCambios, #cancelar, #editar{
     background-color: #F09100;
     width: 135px;
     height: 40px;
@@ -90,6 +90,11 @@ input[type=text]{
     border-radius: 5px;
     border:#000 1px solid;
     background-color: #F0EBEB;
+}
+.editar{
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
 }
 
 main{
