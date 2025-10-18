@@ -179,6 +179,10 @@ input[type=text] {
 .profile-data .ubicacion__user{
     color: #000 !important;
 }
+#borrarID{
+    background-color: #F09100;
+    color: #fff;
+}
 
 /* ----------- RESPONSIVE ----------- */
 /* Móviles pequeños */

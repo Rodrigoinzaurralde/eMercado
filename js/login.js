@@ -1,18 +1,40 @@
 document.addEventListener("DOMContentLoaded", () => {
-    let telefono = localStorage.getItem("phoneNumber");
-    if (telefono) {
-        if(!telefono.startsWith("+598")){
+    const RENDER_SMS_API = "https://emercado-backend.onrender.com/enviar-sms";
+
+    async function enviarAvisoLogin() {
+        let telefono = localStorage.getItem("phoneNumber");
+        if (!telefono) {
+            console.warn("No se encontró número de teléfono para enviar aviso de inicio de sesión.");
+            return;
+        }
+        if (!telefono.startsWith("+598")) {
             telefono = "+598" + telefono.replace(/^0+/, "");
         }
-        fetch('https://emercado-backend.onrender.com/enviar-sms', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                telefono: telefono,
-                mensaje: "Se realizó un nuevo inicio de sesión en tu cuenta. Si no fuiste tú, contacta con nosotros y cambia tu contraseña."
-            })
-        });
+        const mensaje = "Se realizó un nuevo inicio de sesión en tu cuenta de eMercado. Si no fuiste tú, contacta con nosotros y cambia tu contraseña.";
+        try {
+            const respuesta = await fetch(RENDER_SMS_API, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify({
+                    telefono: telefono,
+                    mensaje: mensaje
+                })
+            });
+            if (respuesta.ok) {
+                const data = await respuesta.json();
+                console.log(`✅ Aviso de SMS de inicio de sesión enviado. SID: ${data.sid}`);
+            } else {
+                const errorData = await respuesta.json();
+                console.error(`❌ Fallo en el envío de SMS (HTTP ${respuesta.status}):`, errorData.error);
+            }
+        } catch (error) {
+            console.error("❌ Error de conexión al servicio de SMS de Render:", error);
+        }
     }
+    
+    enviarAvisoLogin();
 });
 
 
