@@ -251,6 +251,19 @@ progress::-webkit-progress-value {
 .imagenes-carrusel {
     display: none;
 }
+.comentario-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+.comentario-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
 /* RESPONSIVE PARA TABLETS Y MÓVILES */
 

@@ -45,6 +45,16 @@ nav a {
   color: black;
   font-weight: bold;
 }
+.dark-mode .jumbotron {
+  height: 50vh !important;
+  padding: 5em inherit !important;
+  background-image: url('../img/cover_back_black.png') !important;
+  background-size: cover !important; 
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  font-weight: bold !important;
+  box-sizing: border-box;
+}
 
 @media (min-width: 768px) {
   .jumbotron {
@@ -754,4 +764,16 @@ li:has(.navmobile-link){
   font-weight: 600 !important;
 }
 /* Mejor contraste para subtítulos */
+.dark-mode .album {
+  background-color: #252424 !important;
+}
 
+.dark-mode #file-upload {
+  background-color: #252424 
+}
+.dark-mode .profile-info label p {
+  color: #000 !important;
+}
+.dark-mode .caract-img {
+  color: #A19999 !important;
+}
