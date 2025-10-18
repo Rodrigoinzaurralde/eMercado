@@ -1,3 +1,21 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const telefono = localStorage.getItem("phoneNumber");
+    if (telefono) {
+        if(!telefono.startsWith("+598")){
+            telefono = "+598" + telefono.replace(/^0+/, "");
+        }
+        fetch('https://emercado-backend.onrender.com/enviar-sms', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                telefono: telefono,
+                mensaje: "Se realizó un nuevo inicio de sesión en tu cuenta. Si no fuiste tú, contacta con nosotros y cambia tu contraseña."
+            })
+        });
+    }
+});
+
+
 function validarEmail(email){
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -58,8 +76,6 @@ function consultarUser(){
         })
         .then(data => {
             console.log("Datos recibidos del backend:", data);
-            let moneda = "USD";
-            localStorage.setItem("monedaUsuario", moneda);
             localStorage.setItem("countryCode", data.countryCode);
             localStorage.setItem("city", data.city || "sin_ciudad");
             console.log("País detectado:", data.country, "Moneda:", moneda);

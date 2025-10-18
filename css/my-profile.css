@@ -1,262 +1,280 @@
 /* ----------- BODY ----------- */
 body {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  margin: 0;
-  padding: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 
 /* ----------- MAIN ----------- */
 main {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 20px;
-  gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 20px;
 }
 
 
 /* ----------- CONTENEDOR DE PERFIL ----------- */
 .profile-container,
 .profile-info {
-  width: 320px;           /* mismo ancho */
-  height: 400px;      /* altura visual similar */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #FFEACC;
-  border-radius: 20px;
-  box-shadow: 0 0 9px #000;
-  box-sizing: border-box;
+    width: 320px;           /* mismo ancho */
+    height: 500px;      /* altura visual similar */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #FFEACC;
+    border-radius: 20px;
+    box-shadow: 0 0 9px #000;
+    box-sizing: border-box;
 }
 
 
 /* Foto de perfil */
 .profile-img {
-  width: 160px;
-  height: 160px;
-  background-color: brown;
-  border-radius: 20px;
-  margin-bottom: 15px;
+    width: 160px;
+    height: 160px;
+    background-color: brown;
+    border-radius: 20px;
+    margin-bottom: 15px;
 }
 
 
 /* Texto debajo de la imagen */
 .caract-img {
-  color: #A19999;
-  text-align: center;
-  margin-top: 3px;
-  font-size: 0.9em;
-  font-weight: 500;
+    color: #A19999;
+    text-align: center;
+    margin-top: 3px;
+    font-size: 0.9em;
+    font-weight: 500;
 }
 
 
 /* ----------- BOTONES DE FOTO ----------- */
 .container-botones {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
 }
 
 
 /* Botones principales: Subir y Tomar */
 #subirImg,
 #tomarFoto {
-  min-width: 140px;
-  max-width: 180px;
-  width: 100%;
-  height: 40px;
-  background-color: #F09100;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-size: 0.9em;
-  cursor: pointer;
-  margin: 5px 0;
+    min-width: 140px;
+    max-width: 180px;
+    width: 100%;
+    height: 40px;
+    background-color: #F09100;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9em;
+    cursor: pointer;
+    margin: 5px 0;
 }
 
 
 /* Botones secundarios: Restablecer y Borrar */
 .botones-secundarios {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  width: 100%;
-  margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 10px;
 }
 
 
 #restablecerID,
 #borrarID {
-  min-width: 120px;
-  max-width: 180px;
-  height: 35px;
-  background-color: #ddd;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+    min-width: 120px;
+    max-width: 180px;
+    height: 35px;
+    background-color: #ddd;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 
 /* ----------- CONTENEDOR DE INFO ----------- */
 .profile-info .profile-data {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
-}
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    }
 
 
 /* Botón Editar */
 .editar {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 15px;
 }
 
 
 #editar {
-  min-width: 140px;
-  max-width: 180px;
-  width: 100%;
-  height: 40px;
-  background-color: #F09100;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-size: 0.9em;
-  cursor: pointer;
+    min-width: 140px;
+    max-width: 180px;
+    width: 100%;
+    height: 40px;
+    background-color: #F09100;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9em;
+    cursor: pointer;
 }
 
 
 /* Inputs y botones guardar/cancelar */
 label p {
-  color: #000;
-  font-weight: 600;
-  margin-bottom: 1px;
+    color: #000;
+    font-weight: 600;
+    margin-bottom: 1px;
 }
 
 
 input[type=text] {
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid #000;
-  background-color: #F0EBEB;
-  width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #000;
+    background-color: #F0EBEB;
+    width: 100%;
 }
 
 
 .botones-info {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
 }
 
+#guardarCambios, #cancelar{
+    background-color: #F09100;
+    border: none;
+    border-radius: 10px;
+
+}
+
+.btn-sacarFoto, .btn-cerrarCamara{
+    border-radius: 10px;
+    width: 100px;
+}
+.botones-camara{
+    display: flex;
+    justify-content: center;
+}
+.profile-data .ubicacion__user{
+    color: #000 !important;
+}
 
 /* ----------- RESPONSIVE ----------- */
 /* Móviles pequeños */
 @media (max-width: 480px) {
-  .profile-container,
-  .profile-info {
+    .profile-container,
+    .profile-info {
     width: 95%;
-  }
+    }
 
 
-  .profile-img {
+.profile-img {
     width: 120px;
     height: 120px;
-  }
+    }
 
 
-  #subirImg,
-  #tomarFoto,
-  #editar,
-  #restablecerID,
-  #borrarID {
+#subirImg,
+#tomarFoto,
+#editar,
+#restablecerID,
+#borrarID {
     width: 100%;
     max-width: none;
-  }
+}
 
 
-  .botones-secundarios {
+.botones-secundarios {
     flex-direction: column;
     align-items: center;
-  }
+    }
 }
 
 
 /* Tablets pequeñas */
 @media (min-width: 481px) and (max-width: 820px) {
-  .profile-container,
-  .profile-info {
+    .profile-container,
+    .profile-info {
     width: 85%;
-  }
+    }
 
 
-  .profile-img {
+.profile-img {
     width: 150px;
     height: 150px;
-  }
+    }
 
 
-  #subirImg,
-  #tomarFoto,
-  #editar {
+#subirImg,
+#tomarFoto,
+#editar {
     min-width: 130px;
     width: 100%;
-  }
+    }
 }
 
 
 /* Tablets grandes / híbridos */
 @media (min-width: 821px) and (max-width: 1280px) {
-  main {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-  }
+    main {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+    }
 
 
-  .profile-container,
-  .profile-info {
+.profile-container,
+.profile-info {
     width: 45%;
     max-width: 500px;
-  }
+    }
 
 
-  .profile-img {
+.profile-img {
     width: 170px;
     height: 170px;
-  }
+    }
 }
 
 
 /* Escritorio grande */
 @media (min-width: 1281px) {
-  main {
-    display: flex;
-    flex-direction: row;      /* horizontal */
-    justify-content: center;  /* centra contenedores */
-    align-items: flex-start;  /* alinea al tope */
-    gap: 40px;        
-    padding-top: 40px;       /* espacio entre ellos */
-  }
+    main {
+        display: flex;
+        flex-direction: row;      /* horizontal */
+        justify-content: center;  /* centra contenedores */
+        align-items: flex-start;  /* alinea al tope */
+        gap: 40px;        
+        padding-top: 40px;       /* espacio entre ellos */
+    }
 
 
-  .profile-container,
-  .profile-info {
+.profile-container,
+.profile-info {
     width: 320px;             /* mismo ancho */
     min-height: 400px;        /* altura similar */
-  }
+    }
 }
 
 

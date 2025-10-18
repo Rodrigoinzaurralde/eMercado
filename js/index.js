@@ -11,4 +11,8 @@ document.addEventListener("DOMContentLoaded", function(){
         localStorage.setItem("catID", 103);
         window.location = "products.html"
     });
+
+    setInterval(() => {
+    fetch('https://emercado-backend.onrender.com/ping');
+}, 600000); // cada 10 minutos
 });
