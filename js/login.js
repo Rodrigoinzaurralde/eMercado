@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const telefono = localStorage.getItem("phoneNumber");
+    let telefono = localStorage.getItem("phoneNumber");
     if (telefono) {
         if(!telefono.startsWith("+598")){
             telefono = "+598" + telefono.replace(/^0+/, "");

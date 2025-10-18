@@ -90,7 +90,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
             localStorage.setItem("name", nombreInput.value);
             localStorage.setItem("lastname", apellidoInput.value);
             localStorage.setItem("email", emailInput.value);
-            localStorage.setItem("phoneNumber", telefonoInput.value);
+            let numero = telefonoInput.value.trim();
+            numero = numero.replace(/^0+/, "");
+            const telefonoUruguay = "+598" + numero;
+            localStorage.setItem("phoneNumber", telefonoUruguay);
         });
 
         setState(false);
