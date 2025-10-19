@@ -50,10 +50,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
         reader.readAsDataURL(file);
         }
         });
-
-        cameraInput.addEventListener('change', (e) => {
-            insertarImagen(e.target.files[0]);
-        });
     }
     subirFoto();
 
