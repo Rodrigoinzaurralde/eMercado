@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as XLSX from 'xlsx';
 
-const MARKDOWN_INPUT_FILE = 'review_raw_output.md'; // Archivo donde pegas la tabla de Copilot
+const MARKDOWN_INPUT_FILE = 'review_raw_output.md';
 const EXCEL_OUTPUT_FILE = `review_audit_${new Date().toISOString().substring(0, 10)}.xlsx`;
 
 function convertMarkdownTableToExcel() {
@@ -35,7 +35,7 @@ function convertMarkdownTableToExcel() {
         XLSX.writeFile(excelWorkbook, EXCEL_OUTPUT_FILE);
 
         console.log('\n========================================');
-        console.log(`[✅] Éxito! Tabla convertida y guardada en: ${EXCEL_OUTPUT_FILE}`);
+        console.log(`Éxito! Tabla convertida y guardada en: ${EXCEL_OUTPUT_FILE}`);
         console.log('========================================');
 
         fs.writeFileSync(MARKDOWN_INPUT_FILE, '', 'utf-8'); 
