@@ -114,7 +114,7 @@ function mostrarCamara() {
         video = document.createElement('video');
         video.autoplay = true;
         video.style.width = "100%";
-        video.style.maxWidth = "160px";
+        video.style.maxWidth = "180px";
         video.style.borderRadius = "20px";
         video.setAttribute('playsinline', '');
 

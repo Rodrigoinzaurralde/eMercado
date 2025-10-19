@@ -393,6 +393,14 @@ a.custom-card:hover {
   justify-content: center;
   font-size: 13px;
 }
+.telegramClass{
+  display: inline-block; 
+  padding: 10px 20px; 
+  background-color: #0088cc; 
+  color: white; 
+  text-decoration: none; 
+  border-radius: 5px;
+}
 
 .switch-input:checked + .switch-slider {
   background-color: #f09100;

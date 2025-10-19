@@ -169,8 +169,9 @@ input[type=text] {
 }
 
 .btn-sacarFoto, .btn-cerrarCamara{
+    background-color: #f09100;
     border-radius: 10px;
-    width: 100px;
+    width: 160px;
 }
 .botones-camara{
     display: flex;
