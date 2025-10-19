@@ -86,7 +86,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
             localStorage.setItem("name", nombreInput.value);
             localStorage.setItem("lastname", apellidoInput.value);
             localStorage.setItem("email", emailInput.value);
-            localStorage.setItem("phoneNumber", telefonoInput.value);
+            let numero = telefonoInput.value.trim();
+            numero = numero.replace(/^0+/, "");
+            const telefonoUruguay = "+598" + numero;
+            localStorage.setItem("phoneNumber", telefonoUruguay);
         });
 
         setState(false);
@@ -112,13 +115,13 @@ function mostrarCamara() {
         video.setAttribute('playsinline', '');
 
         btnCapturar = document.createElement('button');
-        btnCapturar.textContent = "Tomar Foto";
+        btnCapturar.textContent = "Foto";
         //btnCapturar.style.marginRight = "8px";
         btnCapturar.className = "btn-camara";
         btnCapturar.classList.add("btn-sacarFoto");
 
         btnCerrarCamara = document.createElement('button');
-        btnCerrarCamara.textContent = "Cerrar Cámara";
+        btnCerrarCamara.textContent = "Cerrar";
         btnCerrarCamara.className = "btn-camara";
         btnCerrarCamara.classList.add("btn-cerrarCamara");
         canvas = document.createElement('canvas');
@@ -172,10 +175,12 @@ profileImg.appendChild(canvas);
         }
     };
 }
-let divUbicacion = document.querySelector(".ubicacionActual");
+let p_ubicacion = document.querySelector('.ubicacion__user');
 let ubicacion = localStorage.getItem('city');
-divUbicacion.innerHTML = '';
-divUbicacion.innerHTML = `Dirección de envío registrada: ${ubicacion}`;
+p_ubicacion.innerHTML = '';
+p_ubicacion.innerHTML = `Su dirección de envío registrada es: <strong>${ubicacion}</strong>`;
+
+
 
 
 btnTomarFoto.addEventListener('click', mostrarCamara);
