@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     const apellidoInput = document.getElementById("apellido");
     const telefonoInput = document.getElementById("telefono");
     const camposPerfil = document.querySelectorAll("input");
+    console.log(document.querySelector(".profile-data"))
     
     const user = localStorage.getItem("user");
     const nombre = localStorage.getItem("name");
@@ -87,9 +88,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
             localStorage.setItem("lastname", apellidoInput.value);
             localStorage.setItem("email", emailInput.value);
             let numero = telefonoInput.value.trim();
-            numero = numero.replace(/^0+/, "");
-            const telefonoUruguay = "+598" + numero;
-            localStorage.setItem("phoneNumber", telefonoUruguay);
+            if(numero !== ""){
+                numero = numero.replace(/^0+/, "");
+                const telefonoUruguay = "+598" + numero;
+                localStorage.setItem("phoneNumber", telefonoUruguay);
+            }
         });
 
         setState(false);
