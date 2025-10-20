@@ -240,8 +240,24 @@ asignarEventosBuscador();
 let inactividad;
 function resetInactividad(){
   clearTimeout(inactividad);
+
+  // Guarda la foto antes de limpiar
+  const user = localStorage.getItem('user');
+  const fotoKey = user ? `profileImg_${user}` : "profileImg";
+  const foto = localStorage.getItem(fotoKey);
+  const telefono = localStorage.getItem('phoneNumber');
+
   inactividad = setTimeout(() =>{
+    // Limpia todo
     localStorage.clear();
+    // Restaura la foto
+    if (foto) {
+      localStorage.setItem(fotoKey, foto);
+    }
+    if (telefono) {
+      localStorage.setItem('phoneNumber', telefono);
+    }
+
     window.location.href = 'login.html';
   }, 10 * 60 * 1000)
 }
