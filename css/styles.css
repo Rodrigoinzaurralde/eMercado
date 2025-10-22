@@ -218,6 +218,9 @@ a.custom-card:hover {
   justify-content: center;
   width: 100%;
   height: 55px;
+  background-image: url(/img/nav.png);
+  background-size: 250px 95px;
+  background-repeat: no-repeat;
   background-color: var(--nav-bg-color);
 }
 .navbar .box-nav{
@@ -626,6 +629,11 @@ li:has(.navmobile-link){
 
 
 /*-- Responsive --*/
+@media only screen and (max-width:1250px) {
+  .navbar{
+    background: var(--nav-bg-color);
+  }
+}
 @media only screen and (max-width:780px) {
   .jumbotron{ /*Fondo del inicio*/
     background-position: 19%;
@@ -633,6 +641,9 @@ li:has(.navmobile-link){
   }
   #mobile-p-search{
     display: flex;
+  }
+  .navbar{
+    background: var(--nav-bg-color);
   }
   .navbar-button{
     display:flex;
@@ -659,6 +670,9 @@ li:has(.navmobile-link){
   }
   .nav-container ul{
     gap: 10px;
+  }
+  .navbar{
+    background: var(--nav-bg-color);
   }
 }
 
