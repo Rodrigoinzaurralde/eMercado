@@ -162,7 +162,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 // Botón switch modo claro/oscuro
-const nav = document.querySelector("nav");
+const nav = document.querySelector(".nav-container > ul");
 if (nav) {
   const switchContainer = document.createElement("label");
   switchContainer.className = "switch-container";
@@ -191,7 +191,22 @@ if (nav) {
   });
 }
 
-
+  function carrito(){
+    const botonUsuario = document.querySelector(".perfil-container");
+    if (botonUsuario){
+      const carrito = document.createElement("div");
+      carrito.className = "carrito";
+      const paginaCarrito = document.createElement("a");
+      paginaCarrito.href = "cart.html";
+      const iconoCarrito = document.createElement("i");
+      iconoCarrito.className = "bi bi-cart2";
+      
+      carrito.appendChild(paginaCarrito);
+      paginaCarrito.appendChild(iconoCarrito);
+      botonUsuario.insertAdjacentElement("afterend", carrito);
+    }
+  }
+  carrito();
   
   function buscadorMobile(){ //Función para asignar id al buscador mobile
   const normalSearch = document.getElementById("product-search");
