@@ -1,42 +1,32 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const RENDER_SMS_API = "https://emercado-backend.onrender.com/enviar-sms";
+const send_email = "https://eodg0o7xq7s1i8h.m.pipedream.net";
 
     async function enviarAvisoLogin() {
-        let telefono = localStorage.getItem("phoneNumber");
-        if (!telefono) {
-            console.warn("No se encontró número de teléfono para enviar aviso de inicio de sesión.");
+        let mail = localStorage.getItem("user");
+        if (!mail) {
+            console.warn("No se encontró un mail válido para enviar aviso de inicio de sesión.");
             return;
         }
-        if (!telefono.startsWith("+598")) {
-            telefono = "+598" + telefono.replace(/^0+/, "");
-        }
-        const mensaje = "Se realizó un nuevo inicio de sesión en tu cuenta de eMercado. Si no fuiste tú, contacta con nosotros y cambia tu contraseña.";
         try {
-            const respuesta = await fetch(RENDER_SMS_API, {
+            const respuesta = await fetch(send_email, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json' 
                 },
                 body: JSON.stringify({
-                    telefono: telefono,
-                    mensaje: mensaje
+                    mail: mail
                 })
             });
             if (respuesta.ok) {
                 const data = await respuesta.json();
-                console.log(`✅ Aviso de SMS de inicio de sesión enviado. SID: ${data.sid}`);
+                console.log(`Aviso de mail de inicio de sesión enviado. SID: ${data.sid}`);
             } else {
                 const errorData = await respuesta.json();
-                console.error(`❌ Fallo en el envío de SMS (HTTP ${respuesta.status}):`, errorData.error);
+                console.error(`Fallo en el envío de mail (HTTP ${respuesta.status}):`, errorData.error);
             }
         } catch (error) {
-            console.error("❌ Error de conexión al servicio de SMS de Render:", error);
+            console.error("Error de conexión al servicio de mail:", error);
         }
     }
-    
-    enviarAvisoLogin();
-});
-
 
 function validarEmail(email){
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -60,6 +50,7 @@ document.querySelector('.login__button').addEventListener('click', async functio
         const {lat, long} = await obtenerLatLong();
         await consultarUser();
         await guardarUsuarioEnBackend(lat, long);
+        await enviarAvisoLogin();
         window.location.href = 'index.html';
     } 
 });
