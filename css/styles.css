@@ -4,6 +4,35 @@
   --main-shadow: 0 0 10px #262626;
   --nav-bg-color: #f09100;
 }
+
+/* Estilos para la burbuja del contador del carrito */
+.carrito {
+    position: relative;
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff0000;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Ocultar cuando no hay productos */
+.cart-count.hidden {
+    display: none;
+}
+
 .jumbotron,
 .card-body,
 .container,
@@ -626,7 +655,31 @@ li:has(.navmobile-link){
   background: none;
 }
 
+.carrito {
+    position: relative;
+}
 
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff0000;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 20px;
+}
+
+/* Se Oculta el contador cuando no hay productos */
+.cart-count.hidden {
+    display: none;
+}
 
 /*-- Responsive --*/
 @media only screen and (max-width:1250px) {
