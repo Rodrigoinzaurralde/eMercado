@@ -43,14 +43,16 @@
     height: 90px;
     background-color: #ffffff;
     border-radius: 6px;
+    padding: 20px;
 }
 
 .product-unit{
     margin: 1% 0% 6% 6%;
-    height: 40px;
-    width: 100px;
+    height: 50px;
+    width: 120px;
     background-color: #ffffff;
     border-radius: 6px;
+    padding: 5px 10px;
 }
 .btns{
     display: flex;
