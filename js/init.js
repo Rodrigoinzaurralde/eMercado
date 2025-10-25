@@ -200,13 +200,47 @@ if (nav) {
       paginaCarrito.href = "cart.html";
       const iconoCarrito = document.createElement("i");
       iconoCarrito.className = "bi bi-cart2";
+      //se crea un span para el contador del carrito
+      const contador = document.createElement("span");
+      contador.className = "cart-count hidden";
+      contador.id = "cart-count";
+      contador.textContent = "0";
       
       carrito.appendChild(paginaCarrito);
       paginaCarrito.appendChild(iconoCarrito);
+      carrito.appendChild(contador); //contador del carrito
       botonUsuario.insertAdjacentElement("afterend", carrito);
     }
   }
+
+  // Función para actualizar el contador del carrito
+  function actualizarContadorCarrito() {
+    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    const totalProductos = carrito.reduce((total, producto) => total + producto.cantidad, 0);
+    const contador = document.getElementById('cart-count');
+    
+    if (contador) {
+        if (totalProductos > 0) {
+            contador.textContent = totalProductos;
+            contador.classList.remove('hidden');
+        } else {
+            contador.classList.add('hidden');
+        }
+    }
+  }
+
+  // Escucha cambios entre pestañas
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'carrito') {
+      actualizarContadorCarrito();
+    }
+  });
+
+  // se actualiza cada 250 mili-segundosn para que cambie en tiempo real el contador
+  setInterval(actualizarContadorCarrito, 250);
+
   carrito();
+  actualizarContadorCarrito();
   
   function buscadorMobile(){ //Función para asignar id al buscador mobile
   const normalSearch = document.getElementById("product-search");

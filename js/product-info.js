@@ -277,6 +277,12 @@ document.addEventListener('DOMContentLoaded', moverTituloMovil);
 
     // Al cargar la página, carga los comentarios desde Firestore
     cargarComentariosFirestore();
+    //listener para el boton del carrito
+    document.getElementById('botonAniadirID').addEventListener('click', () => {
+        if (productoGlobal) {
+            agregarAlCarrito(productoGlobal);
+        }
+    });
 
     // Listeners para el modal
     document.querySelector('.close-modal').addEventListener('click', function() {
@@ -288,5 +294,24 @@ document.addEventListener('DOMContentLoaded', moverTituloMovil);
         }
     });
 });
+function agregarAlCarrito(producto) {
+    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
+    const existeProducto = carrito.find(item => item.id === producto.id);
+    if (existeProducto) {
+        existeProducto.cantidad += 1;
+    } else {
+        carrito.push({
+            id: producto.id,
+            name: producto.name,
+            cost: producto.cost,
+            currency: producto.currency,
+            image: producto.images[0], // se selecciona la primer imagen
+            cantidad: 1
+        });
+    }
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    alert('Producto agregado al carrito');
+    actualizarContadorCarrito();
+}
 console.log(localStorage.getItem('profileImg'));
