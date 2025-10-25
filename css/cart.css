@@ -1,10 +1,9 @@
 .cart{
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    gap: 10px;
     width: 90%;
     height: auto;
-    background-color: aqua;
     margin: 1% 5%;
 }
 .product{
@@ -36,6 +35,7 @@
     gap: 10px;
     background-color: #f8cd8c;
     border-radius: 10px;
+    margin: 1%;
 }
 .product-info{
     margin: 4% 14% 4% 0%;
