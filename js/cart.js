@@ -208,7 +208,11 @@ function finalizarCompra(datosТarjeta) {
     const compraPendiente = JSON.parse(sessionStorage.getItem('compra_pendiente'));
     
     if (!compraPendiente) {
-        alert('Error: No se encontró información de la compra');
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se encontró información de la compra'
+        });
         return;
     }
 
@@ -262,7 +266,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
             
             if (carrito.length === 0) {
-                alert('El carrito está vacío');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Carrito vacío',
+                    text: 'El carrito está vacío'
+                });
                 return;
             }
             
@@ -331,7 +339,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const errores = validarTarjeta(datosТarjeta);
             
             if (errores.length > 0) {
-                alert('Errores en los datos de la tarjeta:\n\n' + errores.join('\n'));
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Errores en los datos de la tarjeta',
+                    html: errores.join('<br>'),
+                    confirmButtonText: 'Entendido'
+                });
                 return;
             }
             finalizarCompra(datosТarjeta);

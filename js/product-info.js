@@ -236,7 +236,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('botonComentarioID').addEventListener('click', async function() {
         const texto = document.getElementById('comentarioID').value.trim();
         if (comentarioScore === 0 || texto === "") {
-            alert("Debes seleccionar una calificación y escribir un comentario.");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Campos requeridos',
+                text: 'Debes seleccionar una calificación y escribir un comentario.'
+            });
             return;
         }
         const usuario = localStorage.getItem('user') || 'Usuario';
@@ -311,7 +315,13 @@ function agregarAlCarrito(producto) {
         });
     }
     localStorage.setItem('carrito', JSON.stringify(carrito));
-    alert('Producto agregado al carrito');
+    Swal.fire({
+        icon: 'success',
+        title: '¡Producto agregado!',
+        text: 'Producto agregado al carrito',
+        showConfirmButton: false,
+        timer: 1500
+    });
     actualizarContadorCarrito();
 }
 console.log(localStorage.getItem('profileImg'));

@@ -146,7 +146,11 @@ profileImg.appendChild(canvas);
             video.srcObject = stream;
         })
         .catch(err => {
-            alert("No se pudo acceder a la cámara: " + err.message);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de cámara',
+                text: 'No se pudo acceder a la cámara: ' + err.message
+            });
         });
 
     btnCapturar.onclick = () => {
