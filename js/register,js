@@ -1,0 +1,91 @@
+function validarEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+function togglePasswordVisibility(inputId, iconElement) {
+    const passwordInput = document.getElementById(inputId);
+    const icon = iconElement.querySelector('i');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+    } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+    }
+}
+
+// Event listeners para mostrar/ocultar contraseñas
+document.querySelector('.show-password').addEventListener('click', function() {
+    togglePasswordVisibility('passwordRegister', this);
+});
+
+document.querySelector('.show-password-confirm').addEventListener('click', function() {
+    togglePasswordVisibility('confirmPasswordRegister', this);
+});
+
+// Manejar el envío del formulario de registro
+document.getElementById('registerForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById('nameRegister').value.trim();
+    const email = document.getElementById('emailRegister').value.trim();
+    const password = document.getElementById('passwordRegister').value.trim();
+    const confirmPassword = document.getElementById('confirmPasswordRegister').value.trim();
+    const errorMsg = document.querySelector('.error__msg');
+    
+    // Limpiar mensaje de error anterior
+    errorMsg.classList.remove('error__pass');
+    errorMsg.textContent = '';
+    
+    // Validaciones
+    if (!name || !email || !password || !confirmPassword) {
+        errorMsg.classList.remove('error__pass');
+        errorMsg.textContent = 'Todos los campos son obligatorios';
+        return;
+    }
+    
+    if (name.length < 2) {
+        errorMsg.classList.add('error__pass');
+        errorMsg.textContent = 'El nombre debe tener al menos 2 caracteres';
+        return;
+    }
+    
+    if (!validarEmail(email)) {
+        errorMsg.classList.add('error__pass');
+        errorMsg.textContent = 'El correo electrónico no tiene un formato válido';
+        return;
+    }
+    
+    if (password.length < 8) {
+        errorMsg.classList.add('error__pass');
+        errorMsg.textContent = 'La contraseña debe tener al menos 8 caracteres';
+        return;
+    }
+    
+    if (password !== confirmPassword) {
+        errorMsg.classList.add('error__pass');
+        errorMsg.textContent = 'Las contraseñas no coinciden';
+        return;
+    }
+    Swal.fire({
+        icon: 'success',
+        title: '¡Cuenta creada exitosamente!',
+        html: `¡Bienvenido/a <strong>${name}</strong>!<br>Tu cuenta ha sido registrada correctamente.<br>Ahora puedes iniciar sesión.`,
+        confirmButtonText: 'Ir a Login',
+        confirmButtonColor: '#F09100',
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            sessionStorage.setItem('emailRegistrado', email);
+            sessionStorage.setItem('nombreRegistrado', name);
+            window.location.href = 'login.html';
+        }
+    });
+});

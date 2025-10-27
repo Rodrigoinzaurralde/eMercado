@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Registro - eMercado</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="icon" href="img/favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/register.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+<main class="mt-5">
+    <form id="registerForm">
+        <img src="img/login.png" class="login__image">
+        <h2 class="register__title">Crear Cuenta</h2>
+        
+        <div class="form__group">
+            <label for="nameRegister">Nombre Completo</label>
+            <input type="text" class="user__name" id="nameRegister" aria-label="Nombre completo" placeholder="Ingresa tu nombre completo" required>
+            
+            <label for="emailRegister">Correo Electrónico</label>
+            <input type="email" class="user__name" id="emailRegister" aria-label="Correo electrónico" placeholder="ejemplo@correo.com" required>
+            
+            <label for="passwordRegister">Contraseña</label>
+            <div class="input-group mb-3">
+                <input type="password" class="user__password form-control" id="passwordRegister" aria-label="Contraseña" placeholder="Mínimo 8 caracteres" required minlength="8">
+                <span class="input-group-text show-password"><i class="bi bi-eye-slash"></i></span>
+            </div>
+            
+            <label for="confirmPasswordRegister">Confirmar Contraseña</label>
+            <div class="input-group mb-3">
+                <input type="password" class="user__password form-control" id="confirmPasswordRegister" aria-label="Confirmar contraseña" placeholder="Repite tu contraseña" required minlength="8">
+                <span class="input-group-text show-password-confirm"><i class="bi bi-eye-slash"></i></span>
+            </div>
+            
+            <p>¿Ya tienes cuenta? <br><a href="login.html">Inicia Sesión</a></p>
+            <p class="error__msg"></p>
+        </div>
+        <button type="submit" class="submit__button login__button">Registrarse</button>
+    </form>
+</main>
+
+<footer class="text-muted">
+    <div class="container">
+        <p class="float-end">
+        <a href="#">Volver arriba</a>
+        </p>
+        <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank" rel="noopener noreferrer nofollow">Jovenes a Programar</a></p>
+    </div>
+</footer>
+
+<script src="js/register,js"></script>
+
+</body>
+</html>

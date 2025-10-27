@@ -35,6 +35,12 @@ label{
 .form__group p {
     text-align: center;
 }
+.form__group p a {
+    color: #F09100;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
 .submit__button{
     width: 250px;
     height: 60px;

@@ -9,7 +9,11 @@ const EXT_TYPE = ".json";
 let todosLosProductos = [];
 
 
-if(!localStorage.getItem('user')){
+// Páginas que no requieren autenticación
+const paginasSinAuth = ['login.html', 'register.html'];
+const paginaActual = window.location.pathname.split('/').pop();
+
+if(!localStorage.getItem('user') && !paginasSinAuth.includes(paginaActual)){
     window.location.href = 'login.html';
 }
 

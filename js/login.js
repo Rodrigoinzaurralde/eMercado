@@ -55,6 +55,27 @@ document.querySelector('.login__button').addEventListener('click', async functio
     } 
 });
 
+// Pre-llenar email si viene del registro
+document.addEventListener('DOMContentLoaded', function() {
+    const emailRegistrado = sessionStorage.getItem('emailRegistrado');
+    if (emailRegistrado) {
+        document.querySelector('.user__name').value = emailRegistrado;
+        sessionStorage.removeItem('emailRegistrado');
+        
+        // Mostrar mensaje de bienvenida
+        const errorMsg = document.querySelector('.error__msg');
+        errorMsg.classList.remove('error__pass');
+        errorMsg.style.color = '#28a745';
+        errorMsg.textContent = '¡Cuenta creada exitosamente! Ahora inicia sesión.';
+        
+        // Limpiar mensaje después de 3 segundos
+        setTimeout(() => {
+            errorMsg.textContent = '';
+            errorMsg.style.color = '';
+        }, 3000);
+    }
+});
+
 const passwordInput = document.getElementById('passwordId');
 const passwordLabel = document.querySelector('label[for="passwordId"]');
 
