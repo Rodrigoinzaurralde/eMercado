@@ -551,7 +551,7 @@ a.custom-card:hover {
 .dark-mode .carousel-inner,
 .dark-mode .carousel,
 .dark-mode .imagenes-carrusel {
-  background-color: #232323 !important; /* Un gris oscuro, pero no negro */
+  background-color: #232323 !important; 
   color: #f0f0f0 !important;
   border-color: #333 !important;
 }
@@ -569,7 +569,6 @@ a.custom-card:hover {
   background: #333 !important;
 }
 
-/* Si tienes bordes blancos, oscurecerlos también: */
 .dark-mode .cant__resenias,
 .dark-mode .resenias,
 .dark-mode .description,
@@ -579,7 +578,6 @@ a.custom-card:hover {
 .dark-mode .comentario {
   border: 1px solid #444 !important;
 }
-
 
 /*Menu hamburguesa*/
 .navbar-button, #nav-close-button{

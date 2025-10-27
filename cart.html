@@ -78,7 +78,65 @@
   
   <main>
     <div class="cart"></div>
+    <div class="cart-summary">
+    <div class="subtotal-container">
+        <h3>Subtotal: <span id="subtotal-amount">$0</span></h3>
+    </div>
+    <div class="checkout-container">
+        <button id="checkout-btn" class="btn-checkout">Finalizar Compra</button>
+    </div>
+</div>
   </main>
+  <!-- Modal para datos de tarjeta de crédito (HTML5 Dialog) -->
+  <dialog id="payment-modal" class="payment-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Datos de Pago</h2>
+        <button class="close-modal" type="button" aria-label="Cerrar modal">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <form id="payment-form" method="dialog">
+          <div class="form-group">
+            <label for="card-type">Tipo de Tarjeta</label>
+            <select id="card-type" name="type" required>
+              <option value="">Seleccionar tipo</option>
+              <option value="Visa">Visa</option>
+              <option value="MasterCard">MasterCard</option>
+              <option value="American Express">American Express</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="card-name">Nombre del Titular</label>
+            <input type="text" id="card-name" name="name" placeholder="William Rogers" required>
+          </div>
+
+          <div class="form-group">
+            <label for="card-number">Número de Tarjeta</label>
+            <input type="text" id="card-number" name="number" placeholder="1234 5678 9012 3456" maxlength="19" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="card-cvv">CVV</label>
+              <input type="text" id="card-cvv" name="cvv" placeholder="123" maxlength="4" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="card-expiry">Fecha de Vencimiento</label>
+              <input type="text" id="card-expiry" name="expiry" placeholder="MM/AA" maxlength="5" required>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="cancel-payment" class="btn-cancel">Cancelar</button>
+            <button type="submit" id="confirm-payment" class="btn-confirm">Confirmar Pago</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </dialog>
   <footer class="text-muted">
     <div class="container">
       <p class="float-end">
