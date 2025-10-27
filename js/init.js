@@ -37,6 +37,8 @@ document.addEventListener('click', (e) =>{
 });
 document.getElementById("closeSession").addEventListener("click", ()=>{
   localStorage.removeItem("user");
+  // Limpiar marca de notificación para que aparezca en el próximo login
+  sessionStorage.removeItem('ubicacion_notificacion_mostrada');
 });
 
 const menuMobile = document.getElementById("mobile-navbar");
@@ -99,15 +101,155 @@ const url = "http://ip-api.com/json/?fields=61439";
 const proxy = "https://corsproxy.io/?" + encodeURIComponent(url);
 */
 
+// Función para obtener ubicación si falló en login
+async function consultarUbicacionFallback() {
+  try {
+    console.log("Intentando API de respaldo ipapi.co para obtener ubicación...");
+    mostrarNotificacionUbicacion("Detectando ubicación con API de respaldo...", "info");
+    
+    const response = await fetch("https://ipapi.co/json/");
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log("Datos de ubicación obtenidos de respaldo:", data);
+    
+    // Guardar los datos obtenidos
+    localStorage.setItem("countryCode", data.country_code || "UY");
+    localStorage.setItem("city", data.city || "sin_ciudad");
+    localStorage.setItem("region", data.region || "");
+    
+    console.log(`Ubicación actualizada desde respaldo ${data.city}, ${data.region}, ${data.country_name}`);
+    
+    // Actualizar el mensaje de envío con la nueva información
+    actualizarMensajeEnvio(data.city?.toLowerCase() || '');
+    
+    // Mostrar notificación de éxito
+    mostrarNotificacionUbicacion(`Ubicación detectada: ${data.city}, ${data.country_name}`, "success");
+    
+  } catch (error) {
+    console.error("Error en API de erspaldo", error);
+    
+    // Usar valores por defecto de Uruguay
+    localStorage.setItem("countryCode", "UY");
+    localStorage.setItem("city", "montevideo");
+    localStorage.setItem("region", "Montevideo");
+    
+    actualizarMensajeEnvio("montevideo");
+    
+    // Mostrar notificación de error
+    mostrarNotificacionUbicacion("No se pudo detectar la ubicación. Usando ubicación por defecto: Montevideo, Uruguay", "warning");
+  }
+}
+
+// Función para mostrar notificaciones sobre la ubicación
+function mostrarNotificacionUbicacion(mensaje, tipo = "info") {
+  // Remover notificación anterior si existe
+  const notificacionAnterior = document.getElementById('ubicacion-notification');
+  if (notificacionAnterior) {
+    notificacionAnterior.remove();
+  }
+  
+  const notificacion = document.createElement('div');
+  notificacion.id = 'ubicacion-notification';
+  notificacion.className = `notification-ubicacion ${tipo}`;
+  notificacion.innerHTML = `
+    <div class="notification-content">
+      <i class="bi ${tipo === 'success' ? 'bi-check-circle' : tipo === 'warning' ? 'bi-exclamation-triangle' : 'bi-info-circle'}"></i>
+      <span>${mensaje}</span>
+      <button class="notification-close">&times;</button>
+    </div>
+  `;
+  
+  // Insertar al principio del body
+  document.body.insertBefore(notificacion, document.body.firstChild);
+  
+  // Evento para cerrar la notificación
+  const botonCerrar = notificacion.querySelector('.notification-close');
+  botonCerrar.addEventListener('click', () => {
+    notificacion.remove();
+  });
+  
+  // Auto-cerrar después de 5 segundos para info/success, 8 segundos para warning
+  const tiempoAutoClose = tipo === 'warning' ? 8000 : 5000;
+  setTimeout(() => {
+    if (document.getElementById('ubicacion-notification')) {
+      notificacion.remove();
+    }
+  }, tiempoAutoClose);
+}
+
+// Función para actualizar el mensaje de envío
+function actualizarMensajeEnvio(ciudad) {
+  const envioExistente = document.querySelector('.envio-msg');
+  if (envioExistente) {
+    let nuevoMensaje = '';
+    
+    if (ciudad === 'montevideo' || ciudad === 'canelones') {
+      nuevoMensaje = 'Envíos gratis en Montevideo y Canelones';
+    } else if (ciudad === 'maldonado' || ciudad === 'rocha') {
+      nuevoMensaje = 'Envíos a partir de 500 pesos uruguayos';
+    } else if (ciudad === 'rivera' || ciudad === 'artigas' || ciudad === 'Punta del este') {
+      nuevoMensaje = 'Envíos a partir de 700 pesos uruguayos';
+    } else {
+      nuevoMensaje = 'Consulte por costo de envíos en su zona';
+    }
+    
+    envioExistente.textContent = nuevoMensaje;
+    console.log("Mensaje de envío actualizado:", nuevoMensaje);
+  }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.endsWith('index.html')) {
       const ciudad = localStorage.getItem('city')?.toLowerCase() || '';
+      const apiError = localStorage.getItem('api_error');
+      const apiErrorMessage = localStorage.getItem('api_error_message');
+      
+      // Verificar si hubo error en la API del login
+      if (apiError === 'true') {
+        console.warn("Error detectado en API durante login:", apiErrorMessage);
+        mostrarNotificacionUbicacion(apiErrorMessage || "Error en la API de ubicación principal", "warning");
+        
+        //guardar que se mostró notificación
+        sessionStorage.setItem('ubicacion_notificacion_mostrada', 'true');
+        localStorage.removeItem('api_error');
+        localStorage.removeItem('api_error_message');
+        consultarUbicacionFallback();
+      } else if (!ciudad || ciudad === 'sin_ciudad') {
+        console.warn("No se encontró información de ubicación. Intentando obtener ubicación...");
+        
+        const notificacionMostrada = sessionStorage.getItem('ubicacion_notificacion_mostrada');
+        if (!notificacionMostrada) {
+          mostrarNotificacionUbicacion("Detectando ubicación para calcular costos de envío...", "info");
+          sessionStorage.setItem('ubicacion_notificacion_mostrada', 'true');
+        }
+        
+        consultarUbicacionFallback();
+      } else {
+        // Si existe la ubicación, mostrar confirmación
+        const notificacionMostrada = sessionStorage.getItem('ubicacion_notificacion_mostrada');
+        
+        if (!notificacionMostrada) {
+          const region = localStorage.getItem('region') || '';
+          const nombreCiudad = ciudad.charAt(0).toUpperCase() + ciudad.slice(1);
+          const nombreRegion = region ? `, ${region}` : '';
+          console.log(`Ubicación detectada correctamente: ${nombreCiudad}${nombreRegion}`);
+          mostrarNotificacionUbicacion(`Ubicación: ${nombreCiudad}${nombreRegion}`, "success");
+          
+          // Marcar que se mostró notificación
+          sessionStorage.setItem('ubicacion_notificacion_mostrada', 'true');
+        }
+      }
+      
       let envioMsg = '';
       if (ciudad === 'montevideo' || ciudad === 'canelones') {
           envioMsg = '<div class="envio-msg">Envíos gratis en Montevideo y Canelones</div>';
       } else if (ciudad === 'maldonado' || ciudad === 'rocha'){
           envioMsg = '<div class="envio-msg">Envíos a partir de 500 pesos uruguayos</div>';
-      }else if(ciudad === 'rivera' || ciudad === 'artigas'){
+      }else if(ciudad === 'rivera' || ciudad === 'artigas' || ciudad === 'punta del este'){
           envioMsg = '<div class="envio-msg">Envíos a partir de 700 pesos uruguayos</div>';
       }else{
           envioMsg = '<div class="envio-msg">Consulte por costo de envíos en su zona</div>'
@@ -236,7 +378,7 @@ if (nav) {
     }
   });
 
-  // se actualiza cada 250 mili-segundosn para que cambie en tiempo real el contador
+  // se actualiza cada 250 mili-segundosn para que cambie en "tiempo real" el contador
   setInterval(actualizarContadorCarrito, 250);
 
   carrito();

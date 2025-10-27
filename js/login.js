@@ -1,5 +1,5 @@
 const send_email = "https://eodg0o7xq7s1i8h.m.pipedream.net";
-
+//funcion para avisar del inicio de sesión vía mail
     async function enviarAvisoLogin() {
         let mail = localStorage.getItem("user");
         if (!mail) {
@@ -82,22 +82,39 @@ document.querySelector('.input-group-text').addEventListener('click', function()
         icon.classList.add('bi-eye-slash');
     }
 });
+//función para detectar la ubicación y la ip pública del usuario que ingresa
 function consultarUser(){
-    return fetch("https://backend-ip-api.onrender.com/mi-ip")
+    return fetch("https://backend-ip-api-deploy.vercel.app/mi-ip")
         .then(res => {
+            if (!res.ok) {
+                throw new Error(`API Error: ${res.status} - ${res.statusText}`);
+            }
             return res.json();
         })
         .then(data => {
             console.log("Datos recibidos del backend:", data);
-            localStorage.setItem("countryCode", data.countryCode);
+            
+            // Guardar datos principales
+            localStorage.setItem("countryCode", data.countryCode || "UY");
             localStorage.setItem("city", data.city || "sin_ciudad");
-            console.log("País detectado:", data.country, "Moneda:", moneda);
+            localStorage.setItem("region", data.regionName || "");
+            localStorage.setItem("timezone", data.timezone || "");
+            
+            // Limpiar error anterior
+            localStorage.removeItem("api_error");
+            localStorage.removeItem("api_error_message");
+            
+            console.log(`Ubicación detectada: ${data.city}, ${data.regionName}, ${data.country}`);
+            return data;
         })
         .catch(error => {
-            console.error("Error al consultar la API", error);
+            console.error("Error al consultar la API principal:", error);
+            localStorage.setItem("api_error", "true");
+            localStorage.setItem("api_error_message", `Error en API principal: ${error.message}`);
+            throw error;
         });
 }
-//Obtener latitud y longitud del navegador para comparar con API
+//Obtener latitud y longitud del navegador para luego comparar con API
 function obtenerLatLong(){
     return new Promise((resolve) => {
     if('geolocation' in navigator){
@@ -129,8 +146,9 @@ function guardarUsuarioEnBackend(lat , long) {
     const usuario = localStorage.getItem('user');
     const ciudad = localStorage.getItem('city') || 'sin_ciudad';
     const pais = localStorage.getItem('countryCode') || 'sin_pais';
+    const region = localStorage.getItem('region') || '';
 
-    return fetch("https://backend-ip-api.onrender.com/guardar-usuario", {
+    return fetch("https://backend-ip-api-deploy.vercel.app/guardar-usuario", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -139,16 +157,26 @@ function guardarUsuarioEnBackend(lat , long) {
             usuario: usuario,
             ciudad: ciudad,
             pais: pais,
+            region: region,
             lat: lat,
-            long: long
+            long: long,
+            timestamp: new Date().toISOString()
         })
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) {
+            throw new Error(`Error al guardar usuario: ${res.status}`);
+        }
+        return res.json();
+    })
     .then(data => {
-        console.log("Respuesta al guardar usuario:", data);
+        console.log("Usuario guardado en backend:", data);
+        return data;
     })
     .catch(error => {
-        console.error("Error al guardar usuario:", error);
+        console.error("Error al guardar usuario en backend:", error);
+        //solo se registra el error
+        return null;
     });
 }
 
