@@ -1,5 +1,5 @@
 const catID = localStorage.getItem('catID') || '101'
-const URL = `https://japceibal.github.io/emercado-api/cats_products/${catID}.json`;
+const URL = `${atob("aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9jYXRzX3Byb2R1Y3RzLw==")}${catID}.json`;
 let productos = [];
 
 function extraerDatos(){

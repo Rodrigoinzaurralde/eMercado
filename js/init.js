@@ -1,15 +1,13 @@
-const CATEGORIES_URL = "https://japceibal.github.io/emercado-api/cats/cat.json";
-const PUBLISH_PRODUCT_URL = "https://japceibal.github.io/emercado-api/sell/publish.json";
-const PRODUCTS_URL = "https://japceibal.github.io/emercado-api/cats_products/";
-const PRODUCT_INFO_URL = "https://japceibal.github.io/emercado-api/products/";
-const PRODUCT_INFO_COMMENTS_URL = "https://japceibal.github.io/emercado-api/products_comments/";
-const CART_INFO_URL = "https://japceibal.github.io/emercado-api/user_cart/";
-const CART_BUY_URL = "https://japceibal.github.io/emercado-api/cart/buy.json";
-const EXT_TYPE = ".json";
+const CATEGORIES_URL = atob("aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9jYXRzL2NhdC5qc29u");
+const PUBLISH_PRODUCT_URL = atob("aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9zZWxsL3B1Ymxpc2guanNvbg==");
+const PRODUCTS_URL = atob("aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9jYXRzX3Byb2R1Y3RzLw==");
+const PRODUCT_INFO_URL = atob("aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9wcm9kdWN0cy8=");
+const PRODUCT_INFO_COMMENTS_URL = atob("aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9wcm9kdWN0c19jb21tZW50cy8=");
+const CART_INFO_URL = atob("aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS91c2VyX2NhcnQv");
+const CART_BUY_URL = atob("aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9jYXJ0L2J1eS5qc29u");
+const EXT_TYPE = atob("Lmpzb24=");
 let todosLosProductos = [];
 
-
-// Páginas que no requieren autenticación
 const paginasSinAuth = ['login.html', 'register.html'];
 const paginaActual = window.location.pathname.split('/').pop();
 
@@ -90,7 +88,6 @@ let getJSONData = function(url){
         return result;
     });
 }
-
 async function cargarTodosLosProductos() {
   const categorias = await fetch(CATEGORIES_URL).then(r => r.json());
   const fetches = categorias.map(cat =>
@@ -101,8 +98,8 @@ async function cargarTodosLosProductos() {
 }
 cargarTodosLosProductos();
 /*Mostrar ubicacion
-const url = "http://ip-api.com/json/?fields=61439";
-const proxy = "https://corsproxy.io/?" + encodeURIComponent(url);
+const url = atob("aHR0cDovL2lwLWFwaS5jb20vanNvbi8/ZmllbGRzPTYxNDM5");
+const proxy = atob("aHR0cHM6Ly9jb3JzcHJveHkuaW8vPw==") + encodeURIComponent(url);
 */
 
 // Función para obtener ubicación si falló en login
@@ -111,7 +108,7 @@ async function consultarUbicacionFallback() {
     console.log("Intentando API de respaldo ipapi.co para obtener ubicación...");
     mostrarNotificacionUbicacion("Detectando ubicación con API de respaldo...", "info");
     
-    const response = await fetch("https://ipapi.co/json/");
+    const response = await fetch(atob("aHR0cHM6Ly9pcGFwaS5jby9qc29uLw=="));
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -127,30 +124,26 @@ async function consultarUbicacionFallback() {
     
     console.log(`Ubicación actualizada desde respaldo ${data.city}, ${data.region}, ${data.country_name}`);
     
-    // Actualizar el mensaje de envío con la nueva información
     actualizarMensajeEnvio(data.city?.toLowerCase() || '');
-    
-    // Mostrar notificación de éxito
+
     mostrarNotificacionUbicacion(`Ubicación detectada: ${data.city}, ${data.country_name}`, "success");
     
   } catch (error) {
     console.error("Error en API de erspaldo", error);
     
-    // Usar valores por defecto de Uruguay
+    //valores por defecto
     localStorage.setItem("countryCode", "UY");
     localStorage.setItem("city", "montevideo");
     localStorage.setItem("region", "Montevideo");
     
     actualizarMensajeEnvio("montevideo");
     
-    // Mostrar notificación de error
     mostrarNotificacionUbicacion("No se pudo detectar la ubicación. Usando ubicación por defecto: Montevideo, Uruguay", "warning");
   }
 }
 
-// Función para mostrar notificaciones sobre la ubicación
 function mostrarNotificacionUbicacion(mensaje, tipo = "info") {
-  // Remover notificación anterior si existe
+
   const notificacionAnterior = document.getElementById('ubicacion-notification');
   if (notificacionAnterior) {
     notificacionAnterior.remove();

