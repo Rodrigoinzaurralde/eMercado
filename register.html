@@ -38,12 +38,78 @@
                 <span class="input-group-text show-password-confirm"><i class="bi bi-eye-slash"></i></span>
             </div>
             
+            <!-- Checkboxes de términos y promociones -->
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="termsCheckbox" class="custom-checkbox" required>
+                    <label for="termsCheckbox" class="checkbox-label">
+                        Acepto los <a href="#" id="openTermsModal" class="terms-link">Términos y Condiciones</a> *
+                    </label>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="promotionsCheckbox" class="custom-checkbox" checked>
+                    <label for="promotionsCheckbox" class="checkbox-label">
+                        Deseo recibir promociones y nuevas ofertas
+                    </label>
+                </div>
+            </div>
+            
             <p>¿Ya tienes cuenta? <br><a href="login.html">Inicia Sesión</a></p>
             <p class="error__msg"></p>
         </div>
         <button type="submit" class="submit__button login__button">Registrarse</button>
     </form>
 </main>
+
+<!-- Modal de Términos y Condiciones -->
+<dialog id="termsModal" class="terms-modal">
+    <div class="terms-modal-content">
+        <div class="terms-modal-header">
+            <h2>Términos y Condiciones de Uso</h2>
+            <button class="close-terms-modal" type="button" aria-label="Cerrar modal">&times;</button>
+        </div>
+        <div class="terms-modal-body">
+            <div class="terms-content">
+                <h3>TÉRMINOS Y CONDICIONES DE USO DE EMERCADO</h3>
+                
+                <h4>1. Aceptación de los Términos</h4>
+                <p>Al acceder y utilizar eMercado, usted acepta y se compromete a cumplir con los presentes Términos y Condiciones de Uso, la Política de Privacidad y todas las leyes y reglamentos aplicables de la República Oriental del Uruguay. Si no está de acuerdo con estos Términos, no debe usar esta plataforma.</p>
+                
+                <h4>2. Capacidad Legal y Registro de Usuario</h4>
+                <p><strong>a. Capacidad:</strong> El Usuario debe ser mayor de dieciocho (18) años y tener capacidad legal para contratar.</p>
+                <p><strong>b. Registro:</strong> El Usuario deberá completar el formulario de registro con datos válidos. Es responsable de la confidencialidad de su contraseña y de la actividad bajo su cuenta.</p>
+                
+                <h4>3. Proceso de Compra y Precios</h4>
+                <p><strong>a. Precios:</strong> Los precios de los productos publicados están expresados en la moneda indicada (ej. pesos uruguayos o dólares estadounidenses) e incluyen el Impuesto al Valor Agregado (IVA), salvo indicación en contrario.</p>
+                <p><strong>b. Stock:</strong> Las ofertas están sujetas a la disponibilidad de stock. Las imágenes son de referencia.</p>
+                <p><strong>c. Anulación:</strong> eMercado se reserva el derecho de anular transacciones en caso de errores manifiestos en la publicación de precios o información esencial, notificando al cliente.</p>
+                
+                <h4>4. Pagos, Envíos y Entregas</h4>
+                <p><strong>a. Medios de Pago Aceptados:</strong> Solo se aceptan pagos realizados con tarjetas de crédito Visa, MasterCard y American Express.</p>
+                <p><strong>b. Cargos de Envío:</strong> Los costos y plazos de envío serán especificados antes de la confirmación de la compra y corren por cuenta del Usuario.</p>
+                <p><strong>c. Plazos:</strong> Los plazos de entrega son estimativos y eMercado no será responsable por demoras que sean atribuibles únicamente al servicio de transporte o causas de fuerza mayor.</p>
+                
+                <h4>5. Soporte, Devoluciones y Garantía</h4>
+                <p><strong>a. Contacto y Soporte:</strong> Para consultas o asistencia con pedidos, puede contactar a eMercado a través del correo electrónico: <strong>soporte.emercado@mail.com</strong>. Nuestro equipo de soporte opera de lunes a viernes, de 9:00 a 18:00 horas (hora de Uruguay).</p>
+                <p><strong>b. Garantía:</strong> Los productos cuentan con la garantía legal y la otorgada por el fabricante.</p>
+                <p><strong>c. Derecho de Devolución (Retracto):</strong> El Usuario tiene un plazo de treinta (30) días hábiles contados desde la recepción del producto para revocar la compra, sin responsabilidad alguna, siempre y cuando el producto no haya sido usado y mantenga su estado y embalaje original.</p>
+                
+                <h4>6. Propiedad Intelectual</h4>
+                <p>Todo el contenido de eMercado (textos, gráficos, logotipos, código, etc.) es propiedad de eMercado y está protegido por las leyes de propiedad intelectual. Está prohibida su reproducción sin autorización.</p>
+                
+                <h4>7. Jurisdicción y Ley Aplicable</h4>
+                <p>Estos Términos y Condiciones se rigen por las leyes de la República Oriental del Uruguay. Cualquier controversia será sometida a los tribunales competentes de la ciudad de Montevideo, Uruguay.</p>
+                
+                <p class="terms-footer"><strong>Última Actualización:</strong> 27 de octubre de 2025.</p>
+            </div>
+        </div>
+        <div class="terms-modal-footer">
+            <button type="button" id="acceptTermsBtn" class="btn-accept-terms">Acepto los Términos</button>
+            <button type="button" id="closeTermsBtn" class="btn-close-terms">Cerrar</button>
+        </div>
+    </div>
+</dialog>
 
 <footer class="text-muted">
     <div class="container">
@@ -54,7 +120,7 @@
     </div>
 </footer>
 
-<script src="js/register,js"></script>
+<script src="js/register.js"></script>
 
 </body>
 </html>

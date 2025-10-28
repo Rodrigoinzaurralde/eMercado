@@ -63,6 +63,15 @@
 .eliminarBtn, #comprar{
     border-radius: 10px;
     height: 40px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.eliminarBtn:hover, #comprar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px #00000033;
 }
 
 #comprar{
@@ -119,10 +128,13 @@
     font-size: 1.2em;
     font-weight: bold;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .btn-checkout:hover {
     background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px #28a7454d;
 }
 
 /* Para modo oscuro */
@@ -252,7 +264,7 @@
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
 }
 
 .btn-cancel {
@@ -262,6 +274,8 @@
 
 .btn-cancel:hover {
     background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px #6c757d4d;
 }
 
 .btn-confirm {
@@ -271,6 +285,8 @@
 
 .btn-confirm:hover {
     background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px #28a7454d;
 }
 
 @keyframes fadeIn {

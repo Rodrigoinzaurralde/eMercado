@@ -45,11 +45,19 @@ label{
     width: 250px;
     height: 60px;
     background-color: #F09100;
+    border: none;
     border-radius: 7px;
     letter-spacing: 2px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 .submit__button:hover{
     background-color: #C97A00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px #c07a004d;
 }
 .form__group input:focus {
     border: 1.7px solid #000 !important;

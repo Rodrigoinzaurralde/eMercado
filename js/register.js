@@ -1,6 +1,7 @@
 function validarEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
+
 function togglePasswordVisibility(inputId, iconElement) {
     const passwordInput = document.getElementById(inputId);
     const icon = iconElement.querySelector('i');
@@ -16,7 +17,6 @@ function togglePasswordVisibility(inputId, iconElement) {
     }
 }
 
-// Event listeners para mostrar/ocultar contraseñas
 document.querySelector('.show-password').addEventListener('click', function() {
     togglePasswordVisibility('passwordRegister', this);
 });
@@ -25,7 +25,47 @@ document.querySelector('.show-password-confirm').addEventListener('click', funct
     togglePasswordVisibility('confirmPasswordRegister', this);
 });
 
-// Manejar el envío del formulario de registro
+const termsModal = document.getElementById('termsModal');
+const openTermsModal = document.getElementById('openTermsModal');
+const closeTermsModal = document.querySelector('.close-terms-modal');
+const closeTermsBtn = document.getElementById('closeTermsBtn');
+const acceptTermsBtn = document.getElementById('acceptTermsBtn');
+const termsCheckbox = document.getElementById('termsCheckbox');
+
+
+openTermsModal.addEventListener('click', function(e) {
+    e.preventDefault();
+    termsModal.showModal();
+});
+
+closeTermsModal.addEventListener('click', function() {
+    termsModal.close();
+});
+
+closeTermsBtn.addEventListener('click', function() {
+    termsModal.close();
+});
+
+acceptTermsBtn.addEventListener('click', function() {
+    termsCheckbox.checked = true;
+    termsModal.close();
+    Swal.fire({
+        icon: 'success',
+        title: 'Términos Aceptados',
+        text: 'Has aceptado los términos y condiciones.',
+        showConfirmButton: false,
+        timer: 1500,
+        toast: true,
+        position: 'top-end'
+    });
+});
+
+termsModal.addEventListener('click', function(e) {
+    if (e.target === termsModal) {
+        termsModal.close();
+    }
+});
+
 document.getElementById('registerForm').addEventListener('submit', function(event) {
     event.preventDefault();
     
@@ -33,13 +73,13 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     const email = document.getElementById('emailRegister').value.trim();
     const password = document.getElementById('passwordRegister').value.trim();
     const confirmPassword = document.getElementById('confirmPasswordRegister').value.trim();
+    const termsAccepted = document.getElementById('termsCheckbox').checked;
+    const promotionsAccepted = document.getElementById('promotionsCheckbox').checked;
     const errorMsg = document.querySelector('.error__msg');
     
-    // Limpiar mensaje de error anterior
     errorMsg.classList.remove('error__pass');
     errorMsg.textContent = '';
     
-    // Validaciones
     if (!name || !email || !password || !confirmPassword) {
         errorMsg.classList.remove('error__pass');
         errorMsg.textContent = 'Todos los campos son obligatorios';
@@ -69,10 +109,22 @@ document.getElementById('registerForm').addEventListener('submit', function(even
         errorMsg.textContent = 'Las contraseñas no coinciden';
         return;
     }
+    
+    if (!termsAccepted) {
+        errorMsg.classList.add('error__pass');
+        errorMsg.textContent = 'Debes aceptar los términos y condiciones para continuar';
+        return;
+    }
+    
+    // Si llegamos aquí, el registro es válido
+    let mensajePromocion = promotionsAccepted ? 
+        '<br><small>Recibirás nuestras mejores ofertas y promociones.</small>' : 
+        '<br><small>No recibirás promociones comerciales.</small>';
+    
     Swal.fire({
         icon: 'success',
         title: '¡Cuenta creada exitosamente!',
-        html: `¡Bienvenido/a <strong>${name}</strong>!<br>Tu cuenta ha sido registrada correctamente.<br>Ahora puedes iniciar sesión.`,
+        html: `¡Bienvenido/a <strong>${name}</strong>!<br>Tu cuenta ha sido registrada correctamente.${mensajePromocion}<br><br>Ahora puedes iniciar sesión.`,
         confirmButtonText: 'Ir a Login',
         confirmButtonColor: '#F09100',
         showClass: {
@@ -85,6 +137,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
         if (result.isConfirmed) {
             sessionStorage.setItem('emailRegistrado', email);
             sessionStorage.setItem('nombreRegistrado', name);
+            sessionStorage.setItem('promocionesAceptadas', promotionsAccepted);
             window.location.href = 'login.html';
         }
     });

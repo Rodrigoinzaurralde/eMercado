@@ -222,16 +222,11 @@ function finalizarCompra(datosТarjeta) {
     // Limpiar carrito y datos pendientes
     localStorage.removeItem('carrito');
     sessionStorage.removeItem('compra_pendiente');
-    
-    // Ocultar modal
     ocultarModalPago();
-    
-    // Redirigir a página de confirmación
     window.location.href = 'completarOrden.html';
 }
 
 function formatearNumeroTarjeta(input) {
-    // Remueve todos los espacios y caracteres
     let valor = input.value.replace(/\D/g, '');
     
     // Agregar espacios cada 4 dígitos para simular el formayo tarjeta

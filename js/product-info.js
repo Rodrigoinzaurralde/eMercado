@@ -1,18 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import { getFirestore, collection, addDoc, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
-// Configuración de Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyDztICeC_2I7lEd7PLYtIxsZ0FmYtDIWEI",
-    authDomain: "comentarios-351d5.firebaseapp.com",
-    projectId: "comentarios-351d5",
-    storageBucket: "comentarios-351d5.firebasestorage.app",
-    messagingSenderId: "214528495023",
-    appId: "1:214528495023:web:40dea55ef34a476c1cf35a",
-    measurementId: "G-HD1RQ5B6GW"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const _0x486134=_0x1e71;function _0x5e1c(){const _0x1e4433=['320128VZhuwD','21830SPTRAs','9JgMmVY','206215FFEQnm','214528495023','566968gFUGkq','27AscMGT','1974936WDbTFk','70iDiraK','20djIsIx','comentarios-351d5.firebasestorage.app','1311222IdtHpg','4YEbrLg','comentarios-351d5.firebaseapp.com','AIzaSyDztICeC_2I7lEd7PLYtIxsZ0FmYtDIWEI','41628AAVqwV'];_0x5e1c=function(){return _0x1e4433;};return _0x5e1c();}(function(_0x3735d4,_0x346855){const _0x52f48c=_0x1e71,_0xeb749e=_0x3735d4();while(!![]){try{const _0x3a6d70=parseInt(_0x52f48c(0xd0))/0x1+parseInt(_0x52f48c(0xd1))/0x2*(-parseInt(_0x52f48c(0xc6))/0x3)+-parseInt(_0x52f48c(0xcc))/0x4*(-parseInt(_0x52f48c(0xd3))/0x5)+-parseInt(_0x52f48c(0xcf))/0x6*(-parseInt(_0x52f48c(0xc8))/0x7)+-parseInt(_0x52f48c(0xc5))/0x8*(parseInt(_0x52f48c(0xd2))/0x9)+parseInt(_0x52f48c(0xc9))/0xa*(-parseInt(_0x52f48c(0xcb))/0xb)+parseInt(_0x52f48c(0xc7))/0xc;if(_0x3a6d70===_0x346855)break;else _0xeb749e['push'](_0xeb749e['shift']());}catch(_0xfca29f){_0xeb749e['push'](_0xeb749e['shift']());}}}(_0x5e1c,0x2ddab));function _0x1e71(_0x15b5ff,_0x2913e4){const _0x5e1cea=_0x5e1c();return _0x1e71=function(_0x1e7130,_0x1816fb){_0x1e7130=_0x1e7130-0xc4;let _0x5a959d=_0x5e1cea[_0x1e7130];return _0x5a959d;},_0x1e71(_0x15b5ff,_0x2913e4);}const firebaseConfig={'apiKey':_0x486134(0xce),'authDomain':_0x486134(0xcd),'projectId':'comentarios-351d5','storageBucket':_0x486134(0xca),'messagingSenderId':_0x486134(0xc4),'appId':'1:214528495023:web:40dea55ef34a476c1cf35a','measurementId':'G-HD1RQ5B6GW'},app=initializeApp(firebaseConfig),db=getFirestore(app);
 
 // Obtener el productID desde la URL o localStorage
 function getProductId() {

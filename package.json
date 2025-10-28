@@ -5,10 +5,15 @@
   "main": "excel_converter.js",
   "type": "module",
   "scripts": {
-    "excel-review": "node excel_converter.js" 
+    "excel-review": "node excel_converter.js"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
     "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "javascript-obfuscator": "^4.1.1",
+    "terser": "^5.44.0",
+    "webpack-obfuscator": "^3.5.1"
   }
 }

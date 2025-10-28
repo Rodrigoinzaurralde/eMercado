@@ -102,10 +102,15 @@ main {
     height: 54px;
     font-size: 1.1em;
     letter-spacing: 2px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 #botonComentarioID:hover {
     background-color: #C97A00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px #c07a004d;
 }
 
 #botonGuardarID, #botonAniadirID {
@@ -113,6 +118,10 @@ main {
     height: 53px;
     border-radius: 30px;
     text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
 }
 
 #botonGuardarID {
@@ -137,6 +146,14 @@ main {
 
 #botonGuardarID:hover {
     background-color: #C97A00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px #e0b36e66;
+}
+
+#botonAniadirID:hover {
+    background-color: #C97A00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px #c07a004d;
 }
 
 #botonAniadirID:hover {

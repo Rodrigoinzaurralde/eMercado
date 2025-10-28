@@ -761,6 +761,49 @@ li:has(.navmobile-link){
     background-color: rgba(0, 0, 0, 0.1);
 }
 
+.btn,
+button {
+  transition: all 0.3s ease !important;
+}
+
+.btn:hover,
+button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 15px #00000033 !important;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 4px 15px #007bff4d !important;
+}
+
+.btn-success:hover {
+  box-shadow: 0 4px 15px #28a7454d !important;
+}
+
+.btn-warning:hover {
+  box-shadow: 0 4px 15px #ffc1074d !important;
+}
+
+.btn-danger:hover {
+  box-shadow: 0 4px 15px #dc35454d !important;
+}
+
+.btn-info:hover {
+  box-shadow: 0 4px 15px #17a2b84d !important;
+}
+
+.btn-light:hover {
+  box-shadow: 0 4px 15px #f8f9fa4d !important;
+}
+
+.btn-dark:hover {
+  box-shadow: 0 4px 15px #343a404d !important;
+}
+
+.btn-secondary:hover {
+  box-shadow: 0 4px 15px #6c757d4d !important;
+}
+
 /*-- Responsive --*/
 @media only screen and (max-width:1250px) {
   .navbar{
