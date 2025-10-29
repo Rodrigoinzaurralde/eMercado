@@ -15,8 +15,8 @@ function createProductCard(producto) {
     const productInfo = document.createElement('div');
     productInfo.className = 'product-info';
     productInfo.innerHTML = `
-        <h4>${producto.name}</h4>
-        <p>${producto.cost} ${producto.currency}</p>
+        <h4 class='nombre_Class'>${producto.name}</h4>
+        <p class='costo_Class'>${producto.cost} ${producto.currency}</p>
     `;
     
     const productUnit = document.createElement('div');

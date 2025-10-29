@@ -10,6 +10,7 @@
     position: relative;
 }
 
+
 .cart-count {
     position: absolute;
     top: -8px;
@@ -804,13 +805,24 @@ button:hover {
   box-shadow: 0 4px 15px #6c757d4d !important;
 }
 
+.bi-person{
+  display: none;
+}
+.user__mail{
+  text-decoration: none;
+  color: #fff;
+}
+.user__mail:hover{
+  color: #fff;
+}
+
 /*-- Responsive --*/
 @media only screen and (max-width:1250px) {
   .navbar{
     background: var(--nav-bg-color);
   }
 }
-@media only screen and (max-width:780px) {
+@media only screen and (max-width:980px) {
   .jumbotron{ /*Fondo del inicio*/
     background-position: 19%;
     background-size: 270%;
@@ -836,6 +848,12 @@ button:hover {
   }
   .navbar{
     justify-content: space-between;
+  }
+  .user__mail{
+    display: none;
+  }
+  .bi-person{
+    display: block;
   }
 
 }
@@ -982,4 +1000,7 @@ button:hover {
 }
 .dark-mode .caract-img {
   color: #A19999 !important;
+}
+.dark-mode .carrito .bi-cart2{
+  color: #fff !important;
 }

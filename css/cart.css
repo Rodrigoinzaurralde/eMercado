@@ -1,3 +1,11 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    overflow-x: hidden;
+}
+
 .cart{
     display: flex;
     flex-direction: column;
@@ -11,16 +19,16 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-    width: 500px;
-    height: 200px;
+    max-width: 500px;
+    /*height: 200px;*/
     background-color: #f8cd8c;
     box-shadow: 0 1px 20px #fd717166;
     border-radius: 10px;
     margin: 0% 6%;
 }
 .product-img{
-    width: 300px;
-    height: 200px;
+    max-width:300px;
+    /*height: 200px;*/
     background-color: #f8cd8c;
     box-shadow: 0 1px 20px #fd717166;
     border-radius: 10px;
@@ -334,6 +342,12 @@
 .dark-mode .form-group select:focus {
     border-color: #f8cd8c;
 }
+.dark-mode .product-info .costo_Class{
+    color: #000 !important;
+}
+.dark-mode .product-info .nombre_Class{
+    color: #000 !important;
+}
 
 /* Responsive para Dialog */
 @media (max-width: 600px) {
@@ -362,7 +376,91 @@
     }
 }
 
-/* Soporte para navegadores que no soportan dialog */
+/* para navegadores que no soportan dialog */
 .payment-modal:not([open]) {
     display: none;
+}
+
+@media only screen and (max-width: 780px) {
+    .cart {
+        width: 95%;
+        margin: 1% 2.5%;
+    }
+    
+    .product {
+        margin: 0 2%;
+        max-width: 100%;
+        width: 96%;
+    }
+    
+    .product-card {
+        flex-direction: column;
+        height: auto; 
+        min-height: 300px; 
+        padding: 15px;
+        width: 100%;
+        margin: 1% 0;
+        box-sizing: border-box;
+    }
+    
+    .product-info {
+        width: 100%;
+        margin: 10px 0;
+        height: auto;
+        box-sizing: border-box;
+    }
+    
+    .product-unit {
+        width: 100%;
+        margin: 10px 0;
+        height: auto;
+        box-sizing: border-box;
+    }
+    
+    .img__carrito {
+        width: 100%;
+        max-width: 250px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+    
+    .product-img {
+        width: 100%;
+        max-width: 200px;
+        display: block;
+        margin: 0 auto;
+    }
+    
+    .product-info h4 {
+        font-size: 1em;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .cart {
+        width: 98%;
+        margin: 1%;
+    }
+    
+    .product-card {
+        width: 100%;
+        margin: 1% 0;
+        padding: 10px;
+    }
+    
+    .product {
+        margin: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .btns {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .eliminarBtn, #comprar {
+        width: 100%;
+    }
 }
