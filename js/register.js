@@ -116,7 +116,6 @@ document.getElementById('registerForm').addEventListener('submit', function(even
         return;
     }
     
-    // Si llegamos aquí, el registro es válido
     let mensajePromocion = promotionsAccepted ? 
         '<br><small>Recibirás nuestras mejores ofertas y promociones.</small>' : 
         '<br><small>No recibirás promociones comerciales.</small>';

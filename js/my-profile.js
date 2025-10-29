@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btnCancelar.style.display = isEditing ? "block" : "none";
       btnGuardar.style.display = isEditing ? "block" : "none";
 
-      for (let i = 2; i <= 5; i++) {
+      for (let i = 4; i <= 7; i++) {
         if (camposPerfil[i]) {
           camposPerfil[i].readOnly = !isEditing; //No permite editar los campos sin apretar el botón editar
         }

@@ -16,7 +16,7 @@ if(!localStorage.getItem('user') && !paginasSinAuth.includes(paginaActual)){
 }
 
 //---Usuario en navbar---
-document.getElementById("boton-desplegable").innerHTML = `${localStorage.getItem('user')}`;
+document.getElementById("boton-desplegable").innerHTML = `<i class="bi bi-person"></i><a class="user__mail">${localStorage.getItem('user')}</a>`;
 const menuUser = document.getElementById("usuario-desplegable");
 const perfilBox = document.querySelector('.perfil-container');
 const botonMenu = document.getElementById("boton-desplegable");
