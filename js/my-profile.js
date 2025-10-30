@@ -3,8 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const nombreInput = document.getElementById("nombre");
   const apellidoInput = document.getElementById("apellido");
   const telefonoInput = document.getElementById("telefono");
-  const camposPerfil = document.querySelectorAll("input");
-  console.log(document.querySelector(".profile-data"));
+  const camposPerfil = [emailInput, nombreInput, apellidoInput, telefonoInput];
 
   const user = localStorage.getItem("user");
   const nombre = localStorage.getItem("name");
@@ -69,9 +68,9 @@ document.addEventListener("DOMContentLoaded", () => {
       btnCancelar.style.display = isEditing ? "block" : "none";
       btnGuardar.style.display = isEditing ? "block" : "none";
 
-      for (let i = 4; i <= 7; i++) {
-        if (camposPerfil[i]) {
-          camposPerfil[i].readOnly = !isEditing; //No permite editar los campos sin apretar el botón editar
+      for (let input of camposPerfil) {
+        if (input) {
+          input.readOnly = !isEditing; //No permite editar los campos sin apretar el botón editar
         }
       }
     };
@@ -81,18 +80,65 @@ document.addEventListener("DOMContentLoaded", () => {
       setState(false);
       contenidoPerfil();
     });
-    btnGuardar.addEventListener("click", () => {
-      setState(false);
-      localStorage.setItem("name", nombreInput.value);
-      localStorage.setItem("lastname", apellidoInput.value);
-      localStorage.setItem("email", emailInput.value);
-      let numero = telefonoInput.value.trim();
-      if (numero !== "") {
-        numero = numero.replace(/^0+/, "");
-        const telefonoUruguay = "+598" + numero;
-        localStorage.setItem("phoneNumber", telefonoUruguay);
+
+    // Validación para el teléfono - solo números
+    telefonoInput.addEventListener("input", (e) => {
+      // Remueve cualquier caracter que no sea número
+      e.target.value = e.target.value.replace(/[^0-9]/g, "");
+    });
+
+    // Validación para el email
+    emailInput.addEventListener("input", (e) => {
+      const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailValido.test(e.target.value)) {
+        emailInput.style.borderColor = "red";
+      } else {
+        emailInput.style.borderColor = "initial";
       }
     });
+
+    // Validar antes de guardar
+    btnGuardar.addEventListener("click", () => {
+      const validarEmail = /^[A-Za-z0-9]+@[A-Za-z0-9]+\.[A-Za-z]{2,8}$/;
+      if (validarEmail.test(emailInput.value)) {
+        localStorage.setItem("email", emailInput.value);
+        setState(false);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Por favor, ingrese un email válido",
+        });
+        setState(true);
+        return;
+      }
+
+      if (
+        telefonoInput.value.length === 9 &&
+        /^\d+$/.test(telefonoInput.value)
+      ) {
+        localStorage.setItem("phoneNumber", telefonoInput.value);
+        setState(false);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "El teléfono no es correcto",
+        });
+        setState(true);
+        return;
+      }
+      Swal.fire({
+        icon: "success",
+        title: "¡Guardado con exito!",
+        text: "Cambios aplicados correctamente",
+      });
+    });
+    /*let numero = telefonoInput.value;
+      if ((numero && numero !== "")) {
+        numero = numero.replace(/^0+/, "");
+        const telefonoUruguay = "+598" + numero;
+        localStorage.setItem("phoneNumber", telefonoUruguay);*/
 
     setState(false);
   }
