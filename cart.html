@@ -122,6 +122,19 @@
         <p><strong>Total a transferir:</strong> <span id="transfer-amount"></span></p>
       </div>
       
+      <div class="transfer-confirmation" id="transfer-confirmation">
+        <h3>Confirmación de transferencia:</h3>
+        <p>Por favor, suba el comprobante de su transferencia bancaria:</p>
+        <div class="file-upload-container">
+          <input type="file" id="transfer-proof" accept="image/*" class="file-input">
+          <label for="transfer-proof" class="file-label">
+            <i class="bi bi-upload"></i>
+            <span>Seleccionar comprobante</span>
+          </label>
+          <div class="file-preview" id="file-preview"></div>
+        </div>
+      </div>
+      
       <div class="form-actions">
         <button type="button" class="btn-cancel" id="cancel-transfer">Cancelar</button>
         <button type="button" class="btn-confirm" id="confirm-transfer">Confirmar Transferencia</button>
@@ -142,46 +155,44 @@
         </div>
       </div>
       
-      <div class="shipping-container">
-        <div class="shipping-section">
+      <div class="contenedor-envio">
+        <div class="seccion-envio">
           <h3>Tipo de envío</h3>
-          <div class="shipping-options">
-            <div class="shipping-option">
+          <div class="opciones-envio">
+            <div class="opcion-envio">
               <input type="radio" id="premium" name="shipping" value="premium" data-cost="15">
               <label for="premium">
-                <div class="shipping-info">
-                  <div class="shipping-name">Premium</div>
-                  <div class="shipping-time">2 a 5 días</div>
+                <div class="info-envio">
+                  <div class="nombre-envio">Premium</div>
+                  <div class="tiempo-envio">2 a 5 días</div>
                 </div>
-                <div class="shipping-cost">(15%)</div>
+                <div class="costo-envio">(15%)</div>
               </label>
             </div>
             
-            <div class="shipping-option">
+            <div class="opcion-envio">
               <input type="radio" id="express" name="shipping" value="express" data-cost="7" checked>
               <label for="express">
-                <div class="shipping-info">
-                  <div class="shipping-name">Express</div>
-                  <div class="shipping-time">5 a 8 días</div>
+                <div class="info-envio">
+                  <div class="nombre-envio">Express</div>
+                  <div class="tiempo-envio">5 a 8 días</div>
                 </div>
-                <div class="shipping-cost">(7%)</div>
+                <div class="costo-envio">(7%)</div>
               </label>
             </div>
             
-            <div class="shipping-option">
+            <div class="opcion-envio">
               <input type="radio" id="standard" name="shipping" value="standard" data-cost="5">
               <label for="standard">
-                <div class="shipping-info">
-                  <div class="shipping-name">Standard</div>
-                  <div class="shipping-time">12 a 15 días</div>
+                <div class="info-envio">
+                  <div class="nombre-envio">Standard</div>
+                  <div class="tiempo-envio">12 a 15 días</div>
                 </div>
-                <div class="shipping-cost">(5%)</div>
+                <div class="costo-envio">(5%)</div>
               </label>
             </div>
           </div>
-          
-          <!-- Sección de Dirección de Envío -->
-          <div class="shipping-address-section">
+          <div class="seccion-direccion-envio">
             <h3>Dirección de envío</h3>
             
             <div class="delivery-type-options">
@@ -247,8 +258,8 @@
               
               <div class="form-row">
                 <div class="form-group">
-                  <label for="calle">Calle</label>
-                  <input type="text" id="calle" name="calle" placeholder="Ej: 18 de Julio">
+                  <label for="calle">Calle <span class="required">*</span></label>
+                  <input type="text" id="calle" name="calle" placeholder="Ej: 18 de Julio" required>
                 </div>
                 
                 <div class="form-group">
@@ -258,13 +269,13 @@
               </div>
               
               <div class="form-group">
-                <label for="esquina">Esquina</label>
-                <input type="text" id="esquina" name="esquina" placeholder="Ej: Ejido">
+                <label for="esquina">Esquina <span class="required">*</span></label>
+                <input type="text" id="esquina" name="esquina" placeholder="Ej: Ejido" required>
               </div>
             </div>
           </div>
 
-          <div class="shipping-cost-summary">
+          <div class="resumen-costo-envio">
             <div class="cost-breakdown">
               <div class="cost-line">
                 <span>Costo de productos:</span>
@@ -272,7 +283,7 @@
               </div>
               <div class="cost-line">
                 <span>Costo de envío:</span>
-                <span id="shipping-cost">$0</span>
+                <span id="costo-envio">$0</span>
               </div>
               <div class="cost-line total">
                 <span><strong>Total:</strong></span>
@@ -284,7 +295,7 @@
       </div>
     </div>
   </main>
-  <!-- Modal para datos de tarjeta de crédito (HTML5 Dialog) -->
+  <!-- Modal para datos de tarjeta de crédito-->
   <dialog id="payment-modal" class="payment-modal">
     <div class="modal-content">
       <div class="modal-header">

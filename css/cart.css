@@ -173,6 +173,9 @@ body {
 .payment-modal[open] {
     animation: slideIn 0.3s ease-out;
 }
+.swal-high-zindex {
+    z-index: 99999 !important;
+}
 
 .modal-content {
     background-color: #fefefe;
@@ -385,6 +388,107 @@ body {
     color: #555;
 }
 
+/* Estilos para la subida de comprobante de transferencia */
+.transfer-confirmation {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+.transfer-confirmation h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.file-upload-container {
+    margin-top: 15px;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background-color: #fff;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #666;
+    font-weight: 500;
+    min-width: 200px;
+    justify-content: center;
+}
+
+.file-label:hover {
+    border-color: #f8cd8c;
+    background-color: #f8cd8c10;
+    color: #333;
+}
+
+.file-label i {
+    font-size: 18px;
+}
+
+.file-preview {
+    margin-top: 15px;
+    display: none;
+}
+
+.file-preview.active {
+    display: block;
+}
+
+.preview-image {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.file-info {
+    background: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 10px;
+}
+
+.file-name {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.file-size {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.remove-file {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+.remove-file:hover {
+    background: #c82333;
+}
+
 #cuotas-group {
     transition: all 0.3s ease;
 }
@@ -413,6 +517,41 @@ body {
 .dark-mode .bank-info h3,
 .dark-mode .bank-info p {
     color: #fff;
+}
+
+/* Modo oscuro para subida de archivos */
+.dark-mode .transfer-confirmation {
+    background-color: #444;
+    border-color: #666;
+}
+
+.dark-mode .transfer-confirmation h3 {
+    color: #fff;
+}
+
+.dark-mode .file-label {
+    background-color: #555;
+    border-color: #666;
+    color: #ccc;
+}
+
+.dark-mode .file-label:hover {
+    border-color: #f8cd8c;
+    background-color: #666;
+    color: #fff;
+}
+
+.dark-mode .file-info {
+    background-color: #555;
+    border-color: #666;
+}
+
+.dark-mode .file-name {
+    color: #fff;
+}
+
+.dark-mode .file-size {
+    color: #ccc;
 }
 
 .dark-mode .modal-content {
@@ -463,12 +602,12 @@ body {
     min-width: 0;
 }
 
-.shipping-container {
+.contenedor-envio {
     flex: 1;
     max-width: 400px;
 }
 
-.shipping-section {
+.seccion-envio {
     background-color: #ffffff;
     border-radius: 10px;
     padding: 25px;
@@ -478,7 +617,7 @@ body {
     top: 20px;
 }
 
-.shipping-section h3 {
+.seccion-envio h3 {
     margin-top: 0;
     margin-bottom: 20px;
     color: #333;
@@ -488,11 +627,11 @@ body {
     padding-bottom: 10px;
 }
 
-.shipping-options {
+.opciones-envio {
     margin-bottom: 25px;
 }
 
-.shipping-option {
+.opcion-envio {
     margin-bottom: 15px;
     border: 2px solid #e0e0e0;
     border-radius: 8px;
@@ -501,28 +640,28 @@ body {
     cursor: pointer;
 }
 
-.shipping-option:hover {
+.opcion-envio:hover {
     border-color: #f8cd8c;
     background-color: #f8cd8c10;
 }
 
-.shipping-option input[type="radio"] {
+.opcion-envio input[type="radio"] {
     margin-right: 15px;
     transform: scale(1.2);
 }
 
-.shipping-option input[type="radio"]:checked + label {
+.opcion-envio input[type="radio"]:checked + label {
     color: #333;
     font-weight: 600;
 }
 
-.shipping-option:has(input:checked) {
+.opcion-envio:has(input:checked) {
     border-color: #f8cd8c;
     background-color: #f8cd8c20;
     box-shadow: 0 2px 8px #f8cd8c4d;
 }
 
-.shipping-option label {
+.opcion-envio label {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -531,30 +670,30 @@ body {
     width: 100%;
 }
 
-.shipping-info {
+.info-envio {
     display: flex;
     flex-direction: column;
 }
 
-.shipping-name {
+.nombre-envio {
     font-weight: 600;
     font-size: 1.1em;
     color: #333;
 }
 
-.shipping-time {
+.tiempo-envio {
     font-size: 0.9em;
     color: #666;
     margin-top: 3px;
 }
 
-.shipping-cost {
+.costo-envio {
     font-weight: bold;
     color: #28a745;
     font-size: 1.1em;
 }
 
-.shipping-cost-summary {
+.resumen-costo-envio {
     border-top: 2px solid #e0e0e0;
     padding-top: 20px;
 }
@@ -579,36 +718,36 @@ body {
 }
 
 /* Modo oscuro para sección de envío */
-.dark-mode .shipping-section {
+.dark-mode .seccion-envio {
     background-color: #2c2c2c;
     border-color: #555;
 }
 
-.dark-mode .shipping-section h3 {
+.dark-mode .seccion-envio h3 {
     color: #fff;
     border-bottom-color: #f8cd8c;
 }
 
-.dark-mode .shipping-option {
+.dark-mode .opcion-envio {
     border-color: #555;
     background-color: #333;
 }
 
-.dark-mode .shipping-option:hover {
+.dark-mode .opcion-envio:hover {
     border-color: #f8cd8c;
     background-color: #444;
 }
 
-.dark-mode .shipping-option:has(input:checked) {
+.dark-mode .opcion-envio:has(input:checked) {
     border-color: #f8cd8c;
     background-color: #555;
 }
 
-.dark-mode .shipping-name {
+.dark-mode .nombre-envio {
     color: #fff;
 }
 
-.dark-mode .shipping-time {
+.dark-mode .tiempo-envio {
     color: #ccc;
 }
 
@@ -621,7 +760,7 @@ body {
 }
 
 /* Sección de Dirección de Envío */
-.shipping-address-section {
+.seccion-direccion-envio {
     background-color: #ffffff;
     border-radius: 10px;
     padding: 25px;
@@ -630,7 +769,7 @@ body {
     border: 1px solid #e0e0e0;
 }
 
-.shipping-address-section h3 {
+.seccion-direccion-envio h3 {
     margin-top: 0;
     margin-bottom: 20px;
     color: #333;
@@ -762,12 +901,12 @@ body {
 }
 
 /* Modo oscuro para direccion de envío */
-.dark-mode .shipping-address-section {
+.dark-mode .seccion-direccion-envio {
     background-color: #2c2c2c;
     border-color: #555;
 }
 
-.dark-mode .shipping-address-section h3 {
+.dark-mode .seccion-direccion-envio h3 {
     color: #fff;
     border-bottom-color: #f8cd8c;
 }
@@ -824,12 +963,12 @@ body {
         gap: 20px;
     }
     
-    .shipping-container {
+    .contenedor-envio {
         max-width: none;
         order: -1;
     }
     
-    .shipping-section {
+    .seccion-envio {
         position: static;
     }
 }
@@ -839,26 +978,26 @@ body {
         padding: 10px;
     }
     
-    .shipping-section {
+    .seccion-envio {
         padding: 20px;
     }
     
-    .shipping-option {
+    .opcion-envio {
         padding: 12px;
     }
     
-    .shipping-option label {
+    .opcion-envio label {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
     }
     
-    .shipping-cost {
+    .costo-envio {
         align-self: flex-end;
     }
     
     /* Responsive para dirección de envío */
-    .shipping-address-section {
+    .seccion-direccion-envio {
         padding: 20px;
     }
     
@@ -916,7 +1055,7 @@ body {
         padding: 10px;
     }
     
-    .shipping-container {
+    .contenedor-envio {
         order: -1;
     }
     
@@ -974,7 +1113,7 @@ body {
         font-size: 1em;
     }
     
-    .shipping-section {
+    .seccion-envio {
         position: static;
         padding: 20px;
     }
@@ -1011,26 +1150,26 @@ body {
         width: 100%;
     }
     
-    .shipping-section {
+    .seccion-envio {
         padding: 15px;
     }
     
-    .shipping-option {
+    .opcion-envio {
         padding: 12px;
     }
     
-    .shipping-option label {
+    .opcion-envio label {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
     }
     
-    .shipping-cost {
+    .costo-envio {
         align-self: flex-end;
     }
     
     /* Responsive para dirección de envío en móvil */
-    .shipping-address-section {
+    .seccion-direccion-envio {
         padding: 15px;
     }
     

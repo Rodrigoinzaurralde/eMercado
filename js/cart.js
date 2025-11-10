@@ -1,5 +1,39 @@
 let cart = document.querySelector('.cart');
 
+// Configuración global de SweetAlert2 para modales
+if (typeof Swal !== 'undefined') {
+    Swal.mixin({
+        customClass: {
+            container: 'swal-high-zindex'
+        },
+        zIndex: 99999
+    });
+}
+
+// Costos por ciudad para retiro
+const COSTOS_POR_CIUDAD = {
+    'montevideo': 0,
+    'canelones': 0,
+    'maldonado': 1200,
+    'punta del este': 1200,
+    'colonia': 1500,
+    'san jose': 1000,
+    'florida': 1300,
+    'durazno': 1800,
+    'lavalleja': 1400,
+    'rocha': 2000,
+    'treinta y tres': 1900,
+    'cerro largo': 2200,
+    'rivera': 2500,
+    'artigas': 2800,
+    'salto': 2300,
+    'paysandu': 2000,
+    'rio negro': 1800,
+    'soriano': 1700,
+    'tacuarembo': 2100,
+    'flores': 1600
+};
+
 function createProductCard(producto) {
     const product_card = document.createElement('div');
     product_card.className = 'product-card';
@@ -115,56 +149,33 @@ function calcularSubtotalPorMoneda() {
 }
 
 function calcularCostoEnvio(subtotales) {
-    const deliveryType = document.querySelector('input[name="delivery-type"]:checked');
+    const tipoEntrega = document.querySelector('input[name="delivery-type"]:checked');
     
     // Si es retiro en agencia, calcular costo basado en ciudad
-    if (deliveryType && deliveryType.value === 'agency') {
+    if (tipoEntrega && tipoEntrega.value === 'agency') {
         return calcularCostoRetiroAgencia();
     }
     
-    const shippingRadio = document.querySelector('input[name="shipping"]:checked');
-    if (!shippingRadio) return { USD: 0, UYU: 0 };
+    const radioEnvio = document.querySelector('input[name="shipping"]:checked');
+    if (!radioEnvio) return { USD: 0, UYU: 0 };
     
     const departamento = document.getElementById('departamento')?.value;
-    const shippingPercentage = parseInt(shippingRadio.dataset.cost) / 100;
+    const porcentajeEnvio = parseInt(radioEnvio.dataset.cost) / 100;
     
     // Multiplicador por ubicación
     const multiplicadorUbicacion = obtenerMultiplicadorUbicacion(departamento);
     
     return {
-        USD: subtotales.USD * shippingPercentage * multiplicadorUbicacion,
-        UYU: subtotales.UYU * shippingPercentage * multiplicadorUbicacion
+        USD: subtotales.USD * porcentajeEnvio * multiplicadorUbicacion,
+        UYU: subtotales.UYU * porcentajeEnvio * multiplicadorUbicacion
     };
 }
 
 function calcularCostoRetiroAgencia() {
     const ciudadInput = document.getElementById('agency-city');
     const ciudad = ciudadInput ? ciudadInput.value.toLowerCase().trim() : '';
-    // Costo por ciudad para retiro en agencia (en UYU)
-    const costosPorCiudad = {
-        'montevideo': 500,
-        'canelones': 800,
-        'maldonado': 1200,
-        'punta del este': 1200,
-        'colonia': 1500,
-        'san jose': 1000,
-        'florida': 1300,
-        'durazno': 1800,
-        'lavalleja': 1400,
-        'rocha': 2000,
-        'treinta y tres': 1900,
-        'cerro largo': 2200,
-        'rivera': 2500,
-        'artigas': 2800,
-        'salto': 2300,
-        'paysandu': 2000,
-        'rio negro': 1800,
-        'soriano': 1700,
-        'tacuarembo': 2100,
-        'flores': 1600
-    };
     
-    const costo = costosPorCiudad[ciudad] || 1000; // 1000 UYU por defecto
+    const costo = COSTOS_POR_CIUDAD[ciudad] || 1000; // 1000 UYU por defecto
     
     return {
         USD: 0,
@@ -188,32 +199,9 @@ function actualizarTextoCostoAgencia() {
     
     if (ciudadInput && formText) {
         const ciudad = ciudadInput.value.toLowerCase().trim();
-        const costosPorCiudad = {
-            'montevideo': 500,
-            'canelones': 800,
-            'maldonado': 1200,
-            'punta del este': 1200,
-            'colonia': 1500,
-            'san jose': 1000,
-            'florida': 1300,
-            'durazno': 1800,
-            'lavalleja': 1400,
-            'rocha': 2000,
-            'treinta y tres': 1900,
-            'cerro largo': 2200,
-            'rivera': 2500,
-            'artigas': 2800,
-            'salto': 2300,
-            'paysandu': 2000,
-            'rio negro': 1800,
-            'soriano': 1700,
-            'tacuarembo': 2100,
-            'flores': 1600
-        };
+        const costo = COSTOS_POR_CIUDAD[ciudad] || 1000;
         
-        const costo = costosPorCiudad[ciudad] || 1000;
-        
-        if (ciudad && costosPorCiudad[ciudad]) {
+        if (ciudad && COSTOS_POR_CIUDAD[ciudad]) {
             formText.textContent = `Costo para ${ciudadInput.value}: $${costo} UYU`;
         } else {
             formText.textContent = `Costo base: $${costo} UYU (puede variar según la ciudad)`;
@@ -232,7 +220,7 @@ function obtenerMultiplicadorUbicacion(departamento) {
     // Costos de envío por departamento
     const costosPorDepartamento = {
         'montevideo': 1.0,    // Sin recargo
-        'canelones': 1.1,     // 10% adicional
+        'canelones': 1.0,     // Sin recargo
         'san-jose': 1.15,     // 15% adicional
         'maldonado': 1.2,     // 20% adicional
         'colonia': 1.25,      // 25% adicional
@@ -283,9 +271,9 @@ function actualizarCostosEnvio() {
     const costoEnvio = calcularCostoEnvio(subtotales);
     const total = calcularTotal(subtotales, costoEnvio);
     
-    // Actualizar elementos del DOM
+    // Actualizar elementos
     const productsCostElement = document.getElementById('products-cost');
-    const shippingCostElement = document.getElementById('shipping-cost');
+    const shippingCostElement = document.getElementById('costo-envio');
     const totalCostElement = document.getElementById('total-cost');
     
     if (productsCostElement) {
@@ -293,8 +281,8 @@ function actualizarCostosEnvio() {
     }
     
     if (shippingCostElement) {
-        const deliveryType = document.querySelector('input[name="delivery-type"]:checked');
-        if (deliveryType && deliveryType.value === 'agency') {
+        const tipoEntrega = document.querySelector('input[name="delivery-type"]:checked');
+        if (tipoEntrega && tipoEntrega.value === 'agency') {
             const ciudadInput = document.getElementById('agency-city');
             const ciudad = ciudadInput ? ciudadInput.value.trim() : '';
             if (ciudad) {
@@ -313,27 +301,31 @@ function actualizarCostosEnvio() {
 }
 
 function manejarCambioTipoEntrega() {
-    const deliveryType = document.querySelector('input[name="delivery-type"]:checked');
-    const addressForm = document.getElementById('address-form');
-    const agencyForm = document.getElementById('agency-form');
-    const departamentoField = document.getElementById('departamento');
-    const localidadField = document.getElementById('localidad');
+    const tipoEntrega = document.querySelector('input[name="delivery-type"]:checked');
+    const formularioDireccion = document.getElementById('address-form');
+    const formularioAgencia = document.getElementById('agency-form');
+    const campoDepartamento = document.getElementById('departamento');
+    const campoLocalidad = document.getElementById('localidad');
+    const campoCalle = document.getElementById('calle');
+    const campoEsquina = document.getElementById('esquina');
     
-    if (deliveryType && deliveryType.value === 'agency') {
-        // Retiro en agencia - mostrar formulario de ciudad, ocultar dirección
-        addressForm.classList.add('hidden');
-        agencyForm.classList.remove('hidden');
-        departamentoField.required = false;
-        localidadField.required = false;
+    if (tipoEntrega && tipoEntrega.value === 'agency') {
+        formularioDireccion.classList.add('hidden');
+        formularioAgencia.classList.remove('hidden');
+        campoDepartamento.required = false;
+        campoLocalidad.required = false;
+        campoCalle.required = false;
+        campoEsquina.required = false;
         
         // Cargar ciudad desde localStorage si existe
         cargarCiudadDesdeStorage();
     } else {
-        // Envío a domicilio - mostrar formulario de dirección, ocultar agencia
-        addressForm.classList.remove('hidden');
-        agencyForm.classList.add('hidden');
-        departamentoField.required = true;
-        localidadField.required = true;
+        formularioDireccion.classList.remove('hidden');
+        formularioAgencia.classList.add('hidden');
+        campoDepartamento.required = true;
+        campoLocalidad.required = true;
+        campoCalle.required = true;
+        campoEsquina.required = true;
     }
     
     actualizarCostosEnvio();
@@ -427,8 +419,6 @@ function ocultarModalTransferencia() {
         modal.close();
     }
 }
-
-// Modificar mostrarModalPago para manejar tipos
 function mostrarModalPago(tipoTarjeta) {
     const compraPendiente = JSON.parse(sessionStorage.getItem('compra_pendiente'));
     const modal = document.getElementById('payment-modal');
@@ -516,7 +506,8 @@ function finalizarCompra(datosТarjeta) {
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'No se encontró información de la compra'
+            text: 'No se encontró información de la compra',
+            zIndex: 99999
         });
         return;
     }
@@ -532,25 +523,136 @@ function finalizarCompra(datosТarjeta) {
 }
 
 function finalizarCompraTransferencia() {
+    // Validar que se haya subido el comprobante
+    const transferProof = document.getElementById('transfer-proof');
+    if (!transferProof.files || transferProof.files.length === 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Comprobante requerido',
+            text: 'Por favor, suba el comprobante de su transferencia bancaria antes de confirmar.',
+            zIndex: 99999
+        });
+        return;
+    }
+
     const compraPendiente = JSON.parse(sessionStorage.getItem('compra_pendiente'));
     
     if (!compraPendiente) {
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'No se encontró información de la compra'
+            text: 'No se encontró información de la compra',
+            zIndex: 99999
         });
         return;
     }
 
-    console.log('Procesando transferencia bancaria:', compraPendiente);
+    // Mostrar mensaje de procesamiento
+    Swal.fire({
+        title: 'Procesando transferencia...',
+        text: 'Validando su comprobante',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        zIndex: 99999,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
 
-    // Limpiar carrito y datos pendientes
-    localStorage.removeItem('carrito');
-    sessionStorage.removeItem('compra_pendiente');
-    sessionStorage.removeItem('tipo_tarjeta');
-    ocultarModalTransferencia();
-    window.location.href = 'completarOrden.html';
+    // Simular procesamiento del archivo 
+    setTimeout(() => {
+        console.log('Procesando transferencia bancaria:', compraPendiente);
+        console.log('Comprobante subido:', transferProof.files[0]);
+
+        // Limpiar carrito y datos pendientes
+        localStorage.removeItem('carrito');
+        sessionStorage.removeItem('compra_pendiente');
+        sessionStorage.removeItem('tipo_tarjeta');
+        ocultarModalTransferencia();
+        
+        Swal.fire({
+            icon: 'success',
+            title: '¡Transferencia confirmada!',
+            text: 'Su comprobante ha sido validado exitosamente.',
+            timer: 2000,
+            timerProgressBar: true,
+            zIndex: 99999
+        }).then(() => {
+            window.location.href = 'completarOrden.html';
+        });
+    }, 2000);
+}
+function manejarSubidaComprobante() {
+    const fileInput = document.getElementById('transfer-proof');
+    const filePreview = document.getElementById('file-preview');
+    const fileLabel = document.querySelector('label[for="transfer-proof"] span');
+
+    if (fileInput.files && fileInput.files[0]) {
+        const file = fileInput.files[0];
+        
+        // Validar tipo de archivo
+        if (!file.type.startsWith('image/')) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Archivo no válido',
+                text: 'Por favor, seleccione una imagen (JPG, PNG, etc.)',
+                zIndex: 99999
+            });
+            fileInput.value = '';
+            return;
+        }
+
+        // Validar tamaño máximo 5MB
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Archivo muy grande',
+                text: 'El archivo no puede superar los 5MB',
+                zIndex: 99999
+            });
+            fileInput.value = '';
+            return;
+        }
+
+        // Mostrar preview del archivo
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            filePreview.innerHTML = `
+                <div class="file-info">
+                    <div class="file-name">📄 ${file.name}</div>
+                    <div class="file-size">${formatearTamanoArchivo(file.size)}</div>
+                    <button type="button" class="remove-file" onclick="eliminarComprobante()">
+                        <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                </div>
+                <img src="${e.target.result}" alt="Comprobante" class="preview-image">
+            `;
+            filePreview.classList.add('active');
+            fileLabel.textContent = 'Archivo seleccionado ✓';
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+window.eliminarComprobante = function() {
+    const fileInput = document.getElementById('transfer-proof');
+    const filePreview = document.getElementById('file-preview');
+    const fileLabel = document.querySelector('label[for="transfer-proof"] span');
+
+    fileInput.value = '';
+    filePreview.classList.remove('active');
+    filePreview.innerHTML = '';
+    fileLabel.textContent = 'Seleccionar comprobante';
+}
+
+
+function formatearTamanoArchivo(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
 function formatearNumeroTarjeta(input) {
@@ -586,8 +688,8 @@ document.addEventListener('DOMContentLoaded', function() {
     manejarCambioTipoEntrega();
     
     // Event listeners para tipo de entrega
-    const deliveryTypeRadios = document.querySelectorAll('input[name="delivery-type"]');
-    deliveryTypeRadios.forEach(radio => {
+    const radiosTipoEntrega = document.querySelectorAll('input[name="delivery-type"]');
+    radiosTipoEntrega.forEach(radio => {
         radio.addEventListener('change', manejarCambioTipoEntrega);
     });
     
@@ -611,8 +713,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Event listeners para tipo de envío (premium, express, standard)
-    const shippingRadios = document.querySelectorAll('input[name="shipping"]');
-    shippingRadios.forEach(radio => {
+    const radiosEnvio = document.querySelectorAll('input[name="shipping"]');
+    radiosEnvio.forEach(radio => {
         radio.addEventListener('change', actualizarCostosEnvio);
     });
     
@@ -626,22 +728,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Carrito vacío',
-                    text: 'El carrito está vacío'
+                    text: 'El carrito está vacío',
+                    zIndex: 99999
                 });
                 return;
             }
             
             // Validar dirección si es envío a domicilio
-            const deliveryType = document.querySelector('input[name="delivery-type"]:checked');
-            if (deliveryType && deliveryType.value === 'home') {
+            const tipoEntrega = document.querySelector('input[name="delivery-type"]:checked');
+            if (tipoEntrega && tipoEntrega.value === 'home') {
                 const departamento = document.getElementById('departamento').value;
                 const localidad = document.getElementById('localidad').value;
+                const calle = document.getElementById('calle').value;
+                const esquina = document.getElementById('esquina').value;
                 
-                if (!departamento || !localidad) {
+                if (!departamento || !localidad || !calle || !esquina) {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Datos incompletos',
-                        text: 'Por favor completa el departamento y la localidad para el envío'
+                        text: 'Por favor completa todos los campos obligatorios: departamento, localidad, calle y esquina',
+                        zIndex: 99999
                     });
                     return;
                 }
@@ -700,6 +806,11 @@ document.addEventListener('DOMContentLoaded', function() {
             finalizarCompraTransferencia();
         });
     }
+//Listener para la subida de comprobante
+    const transferProofInput = document.getElementById('transfer-proof');
+    if (transferProofInput) {
+        transferProofInput.addEventListener('change', manejarSubidaComprobante);
+    }
     
     const modal = document.getElementById('payment-modal');
     const closeModal = document.querySelector('.close-modal');
@@ -747,8 +858,6 @@ document.addEventListener('DOMContentLoaded', function() {
             this.value = this.value.replace(/\D/g, '');
         });
     }
-
-    // Modificar el submit del form de tarjeta para incluir cuotas
     if (paymentForm) {
         paymentForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -769,7 +878,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     icon: 'error',
                     title: 'Errores en los datos de la tarjeta',
                     html: errores.join('<br>'),
-                    confirmButtonText: 'Entendido'
+                    confirmButtonText: 'Entendido',
+                    zIndex: 99999
                 });
                 return;
             }
@@ -778,8 +888,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Actualizar costos de envío al cambiar la selección
-    const shippingOptions = document.querySelectorAll('input[name="shipping"]');
-    shippingOptions.forEach(option => {
+    const opcionesEnvio = document.querySelectorAll('input[name="shipping"]');
+    opcionesEnvio.forEach(option => {
         option.addEventListener('change', actualizarCostosEnvio);
     });
 });
