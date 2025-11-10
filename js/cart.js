@@ -60,6 +60,7 @@ function cargarCarrito() {
     if (carrito.length === 0) {
         cart.innerHTML = '<p style="text-align: center; font-size: 18px; color: #666; padding: 50px;">Tu carrito está vacío</p>';
         actualizarSubtotal(); // Actualizar subtotal cuando está vacío
+        actualizarCostosEnvio(); // Actualizar costos de envío
         return;
     }
     
@@ -69,6 +70,7 @@ function cargarCarrito() {
     });
     
     actualizarSubtotal();
+    actualizarCostosEnvio(); // Actualizar costos de envío
 }
 
 function eliminarDelCarrito(productId) {
@@ -93,6 +95,7 @@ function actualizarCantidad(productId, nuevaCantidad) {
             actualizarContadorCarrito(); // Actualizar contador
         }
         actualizarSubtotal();
+        actualizarCostosEnvio();
     }
 }
 
@@ -110,6 +113,232 @@ function calcularSubtotalPorMoneda() {
     
     return subtotales;
 }
+
+function calcularCostoEnvio(subtotales) {
+    const deliveryType = document.querySelector('input[name="delivery-type"]:checked');
+    
+    // Si es retiro en agencia, calcular costo basado en ciudad
+    if (deliveryType && deliveryType.value === 'agency') {
+        return calcularCostoRetiroAgencia();
+    }
+    
+    const shippingRadio = document.querySelector('input[name="shipping"]:checked');
+    if (!shippingRadio) return { USD: 0, UYU: 0 };
+    
+    const departamento = document.getElementById('departamento')?.value;
+    const shippingPercentage = parseInt(shippingRadio.dataset.cost) / 100;
+    
+    // Multiplicador por ubicación
+    const multiplicadorUbicacion = obtenerMultiplicadorUbicacion(departamento);
+    
+    return {
+        USD: subtotales.USD * shippingPercentage * multiplicadorUbicacion,
+        UYU: subtotales.UYU * shippingPercentage * multiplicadorUbicacion
+    };
+}
+
+function calcularCostoRetiroAgencia() {
+    const ciudadInput = document.getElementById('agency-city');
+    const ciudad = ciudadInput ? ciudadInput.value.toLowerCase().trim() : '';
+    // Costo por ciudad para retiro en agencia (en UYU)
+    const costosPorCiudad = {
+        'montevideo': 500,
+        'canelones': 800,
+        'maldonado': 1200,
+        'punta del este': 1200,
+        'colonia': 1500,
+        'san jose': 1000,
+        'florida': 1300,
+        'durazno': 1800,
+        'lavalleja': 1400,
+        'rocha': 2000,
+        'treinta y tres': 1900,
+        'cerro largo': 2200,
+        'rivera': 2500,
+        'artigas': 2800,
+        'salto': 2300,
+        'paysandu': 2000,
+        'rio negro': 1800,
+        'soriano': 1700,
+        'tacuarembo': 2100,
+        'flores': 1600
+    };
+    
+    const costo = costosPorCiudad[ciudad] || 1000; // 1000 UYU por defecto
+    
+    return {
+        USD: 0,
+        UYU: costo
+    };
+}
+
+function cargarCiudadDesdeStorage() {
+    const ciudadGuardada = localStorage.getItem('ciudad_usuario');
+    const ciudadInput = document.getElementById('agency-city');
+    
+    if (ciudadGuardada && ciudadInput) {
+        ciudadInput.value = ciudadGuardada;
+        actualizarTextoCostoAgencia();
+    }
+}
+
+function actualizarTextoCostoAgencia() {
+    const ciudadInput = document.getElementById('agency-city');
+    const formText = document.querySelector('#agency-form .form-text');
+    
+    if (ciudadInput && formText) {
+        const ciudad = ciudadInput.value.toLowerCase().trim();
+        const costosPorCiudad = {
+            'montevideo': 500,
+            'canelones': 800,
+            'maldonado': 1200,
+            'punta del este': 1200,
+            'colonia': 1500,
+            'san jose': 1000,
+            'florida': 1300,
+            'durazno': 1800,
+            'lavalleja': 1400,
+            'rocha': 2000,
+            'treinta y tres': 1900,
+            'cerro largo': 2200,
+            'rivera': 2500,
+            'artigas': 2800,
+            'salto': 2300,
+            'paysandu': 2000,
+            'rio negro': 1800,
+            'soriano': 1700,
+            'tacuarembo': 2100,
+            'flores': 1600
+        };
+        
+        const costo = costosPorCiudad[ciudad] || 1000;
+        
+        if (ciudad && costosPorCiudad[ciudad]) {
+            formText.textContent = `Costo para ${ciudadInput.value}: $${costo} UYU`;
+        } else {
+            formText.textContent = `Costo base: $${costo} UYU (puede variar según la ciudad)`;
+        }
+    }
+}
+
+function guardarCiudadEnStorage() {
+    const ciudadInput = document.getElementById('agency-city');
+    if (ciudadInput && ciudadInput.value.trim()) {
+        localStorage.setItem('ciudad_usuario', ciudadInput.value.trim());
+    }
+}
+
+function obtenerMultiplicadorUbicacion(departamento) {
+    // Costos de envío por departamento
+    const costosPorDepartamento = {
+        'montevideo': 1.0,    // Sin recargo
+        'canelones': 1.1,     // 10% adicional
+        'san-jose': 1.15,     // 15% adicional
+        'maldonado': 1.2,     // 20% adicional
+        'colonia': 1.25,      // 25% adicional
+        'florida': 1.3,       // 30% adicional
+        'lavalleja': 1.3,     // 30% adicional
+        'flores': 1.35,       // 35% adicional
+        'durazno': 1.4,       // 40% adicional
+        'soriano': 1.4,       // 40% adicional
+        'rio-negro': 1.45,    // 45% adicional
+        'rocha': 1.5,         // 50% adicional
+        'treinta-y-tres': 1.5, // 50% adicional
+        'paysandu': 1.55,     // 55% adicional
+        'tacuarembo': 1.6,    // 60% adicional
+        'salto': 1.65,        // 65% adicional
+        'artigas': 1.7,       // 70% adicional
+        'rivera': 1.7,        // 70% adicional
+        'cerro-largo': 1.75   // 75% adicional
+    };
+    
+    return costosPorDepartamento[departamento] || 1.0;
+}
+
+function calcularTotal(subtotales, costoEnvio) {
+    return {
+        USD: subtotales.USD + costoEnvio.USD,
+        UYU: subtotales.UYU + costoEnvio.UYU
+    };
+}
+
+function formatearMoneda(subtotales) {
+    let texto = '';
+    
+    if (subtotales.USD > 0 && subtotales.UYU > 0) {
+        texto = `$${subtotales.USD.toLocaleString('es-UY', { minimumFractionDigits: 2 })} USD + $${subtotales.UYU.toLocaleString('es-UY', { minimumFractionDigits: 2 })} UYU`;
+    } else if (subtotales.USD > 0) {
+        texto = `$${subtotales.USD.toLocaleString('es-UY', { minimumFractionDigits: 2 })} USD`;
+    } else if (subtotales.UYU > 0) {
+        texto = `$${subtotales.UYU.toLocaleString('es-UY', { minimumFractionDigits: 2 })} UYU`;
+    } else {
+        texto = '$0';
+    }
+    
+    return texto;
+}
+
+function actualizarCostosEnvio() {
+    const subtotales = calcularSubtotalPorMoneda();
+    const costoEnvio = calcularCostoEnvio(subtotales);
+    const total = calcularTotal(subtotales, costoEnvio);
+    
+    // Actualizar elementos del DOM
+    const productsCostElement = document.getElementById('products-cost');
+    const shippingCostElement = document.getElementById('shipping-cost');
+    const totalCostElement = document.getElementById('total-cost');
+    
+    if (productsCostElement) {
+        productsCostElement.textContent = formatearMoneda(subtotales);
+    }
+    
+    if (shippingCostElement) {
+        const deliveryType = document.querySelector('input[name="delivery-type"]:checked');
+        if (deliveryType && deliveryType.value === 'agency') {
+            const ciudadInput = document.getElementById('agency-city');
+            const ciudad = ciudadInput ? ciudadInput.value.trim() : '';
+            if (ciudad) {
+                shippingCostElement.textContent = `Retiro en ${ciudad} - ${formatearMoneda(costoEnvio)}`;
+            } else {
+                shippingCostElement.textContent = `Retiro en agencia - ${formatearMoneda(costoEnvio)}`;
+            }
+        } else {
+            shippingCostElement.textContent = formatearMoneda(costoEnvio);
+        }
+    }
+    
+    if (totalCostElement) {
+        totalCostElement.textContent = formatearMoneda(total);
+    }
+}
+
+function manejarCambioTipoEntrega() {
+    const deliveryType = document.querySelector('input[name="delivery-type"]:checked');
+    const addressForm = document.getElementById('address-form');
+    const agencyForm = document.getElementById('agency-form');
+    const departamentoField = document.getElementById('departamento');
+    const localidadField = document.getElementById('localidad');
+    
+    if (deliveryType && deliveryType.value === 'agency') {
+        // Retiro en agencia - mostrar formulario de ciudad, ocultar dirección
+        addressForm.classList.add('hidden');
+        agencyForm.classList.remove('hidden');
+        departamentoField.required = false;
+        localidadField.required = false;
+        
+        // Cargar ciudad desde localStorage si existe
+        cargarCiudadDesdeStorage();
+    } else {
+        // Envío a domicilio - mostrar formulario de dirección, ocultar agencia
+        addressForm.classList.remove('hidden');
+        agencyForm.classList.add('hidden');
+        departamentoField.required = true;
+        localidadField.required = true;
+    }
+    
+    actualizarCostosEnvio();
+}
+
 function actualizarSubtotal() {
     const subtotales = calcularSubtotalPorMoneda();
     const subtotalElement = document.getElementById('subtotal-amount');
@@ -136,29 +365,101 @@ function actualizarSubtotal() {
 function procesarCompra(carrito, subtotales) {
     console.log('Iniciando proceso de compra:', { carrito, subtotales });
     
-    // Crear mensaje de compra para mostrar en el modal
+    // Calcular el costo de envío
+    const costoEnvio = calcularCostoEnvio(subtotales);
+    const total = calcularTotal(subtotales, costoEnvio);
+    
     let mensajeCompra = '';
-    if (subtotales.USD > 0 && subtotales.UYU > 0) {
-        mensajeCompra = `$${subtotales.USD.toLocaleString()} USD + $${subtotales.UYU.toLocaleString()} UYU`;
-    } else if (subtotales.USD > 0) {
-        mensajeCompra = `$${subtotales.USD.toLocaleString()} USD`;
+    if (total.USD > 0 && total.UYU > 0) {
+        mensajeCompra = `$${total.USD.toLocaleString('es-UY', { minimumFractionDigits: 2 })} USD + $${total.UYU.toLocaleString('es-UY', { minimumFractionDigits: 2 })} UYU`;
+    } else if (total.USD > 0) {
+        mensajeCompra = `$${total.USD.toLocaleString('es-UY', { minimumFractionDigits: 2 })} USD`;
+    } else if (total.UYU > 0) {
+        mensajeCompra = `$${total.UYU.toLocaleString('es-UY', { minimumFractionDigits: 2 })} UYU`;
     } else {
-        mensajeCompra = `$${subtotales.UYU.toLocaleString()} UYU`;
+        mensajeCompra = '$0,00';
     }
     
-    // Guardar datos de compra temporalmente
-    sessionStorage.setItem('compra_pendiente', JSON.stringify({ carrito, subtotales, mensajeCompra }));
+    // Guardar todos los datos de la compra
+    const datosCompra = { 
+        carrito, 
+        subtotales, 
+        costoEnvio,
+        total,
+        mensajeCompra 
+    };
     
-    // Mostrar modal de pago
-    mostrarModalPago();
+    sessionStorage.setItem('compra_pendiente', JSON.stringify(datosCompra));
+    
+    // Mostrar modal de selección de método de pago
+    mostrarModalMetodoPago();
 }
-
-// Funciones para manejar el modal de pago (HTML5 Dialog)
-function mostrarModalPago() {
-    const modal = document.getElementById('payment-modal');
+// Funciones para modal de método de pago
+function mostrarModalMetodoPago() {
+    const modal = document.getElementById('payment-method-modal');
     if (modal) {
         modal.showModal();
-        // No necesitamos manejar overflow del body, el dialog lo hace automáticamente
+    }
+}
+
+function ocultarModalMetodoPago() {
+    const modal = document.getElementById('payment-method-modal');
+    if (modal) {
+        modal.close();
+    }
+}
+
+// Funciones para modal de transferencia
+function mostrarModalTransferencia() {
+    const compraPendiente = JSON.parse(sessionStorage.getItem('compra_pendiente'));
+    const modal = document.getElementById('transfer-modal');
+    const amountElement = document.getElementById('transfer-amount');
+    
+    if (modal && compraPendiente) {
+        amountElement.textContent = compraPendiente.mensajeCompra;
+        modal.showModal();
+    }
+}
+
+function ocultarModalTransferencia() {
+    const modal = document.getElementById('transfer-modal');
+    if (modal) {
+        modal.close();
+    }
+}
+
+// Modificar mostrarModalPago para manejar tipos
+function mostrarModalPago(tipoTarjeta) {
+    const compraPendiente = JSON.parse(sessionStorage.getItem('compra_pendiente'));
+    const modal = document.getElementById('payment-modal');
+    const cuotasGroup = document.getElementById('cuotas-group');
+    const modalHeader = modal.querySelector('.modal-header h2');
+    const amountElement = document.getElementById('card-payment-amount');
+    
+    if (modal && cuotasGroup && modalHeader) {
+        // Mostrar el total en el modal
+        if (amountElement && compraPendiente) {
+            amountElement.textContent = compraPendiente.mensajeCompra;
+        }
+        
+        if (tipoTarjeta === 'credito') {
+            cuotasGroup.style.display = 'block';
+            modalHeader.textContent = 'Datos de Tarjeta de Crédito';
+            console.log('Mostrando modal de crédito con cuotas');
+        } else {
+            cuotasGroup.style.display = 'none';
+            modalHeader.textContent = 'Datos de Tarjeta de Débito';
+            console.log('Mostrando modal de débito sin cuotas');
+        }
+        
+        sessionStorage.setItem('tipo_tarjeta', tipoTarjeta);
+        modal.showModal();
+    } else {
+        console.error('No se encontraron los elementos del modal:', {
+            modal: !!modal,
+            cuotasGroup: !!cuotasGroup,
+            modalHeader: !!modalHeader
+        });
     }
 }
 
@@ -171,6 +472,7 @@ function ocultarModalPago() {
 
 function validarTarjeta(datosТarjeta) {
     const errores = [];
+    const tipoTarjeta = sessionStorage.getItem('tipo_tarjeta');
     
     // validador del nombre
     if (!datosТarjeta.name || datosТarjeta.name.trim().length < 2) {
@@ -200,6 +502,9 @@ function validarTarjeta(datosТarjeta) {
             errores.push('La tarjeta está vencida');
         }
     }
+    if (tipoTarjeta === 'credito' && (!datosТarjeta.cuotas || datosТarjeta.cuotas < 1)) {
+        errores.push('Debe seleccionar el número de cuotas');
+    }
     
     return errores;
 }
@@ -223,6 +528,28 @@ function finalizarCompra(datosТarjeta) {
     localStorage.removeItem('carrito');
     sessionStorage.removeItem('compra_pendiente');
     ocultarModalPago();
+    window.location.href = 'completarOrden.html';
+}
+
+function finalizarCompraTransferencia() {
+    const compraPendiente = JSON.parse(sessionStorage.getItem('compra_pendiente'));
+    
+    if (!compraPendiente) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se encontró información de la compra'
+        });
+        return;
+    }
+
+    console.log('Procesando transferencia bancaria:', compraPendiente);
+
+    // Limpiar carrito y datos pendientes
+    localStorage.removeItem('carrito');
+    sessionStorage.removeItem('compra_pendiente');
+    sessionStorage.removeItem('tipo_tarjeta');
+    ocultarModalTransferencia();
     window.location.href = 'completarOrden.html';
 }
 
@@ -253,6 +580,41 @@ function formatearFechaVencimiento(input) {
 document.addEventListener('DOMContentLoaded', function() {
     cargarCarrito();
     actualizarSubtotal();
+    actualizarCostosEnvio();
+    
+    // Inicializar formularios según tipo de entrega
+    manejarCambioTipoEntrega();
+    
+    // Event listeners para tipo de entrega
+    const deliveryTypeRadios = document.querySelectorAll('input[name="delivery-type"]');
+    deliveryTypeRadios.forEach(radio => {
+        radio.addEventListener('change', manejarCambioTipoEntrega);
+    });
+    
+    // Event listener para ciudad de retiro en agencia
+    const agencyCityInput = document.getElementById('agency-city');
+    if (agencyCityInput) {
+        agencyCityInput.addEventListener('input', function() {
+            actualizarTextoCostoAgencia();
+            actualizarCostosEnvio();
+        });
+        
+        agencyCityInput.addEventListener('blur', function() {
+            guardarCiudadEnStorage();
+        });
+    }
+    
+    // Event listeners para departamento (para recalcular costos)
+    const departamentoSelect = document.getElementById('departamento');
+    if (departamentoSelect) {
+        departamentoSelect.addEventListener('change', actualizarCostosEnvio);
+    }
+    
+    // Event listeners para tipo de envío (premium, express, standard)
+    const shippingRadios = document.querySelectorAll('input[name="shipping"]');
+    shippingRadios.forEach(radio => {
+        radio.addEventListener('change', actualizarCostosEnvio);
+    });
     
     // Configurar evento del botón de comprar
     const checkoutBtn = document.getElementById('checkout-btn');
@@ -269,10 +631,76 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
+            // Validar dirección si es envío a domicilio
+            const deliveryType = document.querySelector('input[name="delivery-type"]:checked');
+            if (deliveryType && deliveryType.value === 'home') {
+                const departamento = document.getElementById('departamento').value;
+                const localidad = document.getElementById('localidad').value;
+                
+                if (!departamento || !localidad) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Datos incompletos',
+                        text: 'Por favor completa el departamento y la localidad para el envío'
+                    });
+                    return;
+                }
+            }
+            
             const subtotales = calcularSubtotalPorMoneda();
             procesarCompra(carrito, subtotales);
         });
     }
+    const methodModal = document.getElementById('payment-method-modal');
+    const closeMethodModal = document.querySelector('.close-modal-method');
+    const paymentMethodBtns = document.querySelectorAll('.payment-method-btn');
+
+    console.log('Configurando modales:', {
+        methodModal: !!methodModal,
+        closeMethodModal: !!closeMethodModal,
+        paymentMethodBtns: paymentMethodBtns.length
+    });
+
+    if (closeMethodModal) {
+        closeMethodModal.addEventListener('click', ocultarModalMetodoPago);
+    }
+
+    paymentMethodBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const method = this.dataset.method;
+            console.log('Método seleccionado:', method);
+            ocultarModalMetodoPago();
+            
+            if (method === 'transferencia') {
+                mostrarModalTransferencia();
+            } else if (method === 'credito') {
+                mostrarModalPago('credito');
+            } else if (method === 'debito') {
+                mostrarModalPago('debito');
+            }
+        });
+    });
+
+    // Event listeners para modal de transferencia
+    const transferModal = document.getElementById('transfer-modal');
+    const closeTransferModal = document.querySelector('.close-transfer-modal');
+    const cancelTransferBtn = document.getElementById('cancel-transfer');
+    const confirmTransferBtn = document.getElementById('confirm-transfer');
+
+    if (closeTransferModal) {
+        closeTransferModal.addEventListener('click', ocultarModalTransferencia);
+    }
+
+    if (cancelTransferBtn) {
+        cancelTransferBtn.addEventListener('click', ocultarModalTransferencia);
+    }
+
+    if (confirmTransferBtn) {
+        confirmTransferBtn.addEventListener('click', function() {
+            finalizarCompraTransferencia();
+        });
+    }
+    
     const modal = document.getElementById('payment-modal');
     const closeModal = document.querySelector('.close-modal');
     const cancelBtn = document.getElementById('cancel-payment');
@@ -320,6 +748,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Modificar el submit del form de tarjeta para incluir cuotas
     if (paymentForm) {
         paymentForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -329,8 +758,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 name: document.getElementById('card-name').value.trim(),
                 number: document.getElementById('card-number').value.replace(/\s/g, ''),
                 cvv: document.getElementById('card-cvv').value,
-                expiry: document.getElementById('card-expiry').value
+                expiry: document.getElementById('card-expiry').value,
+                cuotas: document.getElementById('card-installments')?.value || 1
             };
+            
             const errores = validarTarjeta(datosТarjeta);
             
             if (errores.length > 0) {
@@ -345,4 +776,11 @@ document.addEventListener('DOMContentLoaded', function() {
             finalizarCompra(datosТarjeta);
         });
     }
+
+    // Actualizar costos de envío al cambiar la selección
+    const shippingOptions = document.querySelectorAll('input[name="shipping"]');
+    shippingOptions.forEach(option => {
+        option.addEventListener('change', actualizarCostosEnvio);
+    });
 });
+

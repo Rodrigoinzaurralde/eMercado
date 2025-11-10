@@ -78,15 +78,211 @@
 
   
   <main>
-    <div class="cart"></div>
-    <div class="cart-summary">
-    <div class="subtotal-container">
-        <h3>Subtotal: <span id="subtotal-amount">$0</span></h3>
+    <!--Mopdal para sellecionar metodo de pago-->
+    <dialog id="payment-method-modal" class="payment-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Seleccionar Método de Pago</h2>
+      <button class="close-modal-method" type="button">&times;</button>
     </div>
-    <div class="checkout-container">
-        <button id="checkout-btn" class="btn-checkout">Finalizar Compra</button>
+    
+    <div class="modal-body">
+      <div class="payment-methods">
+        <button class="payment-method-btn" data-method="transferencia">
+          <i class="bi bi-bank"></i>
+          <span>Transferencia Bancaria</span>
+        </button>
+        
+        <button class="payment-method-btn" data-method="credito">
+          <i class="bi bi-credit-card"></i>
+          <span>Tarjeta de Crédito</span>
+        </button>
+        
+        <button class="payment-method-btn" data-method="debito">
+          <i class="bi bi-credit-card-2-front"></i>
+          <span>Tarjeta de Débito</span>
+        </button>
+      </div>
     </div>
-</div>
+  </div>
+</dialog>
+<!--Modal de transferencia bancaria-->
+<dialog id="transfer-modal" class="payment-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Transferencia Bancaria</h2>
+      <button class="close-transfer-modal" type="button">&times;</button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="bank-info">
+        <h3>Datos bancarios:</h3>
+        <p><strong>Banco:</strong> Banco República</p>
+        <p><strong>Cuenta:</strong> 12345678901</p>
+        <p><strong>Total a transferir:</strong> <span id="transfer-amount"></span></p>
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" id="cancel-transfer">Cancelar</button>
+        <button type="button" class="btn-confirm" id="confirm-transfer">Confirmar Transferencia</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+    <div class="main-container">
+      <div class="cart-container">
+        <div class="cart"></div>
+        <div class="cart-summary">
+          <div class="subtotal-container">
+              <h3>Subtotal: <span id="subtotal-amount">$0</span></h3>
+          </div>
+          <div class="checkout-container">
+              <button id="checkout-btn" class="btn-checkout">Finalizar Compra</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="shipping-container">
+        <div class="shipping-section">
+          <h3>Tipo de envío</h3>
+          <div class="shipping-options">
+            <div class="shipping-option">
+              <input type="radio" id="premium" name="shipping" value="premium" data-cost="15">
+              <label for="premium">
+                <div class="shipping-info">
+                  <div class="shipping-name">Premium</div>
+                  <div class="shipping-time">2 a 5 días</div>
+                </div>
+                <div class="shipping-cost">(15%)</div>
+              </label>
+            </div>
+            
+            <div class="shipping-option">
+              <input type="radio" id="express" name="shipping" value="express" data-cost="7" checked>
+              <label for="express">
+                <div class="shipping-info">
+                  <div class="shipping-name">Express</div>
+                  <div class="shipping-time">5 a 8 días</div>
+                </div>
+                <div class="shipping-cost">(7%)</div>
+              </label>
+            </div>
+            
+            <div class="shipping-option">
+              <input type="radio" id="standard" name="shipping" value="standard" data-cost="5">
+              <label for="standard">
+                <div class="shipping-info">
+                  <div class="shipping-name">Standard</div>
+                  <div class="shipping-time">12 a 15 días</div>
+                </div>
+                <div class="shipping-cost">(5%)</div>
+              </label>
+            </div>
+          </div>
+          
+          <!-- Sección de Dirección de Envío -->
+          <div class="shipping-address-section">
+            <h3>Dirección de envío</h3>
+            
+            <div class="delivery-type-options">
+              <div class="delivery-option">
+                <input type="radio" id="home-delivery" name="delivery-type" value="home" checked>
+                <label for="home-delivery">
+                  <i class="bi bi-house-door"></i>
+                  Envío a domicilio
+                </label>
+              </div>
+              
+              <div class="delivery-option">
+                <input type="radio" id="agency-pickup" name="delivery-type" value="agency">
+                <label for="agency-pickup">
+                  <i class="bi bi-shop"></i>
+                  Retiro en agencia
+                </label>
+              </div>
+            </div>
+
+            <!-- Formulario para retiro en agencia -->
+            <div id="agency-form" class="agency-form hidden">
+              <div class="form-group">
+                <label for="agency-city">Ciudad de retiro</label>
+                <input type="text" id="agency-city" name="agency-city" placeholder="Ej: Montevideo, Maldonado">
+                <small class="form-text">Costo: $1000 UYU</small>
+              </div>
+            </div>
+
+            <div id="address-form" class="address-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="departamento">Departamento <span class="required">*</span></label>
+                  <select id="departamento" name="departamento" required>
+                    <option value="">Seleccionar departamento</option>
+                    <option value="montevideo" selected>Montevideo</option>
+                    <option value="artigas">Artigas</option>
+                    <option value="canelones">Canelones</option>
+                    <option value="cerro-largo">Cerro Largo</option>
+                    <option value="colonia">Colonia</option>
+                    <option value="durazno">Durazno</option>
+                    <option value="flores">Flores</option>
+                    <option value="florida">Florida</option>
+                    <option value="lavalleja">Lavalleja</option>
+                    <option value="maldonado">Maldonado</option>
+                    <option value="paysandu">Paysandú</option>
+                    <option value="rio-negro">Río Negro</option>
+                    <option value="rivera">Rivera</option>
+                    <option value="rocha">Rocha</option>
+                    <option value="salto">Salto</option>
+                    <option value="san-jose">San José</option>
+                    <option value="soriano">Soriano</option>
+                    <option value="tacuarembo">Tacuarembó</option>
+                    <option value="treinta-y-tres">Treinta y Tres</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="localidad">Localidad <span class="required">*</span></label>
+                  <input type="text" id="localidad" name="localidad" placeholder="Ej: Pocitos, Ciudad Vieja" required>
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="calle">Calle</label>
+                  <input type="text" id="calle" name="calle" placeholder="Ej: 18 de Julio">
+                </div>
+                
+                <div class="form-group">
+                  <label for="numero">Número</label>
+                  <input type="text" id="numero" name="numero" placeholder="Ej: 1234">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="esquina">Esquina</label>
+                <input type="text" id="esquina" name="esquina" placeholder="Ej: Ejido">
+              </div>
+            </div>
+          </div>
+
+          <div class="shipping-cost-summary">
+            <div class="cost-breakdown">
+              <div class="cost-line">
+                <span>Costo de productos:</span>
+                <span id="products-cost">$0</span>
+              </div>
+              <div class="cost-line">
+                <span>Costo de envío:</span>
+                <span id="shipping-cost">$0</span>
+              </div>
+              <div class="cost-line total">
+                <span><strong>Total:</strong></span>
+                <span id="total-cost"><strong>$0</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
   <!-- Modal para datos de tarjeta de crédito (HTML5 Dialog) -->
   <dialog id="payment-modal" class="payment-modal">
@@ -97,6 +293,9 @@
       </div>
       
       <div class="modal-body">
+        <div class="payment-amount">
+          <h3>Total a pagar: <span id="card-payment-amount"></span></h3>
+        </div>
         <form id="payment-form" method="dialog">
           <div class="form-group">
             <label for="card-type">Tipo de Tarjeta</label>
@@ -128,6 +327,15 @@
               <label for="card-expiry">Fecha de Vencimiento</label>
               <input type="text" id="card-expiry" name="expiry" placeholder="MM/AA" maxlength="5" required>
             </div>
+          </div>
+          <div class="form-group" id="cuotas-group" style="display: none;">
+            <label for="card-installments">Cuotas:</label>
+            <select id="card-installments" name="installments">
+              <option value="1">1 cuota (sin interés)</option>
+              <option value="3">3 cuotas</option>
+              <option value="6">6 cuotas</option>
+              <option value="12">12 cuotas</option>
+            </select>
           </div>
 
           <div class="form-actions">
