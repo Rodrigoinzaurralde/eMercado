@@ -113,7 +113,7 @@ main {
     box-shadow: 0 4px 15px #c07a004d;
 }
 
-#botonGuardarID, #botonAniadirID {
+#botonComprarID, #botonAniadirID {
     width: 209px;
     height: 53px;
     border-radius: 30px;
@@ -124,8 +124,9 @@ main {
     font-weight: 600;
 }
 
-#botonGuardarID {
-    background-color: #E0B36E;
+#botonComprarID {
+    background-color: #28a745;
+    color: white;
 }
 
 #botonAniadirID {
@@ -144,10 +145,10 @@ main {
     border-radius: 20px;
 }
 
-#botonGuardarID:hover {
-    background-color: #C97A00;
+#botonComprarID:hover {
+    background-color: #218838;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px #e0b36e66;
+    box-shadow: 0 4px 15px #28a74566;
 }
 
 #botonAniadirID:hover {
@@ -402,7 +403,7 @@ progress::-webkit-progress-value {
         box-sizing: border-box;
     }
 
-    #botonGuardarID, #botonAniadirID {
+    #botonComprarID, #botonAniadirID {
         width: 48% !important;
         margin-right: 2%;
     }
@@ -453,7 +454,7 @@ progress::-webkit-progress-value {
         font-size: 1.1em !important;
     }
 
-    #botonGuardarID, #botonAniadirID {
+    #botonComprarID, #botonAniadirID {
         width: 100% !important;
         margin: 5px 0;
     }

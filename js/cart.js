@@ -14,24 +14,24 @@ if (typeof Swal !== 'undefined') {
 const COSTOS_POR_CIUDAD = {
     'montevideo': 0,
     'canelones': 0,
-    'maldonado': 1200,
-    'punta del este': 1200,
-    'colonia': 1500,
-    'san jose': 1000,
-    'florida': 1300,
-    'durazno': 1800,
-    'lavalleja': 1400,
-    'rocha': 2000,
-    'treinta y tres': 1900,
-    'cerro largo': 2200,
-    'rivera': 2500,
-    'artigas': 2800,
-    'salto': 2300,
-    'paysandu': 2000,
-    'rio negro': 1800,
-    'soriano': 1700,
-    'tacuarembo': 2100,
-    'flores': 1600
+    'maldonado': 500,
+    'punta del este': 500,
+    'colonia': 800,
+    'san jose': 400,
+    'florida': 600,
+    'durazno': 1000,
+    'lavalleja': 700,
+    'rocha': 900,
+    'treinta y tres': 1100,
+    'cerro largo': 1400,
+    'rivera': 1600,
+    'artigas': 1800,
+    'salto': 1300,
+    'paysandu': 1100,
+    'rio negro': 900,
+    'soriano': 800,
+    'tacuarembo': 1200,
+    'flores': 700
 };
 
 function createProductCard(producto) {
@@ -93,8 +93,8 @@ function cargarCarrito() {
     
     if (carrito.length === 0) {
         cart.innerHTML = '<p style="text-align: center; font-size: 18px; color: #666; padding: 50px;">Tu carrito está vacío</p>';
-        actualizarSubtotal(); // Actualizar subtotal cuando está vacío
-        actualizarCostosEnvio(); // Actualizar costos de envío
+        actualizarSubtotal();
+        actualizarCostosEnvio();
         return;
     }
     
@@ -150,8 +150,6 @@ function calcularSubtotalPorMoneda() {
 
 function calcularCostoEnvio(subtotales) {
     const tipoEntrega = document.querySelector('input[name="delivery-type"]:checked');
-    
-    // Si es retiro en agencia, calcular costo basado en ciudad
     if (tipoEntrega && tipoEntrega.value === 'agency') {
         return calcularCostoRetiroAgencia();
     }
@@ -203,8 +201,6 @@ function actualizarTextoCostoAgencia() {
         
         if (ciudad && COSTOS_POR_CIUDAD[ciudad]) {
             formText.textContent = `Costo para ${ciudadInput.value}: $${costo} UYU`;
-        } else {
-            formText.textContent = `Costo base: $${costo} UYU (puede variar según la ciudad)`;
         }
     }
 }
@@ -219,25 +215,25 @@ function guardarCiudadEnStorage() {
 function obtenerMultiplicadorUbicacion(departamento) {
     // Costos de envío por departamento
     const costosPorDepartamento = {
-        'montevideo': 1.0,    // Sin recargo
-        'canelones': 1.0,     // Sin recargo
-        'san-jose': 1.15,     // 15% adicional
-        'maldonado': 1.2,     // 20% adicional
-        'colonia': 1.25,      // 25% adicional
-        'florida': 1.3,       // 30% adicional
-        'lavalleja': 1.3,     // 30% adicional
-        'flores': 1.35,       // 35% adicional
-        'durazno': 1.4,       // 40% adicional
-        'soriano': 1.4,       // 40% adicional
-        'rio-negro': 1.45,    // 45% adicional
-        'rocha': 1.5,         // 50% adicional
-        'treinta-y-tres': 1.5, // 50% adicional
-        'paysandu': 1.55,     // 55% adicional
-        'tacuarembo': 1.6,    // 60% adicional
-        'salto': 1.65,        // 65% adicional
-        'artigas': 1.7,       // 70% adicional
-        'rivera': 1.7,        // 70% adicional
-        'cerro-largo': 1.75   // 75% adicional
+        'montevideo': 1.0,       // Sin recargo
+        'canelones': 1.0,        // Sin recargo
+        'san-jose': 1.05,        // 5% adicional
+        'maldonado': 1.08,       // 8% adicional
+        'colonia': 1.12,         // 12% adicional
+        'florida': 1.15,         // 15% adicional
+        'lavalleja': 1.18,       // 18% adicional
+        'soriano': 1.20,         // 20% adicional
+        'flores': 1.22,          // 22% adicional
+        'rocha': 1.25,           // 25% adicional
+        'rio-negro': 1.28,       // 28% adicional
+        'durazno': 1.30,         // 30% adicional
+        'paysandu': 1.35,        // 35% adicional
+        'salto': 1.40,           // 40% adicional
+        'treinta-y-tres': 1.42,  // 42% adicional
+        'tacuarembo': 1.45,      // 45% adicional
+        'cerro-largo': 1.50,     // 50% adicional
+        'rivera': 1.55,          // 55% adicional
+        'artigas': 1.60          // 60% adicional
     };
     
     return costosPorDepartamento[departamento] || 1.0;
@@ -530,7 +526,7 @@ function finalizarCompraTransferencia() {
             icon: 'warning',
             title: 'Comprobante requerido',
             text: 'Por favor, suba el comprobante de su transferencia bancaria antes de confirmar.',
-            zIndex: 99999
+            target: document.getElementById('transfer-modal')
         });
         return;
     }
@@ -542,7 +538,7 @@ function finalizarCompraTransferencia() {
             icon: 'error',
             title: 'Error',
             text: 'No se encontró información de la compra',
-            zIndex: 99999
+            target: document.getElementById('transfer-modal')
         });
         return;
     }
@@ -553,7 +549,7 @@ function finalizarCompraTransferencia() {
         text: 'Validando su comprobante',
         allowOutsideClick: false,
         showConfirmButton: false,
-        zIndex: 99999,
+        target: document.getElementById('transfer-modal'),
         didOpen: () => {
             Swal.showLoading();
         }
@@ -596,7 +592,7 @@ function manejarSubidaComprobante() {
                 icon: 'error',
                 title: 'Archivo no válido',
                 text: 'Por favor, seleccione una imagen (JPG, PNG, etc.)',
-                zIndex: 99999
+                target: document.getElementById('transfer-modal')
             });
             fileInput.value = '';
             return;
@@ -609,7 +605,7 @@ function manejarSubidaComprobante() {
                 icon: 'error',
                 title: 'Archivo muy grande',
                 text: 'El archivo no puede superar los 5MB',
-                zIndex: 99999
+                target: document.getElementById('transfer-modal')
             });
             fileInput.value = '';
             return;

@@ -277,6 +277,13 @@ document.addEventListener('DOMContentLoaded', moverTituloMovil);
         }
     });
 
+    //listener para el boton de comprar
+    document.getElementById('botonComprarID').addEventListener('click', () => {
+        if (productoGlobal) {
+            comprarProducto(productoGlobal);
+        }
+    });
+
     // Listeners para el modal
     document.querySelector('.close-modal').addEventListener('click', function() {
         document.getElementById('image-modal').style.display = 'none';
@@ -311,6 +318,38 @@ function agregarAlCarrito(producto) {
         showConfirmButton: false,
         timer: 1500
     });
+    actualizarContadorCarrito();
+}
+
+function comprarProducto(producto) {
+    let carritoActual = JSON.parse(localStorage.getItem('carrito')) || [];
+
+    const productoExistente = carritoActual.find(item => item.id === producto.id);
+    if (productoExistente) {
+        productoExistente.cantidad += 1;
+    } else {
+        carritoActual.push({
+            id: producto.id,
+            name: producto.name,
+            cost: producto.cost,
+            currency: producto.currency,
+            image: producto.images[0], 
+            cantidad: 1
+        });
+    }
+    localStorage.setItem('carrito', JSON.stringify(carritoActual));
+    
+    // Mostrar mensaje de confirmación y redirigir al carrito
+    Swal.fire({
+        icon: 'success',
+        title: '¡Producto agregado al carrito!',
+        text: 'Redirigiendo al carrito...',
+        showConfirmButton: false,
+        timer: 1500
+    }).then(() => {
+        window.location.href = 'cart.html';
+    });
+    
     actualizarContadorCarrito();
 }
 console.log(localStorage.getItem('profileImg'));
