@@ -518,10 +518,14 @@ function finalizarCompra(datosТarjeta) {
     window.location.href = 'completarOrden.html';
 }
 
-function finalizarCompraTransferencia() {
-    // Validar que se haya subido el comprobante
-    const transferProof = document.getElementById('transfer-proof');
-    if (!transferProof.files || transferProof.files.length === 0) {
+async function finalizarCompraTransferencia() {
+    const confirmarBtn = document.getElementById('confirm-transfer');
+    const inputFile = document.getElementById('transfer-proof'); 
+    
+    const file = inputFile.files[0];
+    
+    // 1. Validación inicial
+    if (!file) {
         Swal.fire({
             icon: 'warning',
             title: 'Comprobante requerido',
@@ -530,54 +534,60 @@ function finalizarCompraTransferencia() {
         });
         return;
     }
-
-    const compraPendiente = JSON.parse(sessionStorage.getItem('compra_pendiente'));
     
-    if (!compraPendiente) {
+    confirmarBtn.disabled = true;
+    confirmarBtn.textContent = 'Analizando comprobante...'; 
+    
+    try {
+        const { data: { text } } = await Tesseract.recognize(
+            file,
+            'spa' 
+        );
+        console.log("Texto extraído por Tesseract:", text);
+        
+        const textoLimpio = text.toLowerCase();
+        const patronAccion = textoLimpio.includes('transferiste') || textoLimpio.includes('transferencia') || textoLimpio.includes('transierencis') || textoLimpio.includes('spei') || textoLimpio.includes('enviado desde') || textoLimpio.includes('deposito');
+
+        //Identificar el Monto y Destino
+        const patronDetalle = textoLimpio.includes('referencia') || textoLimpio.includes('monto') || textoLimpio.includes('importe') || textoLimpio.includes('clabe') || textoLimpio.includes('cuenta') || textoLimpio.includes('brod') || textoLimpio.includes('movimiento');
+        const patronConfirmacion = textoLimpio.includes('confirmacion') || textoLimpio.includes('reciben') || textoLimpio.includes('finalizada') || textoLimpio.includes('exitosa');
+        // Contar cuantos criterios se cumplen
+        let criteriosCumplidos = 0;
+        if (patronAccion) criteriosCumplidos++;
+        if (patronDetalle) criteriosCumplidos++;
+        if (patronConfirmacion) criteriosCumplidos++;
+        if (criteriosCumplidos >= 2) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Comprobante Aprobado',
+                text: 'Validación local exitosa. Tu pedido entrará en revisión final. ¡Gracias!',
+                target: document.getElementById('transfer-modal')
+            });
+        } else {
+            console.warn("Fallo de Detección. Criterios cumplidos:", {patronAccion, patronDetalle, patronConfirmacion, total: criteriosCumplidos});
+            Swal.fire({
+                icon: 'error',
+                title: 'No Reconocido',
+                text: 'La imagen no contiene el texto esperado de un comprobante bancario. Intenta con una captura más clara.',
+                target: document.getElementById('transfer-modal')
+            });
+        }
+
+    } catch (error) {
+        // Captura errores de Tesseract.js
+        console.error("Error durante el análisis OCR:", error);
         Swal.fire({
             icon: 'error',
-            title: 'Error',
-            text: 'No se encontró información de la compra',
+            title: 'Error de Análisis',
+            text: 'Ocurrió un error al intentar leer la imagen. Asegúrate de que sea un formato de imagen válido.',
             target: document.getElementById('transfer-modal')
         });
-        return;
+    } finally {
+        confirmarBtn.disabled = false;
+        confirmarBtn.textContent = 'Confirmar Transferencia';
     }
-
-    // Mostrar mensaje de procesamiento
-    Swal.fire({
-        title: 'Procesando transferencia...',
-        text: 'Validando su comprobante',
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        target: document.getElementById('transfer-modal'),
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
-
-    // Simular procesamiento del archivo 
-    setTimeout(() => {
-        console.log('Procesando transferencia bancaria:', compraPendiente);
-        console.log('Comprobante subido:', transferProof.files[0]);
-
-        // Limpiar carrito y datos pendientes
-        localStorage.removeItem('carrito');
-        sessionStorage.removeItem('compra_pendiente');
-        sessionStorage.removeItem('tipo_tarjeta');
-        ocultarModalTransferencia();
-        
-        Swal.fire({
-            icon: 'success',
-            title: '¡Transferencia confirmada!',
-            text: 'Su comprobante ha sido validado exitosamente.',
-            timer: 2000,
-            timerProgressBar: true,
-            zIndex: 99999
-        }).then(() => {
-            window.location.href = 'completarOrden.html';
-        });
-    }, 2000);
 }
+
 function manejarSubidaComprobante() {
     const fileInput = document.getElementById('transfer-proof');
     const filePreview = document.getElementById('file-preview');
@@ -611,7 +621,7 @@ function manejarSubidaComprobante() {
             return;
         }
 
-        // Mostrar preview del archivo
+        // Mostrar previsualizacion  del archivo
         const reader = new FileReader();
         reader.onload = function(e) {
             filePreview.innerHTML = `
