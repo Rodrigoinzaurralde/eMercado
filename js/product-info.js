@@ -50,7 +50,7 @@ async function cargarComentariosFirestore() {
 }
 
 // Fetch producto
-fetch(UR)
+fetch(URL)
     .then(response => response.json())
     .then(data => {
         productoGlobal = data;
