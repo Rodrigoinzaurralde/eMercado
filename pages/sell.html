@@ -1,75 +1,77 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>eMercado - Todo lo que busques está aquí</title>
-  <link rel="icon" href="img/favicon.png" type="image/png">
+  <link rel="icon" href="/img/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="css/dropzone.css" rel="stylesheet">
-  <link href="css/styles.css" rel="stylesheet">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/dropzone.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
 </head>
 
 <body>
   <nav class="navbar">
-    
+
     <div class="box-nav">
       <div class="nav-container">
-        
-      
+
+
         <ul>
           <div style="display: flex; justify-content: flex-start;">
             <button class="navbar-button" type="button">
               <span class="nav-button">&#9776;</span>
             </button>
           </div>
-          
+
           <li>
-            <a class="navbar-link active" href="index.html">Inicio</a>
+            <a class="navbar-link active" href="/pages/index.html">Inicio</a>
           </li>
           <li>
-            <a class="navbar-link" href="categories.html">Categorías</a>
+            <a class="navbar-link" href="/pages/categories.html">Categorías</a>
           </li>
           <li>
-            <a class="navbar-link" href="sell.html">Vender</a>
+            <a class="navbar-link" href="/pages/sell.html">Vender</a>
           </li>
           <li>
-            
+
           </li>
           <div id="product-search" class="input-group flex-nowrap findProduct" style="position:relative;">
             <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
-            <input id="findProductId" type="text" class="form-control" placeholder="Buscar producto..." aria-label="Buscar producto" aria-describedby="addon-wrapping">
+            <input id="findProductId" type="text" class="form-control" placeholder="Buscar producto..."
+              aria-label="Buscar producto" aria-describedby="addon-wrapping">
             <div id="liveResults" class="live-results"></div>
           </div>
-            <div class="perfil-container">
-              <button id="boton-desplegable"></button> 
-              <div id="usuario-desplegable" class="usuario-desplegable" style="display: none;">
-                <a href="my-profile.html" id="perfil">Mi Perfil</a>
-                <a href="" id="closeSession">Cerrar Sesión</a>
-              </div>
+          <div class="perfil-container">
+            <button id="boton-desplegable"></button>
+            <div id="usuario-desplegable" class="usuario-desplegable" style="display: none;">
+              <a href="/pages/my-profile.html" id="perfil">Mi Perfil</a>
+              <a href="" id="closeSession">Cerrar Sesión</a>
             </div>
+          </div>
         </ul>
-    </div>
+      </div>
   </nav>
   <div id="mobile-p-search" class="input-group flex-nowrap findProduct" style="position:relative;">
     <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
-    <input type="text" class="form-control" placeholder="Buscar producto..." aria-label="Buscar producto" aria-describedby="addon-wrapping">
+    <input type="text" class="form-control" placeholder="Buscar producto..." aria-label="Buscar producto"
+      aria-describedby="addon-wrapping">
     <div class="mobile-results"></div>
   </div>
   <div id="mobile-navbar">
     <button class="close-mobile"> &times; </button>
-    <div class="mobile-list-links">    
+    <div class="mobile-list-links">
       <li>
-        <a class="navmobile-link active" href="index.html">Inicio</a>
+        <a class="navmobile-link active" href="/pages/index.html">Inicio</a>
       </li>
       <li>
-        <a class="navmobile-link" href="categories.html">Categorías</a>
+        <a class="navmobile-link" href="/pages/categories.html">Categorías</a>
       </li>
       <li>
-        <a class="navmobile-link" href="sell.html">Vender</a>
+        <a class="navmobile-link" href="/pages/sell.html">Vender</a>
       </li>
     </div>
   </div><!--Navbar-->
@@ -111,15 +113,16 @@
           <div class="row">
             <div class="col-md-3 mb-3">
               <label for="productCostInput">Costo</label>
-              <input type="number" name="productCostInput" class="form-control" id="productCostInput" placeholder="" required="" value="0"
-                min="0">
+              <input type="number" name="productCostInput" class="form-control" id="productCostInput" placeholder=""
+                required="" value="0" min="0">
               <div class="invalid-feedback">
                 El costo debe ser mayor que 0.
               </div>
             </div>
             <div class="col-md-4 mb-3">
               <label for="productCurrency">Moneda</label>
-              <select name="productCurrency" class="form-select custom-select d-block w-100" id="productCurrency" required>
+              <select name="productCurrency" class="form-select custom-select d-block w-100" id="productCurrency"
+                required>
                 <option value="" hidden selected>Seleccionar moneda</option>
                 <option>Pesos Uruguayos (UYU)</option>
                 <option>Dólares (USD)</option>
@@ -149,8 +152,8 @@
           <div class="row">
             <div class="col-md-3 mb-3">
               <label for="productCountInput">Cantidad en stock</label>
-              <input type="number" name="productCountInput" class="form-control" id="productCountInput"  required value="1"
-                min="0">
+              <input type="number" name="productCountInput" class="form-control" id="productCountInput" required
+                value="1" min="0">
               <div class="invalid-feedback">
                 La cantidad es requerida.
               </div>
@@ -211,7 +214,8 @@
       <p class="float-end">
         <a href="#">Volver arriba</a>
       </p>
-      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank" rel="noopener noreferrer">Jovenes a Programar</a></p>
+      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank"
+          rel="noopener noreferrer">Jovenes a Programar</a></p>
     </div>
   </footer>
 
@@ -260,10 +264,10 @@
       <div></div>
     </div>
   </div>
-  <script src="js/bootstrap.bundle.min.js"></script>
-  <script src="js/dropzone.js"></script>
-  <script src="js/init.js"></script>
-  <script src="js/sell.js"></script>
+  <script src="/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/dropzone.js"></script>
+  <script src="/js/init.js"></script>
+  <script src="/js/sell.js"></script>
 </body>
 
 </html>

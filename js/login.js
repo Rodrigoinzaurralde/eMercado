@@ -51,7 +51,7 @@ document.querySelector('.login__button').addEventListener('click', async functio
         await consultarUser();
         await guardarUsuarioEnBackend(lat, long);
         await enviarAvisoLogin();
-        window.location.href = 'index.html';
+        window.location.href = '/pages/index.html';
     } 
 });
 

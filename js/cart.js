@@ -41,7 +41,7 @@ function createProductCard(producto) {
     
     const productImg = document.createElement('div');
     productImg.className = 'product-img';
-    productImg.innerHTML = `<img src="${producto.image}" alt="${producto.name}" class="img__carrito">`;
+    productImg.innerHTML = `<img src="/${producto.image}" alt="${producto.name}" class="img__carrito">`;
     
     const product = document.createElement('div');
     product.className = 'product';
@@ -515,7 +515,7 @@ function finalizarCompra(datosТarjeta) {
     localStorage.removeItem('carrito');
     sessionStorage.removeItem('compra_pendiente');
     ocultarModalPago();
-    window.location.href = 'completarOrden.html';
+    window.location.href = '/pages/completarOrden.html';
 }
 
 async function finalizarCompraTransferencia() {

@@ -1,13 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Completando Orden - eMercado</title>
-    <link rel="icon" href="img/favicon.png" type="image/png">
+    <link rel="icon" href="/img/favicon.png" type="image/png">
     <link rel="stylesheet" href="https://public.codepenassets.com/css/reset-2.0.min.css">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,500,700&amp;display=swap'>
-    <link rel="stylesheet" href="css/stylesOrden.css">
+    <link rel="stylesheet" href="/css/stylesOrden.css">
     <style>
         body {
             display: flex;
@@ -18,12 +19,12 @@
             margin: 0;
             font-family: 'Roboto', sans-serif;
         }
-        
+
         .container {
             text-align: center;
             color: white;
         }
-        
+
         .title {
             font-size: 2.5em;
             margin-bottom: 30px;
@@ -31,30 +32,32 @@
             opacity: 0;
             animation: fadeInDown 1s ease-out 0.5s forwards;
         }
-        
+
         .subtitle {
             font-size: 1.2em;
             margin-bottom: 40px;
             opacity: 0;
             animation: fadeInUp 1s ease-out 1s forwards;
         }
-        
+
         @keyframes fadeInDown {
             from {
                 opacity: 0;
                 transform: translateY(-30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -62,11 +65,12 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1 class="title">¡Procesando tu compra!</h1>
         <p class="subtitle">Tu orden está siendo confirmada...</p>
-        
+
         <button class="order" id="orderButton">
             <span class="default">Completar Orden</span>
             <span class="success">Gracias por su compra
@@ -88,18 +92,19 @@
     </div>
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
-    <script src="js/scriptOrden.js"></script>
-    <script src="js/init.js"></script>
+    <script src="/js/scriptOrden.js"></script>
+    <script src="/js/init.js"></script>
     <script>
-        $(document).ready(function() {
-            setTimeout(function() {
+        $(document).ready(function () {
+            setTimeout(function () {
                 $('#orderButton').click();
-                setTimeout(function() {
-                    window.location.href = 'index.html';
+                setTimeout(function () {
+                    window.location.href = '/pages/index.html';
                 }, 10000);
-                
+
             }, 2000);
         });
     </script>
 </body>
+
 </html>

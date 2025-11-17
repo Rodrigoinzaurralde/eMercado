@@ -8,11 +8,11 @@ const CART_BUY_URL = atob("aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwa
 const EXT_TYPE = atob("Lmpzb24=");
 let todosLosProductos = [];
 
-const paginasSinAuth = ['login.html', 'register.html'];
+const paginasSinAuth = ['/pages/login.html', '/pages/register.html'];
 const paginaActual = window.location.pathname.split('/').pop();
 
 if(!localStorage.getItem('user') && !paginasSinAuth.includes(paginaActual)){
-    window.location.href = 'login.html';
+    window.location.href = '/pages/login.html';
 }
 
 //---Usuario en navbar---
@@ -200,7 +200,7 @@ function actualizarMensajeEnvio(ciudad) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    if (window.location.pathname.endsWith('index.html')) {
+    if (window.location.pathname.endsWith('/pages/index.html')) {
       const ciudad = localStorage.getItem('city')?.toLowerCase() || '';
       const apiError = localStorage.getItem('api_error');
       const apiErrorMessage = localStorage.getItem('api_error_message');
@@ -287,7 +287,7 @@ window.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.result-item[data-id]').forEach(item =>{
         item.addEventListener('click', function(){
           localStorage.setItem('productID', this.getAttribute('data-id'));
-          window.location.href = 'product-info.html';
+          window.location.href = '/pages/product-info.html';
         })
       })
     }
@@ -336,7 +336,7 @@ if (nav) {
       const carrito = document.createElement("div");
       carrito.className = "carrito";
       const paginaCarrito = document.createElement("a");
-      paginaCarrito.href = "cart.html";
+      paginaCarrito.href = "/pages/cart.html";
       const iconoCarrito = document.createElement("i");
       iconoCarrito.className = "bi bi-cart2";
       //se crea un span para el contador del carrito
@@ -421,7 +421,7 @@ asignarEventosBuscador();
     marcasDeTiempo.push(now);
     localStorage.setItem('bloqueoDeVisitas', JSON.stringify(marcasDeTiempo));
     if (marcasDeTiempo.length > 8) {
-        window.location.href = "error.html";
+        window.location.href = "/pages/error.html";
     }
 
 // Limpiar localStorage tras 10 min de inactividad
@@ -446,7 +446,7 @@ function resetInactividad(){
       localStorage.setItem('phoneNumber', telefono);
     }
 
-    window.location.href = 'login.html';
+    window.location.href = '/pages/login.html';
   }, 10 * 60 * 1000)
 }
 

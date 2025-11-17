@@ -6,19 +6,26 @@
     --white: #fff;
 }
 
-.card-calificaciones, .card-resenias {
+.card-calificaciones {
     display: flex;
     flex-wrap: wrap;
     align-content: center;
     justify-content: center;
-    padding: 10px 60px;
+    padding: 10px 60px 0px 110px;
 
+}
+.card-resenias{
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    
 }
 
 .card-calificaciones .line {
     background-color: #ffd5d5 ;
     height: 18px;
-    width: 90%;
+    width: 100%;
     border-radius: 10px;
     margin: 5px 0;
 }
@@ -26,14 +33,22 @@
 .card-calificaciones .line:first-child {
     width: 40%;
     height: 25px;
+    margin: 0;
 }
 
 .card-resenias .line {
     background-color: #B8B1B1 ;
-    height: 80px;
+    height: 100px;
     width: 100%;
+    border-radius: 20px;
+    margin: 8px 0;
+}
+.card-img .line{
+    background-color: #B8B1B1;
+    height: 250px;
+    width: 450px;
     border-radius: 10px;
-    margin: 5px 0;
+    margin: 0 5%;
 }
 
 .loading {

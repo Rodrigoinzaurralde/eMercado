@@ -18,13 +18,9 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    max-width: 500px;
+    gap: 30px;
     /*height: 200px;*/
     background-color: #f8cd8c;
-    box-shadow: 0 1px 20px #fd717166;
-    border-radius: 10px;
-    margin: 0% 6%;
 }
 .product-img{
     max-width:300px;
@@ -1065,6 +1061,7 @@ body {
     }
     
     .product {
+        gap: 0;
         margin: 0 2%;
         max-width: 100%;
         width: 96%;
@@ -1088,7 +1085,6 @@ body {
     }
     
     .product-unit {
-        width: 100%;
         margin: 10px 0;
         height: auto;
         box-sizing: border-box;
