@@ -56,6 +56,7 @@ fetch(URL)
         productoGlobal = data;
         mostrarProductosRelacionados(data);
         showProducts(productoGlobal);
+        ocultarPreload();
     })
     .catch(error => {
         console.error('Error en la obtención de los datos', error);
@@ -351,5 +352,12 @@ function comprarProducto(producto) {
     });
     
     actualizarContadorCarrito();
+}
+
+function ocultarPreload(){
+    const preload = document.querySelectorAll(".preload");
+    preload.forEach((pre)=>{
+        pre.style.display = "none";
+    })
 }
 console.log(localStorage.getItem('profileImg'));
