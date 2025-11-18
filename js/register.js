@@ -137,7 +137,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
             sessionStorage.setItem('emailRegistrado', email);
             sessionStorage.setItem('nombreRegistrado', name);
             sessionStorage.setItem('promocionesAceptadas', promotionsAccepted);
-            window.location.href = '/pages/login.html';
+            window.location.href = 'login.html';
         }
     });
 });

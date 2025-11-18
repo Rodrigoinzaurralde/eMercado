@@ -65,7 +65,7 @@ fetch(URL)
 function showProducts(products){
     let imagenes = document.querySelector('.imagenes__product');
     imagenes.innerHTML = products.images.map((element, index) => 
-        `<img src='/${element}' class='${index === 0 ? 'imagen-principal' : 'imagen'}'>`
+        `<img src='${element}' class='${index === 0 ? 'imagen-principal' : 'imagen'}'>`
     ).join('');
     let title = document.querySelector('.title');
     let soldCount = document.querySelector('.opinions');
@@ -121,11 +121,11 @@ function mostrarComentarios(comments){
     comments.forEach(comment =>{
         let imgSrc = (comment.user === usuarioActual && imagenPerfilActual)
         ? imagenPerfilActual
-        : 'img/blank-profile.png';
+        : '../img/blank-profile.png';
         resenias.innerHTML += `
             <div class="comentario">
                 <div class="comentario-header">
-                    <img src="/${imgSrc}" class="comentario-avatar">
+                    <img src="${imgSrc}" class="comentario-avatar">
                     <p><strong>${comment.user}</strong> - ${comment.dateTime}</p>
                 </div>
                 <p>${comment.description}</p>
@@ -145,7 +145,7 @@ function mostrarProductosRelacionados(product){
     product.relatedProducts.forEach(prod =>{
         related_products.innerHTML += `
             <div class='relacionados'>
-                <img src='/${prod.image}' class='relacionados_imagen' alt='Imagen de ${prod.name}' data-id='${prod.id}'>
+                <img src='${prod.image}' class='relacionados_imagen' alt='Imagen de ${prod.name}' data-id='${prod.id}'>
                 <p>${prod.name}</p>
             </div>
         `;
@@ -154,7 +154,7 @@ function mostrarProductosRelacionados(product){
         img.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
             localStorage.setItem('productID', id);
-            window.location.href = `/pages/product-info.html?id=${id}`;
+            window.location.href = `product-info.html?id=${id}`;
         });
     });
 }
@@ -177,7 +177,7 @@ imagenes.forEach((img, idx) => {
 
     const itemClase = esActivo ? 'carousel-item active' : 'carousel-item';
     items += `<div class="${itemClase}">
-        <img src="/${img}" class="d-block w-100" alt="Imagen ${idx + 1}">
+        <img src="${img}" class="d-block w-100" alt="Imagen ${idx + 1}">
     </div>`;
 });
 
@@ -348,7 +348,7 @@ function comprarProducto(producto) {
         showConfirmButton: false,
         timer: 1500
     }).then(() => {
-        window.location.href = '/pages/cart.html';
+        window.location.href = 'cart.html';
     });
     
     actualizarContadorCarrito();
