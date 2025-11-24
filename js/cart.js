@@ -384,14 +384,14 @@ function procesarCompra(carrito, subtotales) {
 }
 // Funciones para modal de método de pago
 function mostrarModalMetodoPago() {
-    const modal = document.getElementById('payment-method-modal');
+    const modal = document.getElementById('modal-metodo-pago');
     if (modal) {
         modal.showModal();
     }
 }
 
 function ocultarModalMetodoPago() {
-    const modal = document.getElementById('payment-method-modal');
+    const modal = document.getElementById('modal-metodo-pago');
     if (modal) {
         modal.close();
     }
@@ -763,8 +763,8 @@ document.addEventListener('DOMContentLoaded', function() {
             procesarCompra(carrito, subtotales);
         });
     }
-    const methodModal = document.getElementById('payment-method-modal');
-    const closeMethodModal = document.querySelector('.close-modal-method');
+    const methodModal = document.getElementById('modal-metodo-pago');
+    const closeMethodModal = document.querySelector('.cerrar-modal-metodo');
     const paymentMethodBtns = document.querySelectorAll('.payment-method-btn');
 
     console.log('Configurando modales:', {

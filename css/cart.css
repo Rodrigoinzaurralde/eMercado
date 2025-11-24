@@ -198,7 +198,7 @@ body {
     font-size: 1.5em;
 }
 
-.close-modal {
+.close-modal, .cerrar-modal-metodo {
     background: none;
     border: none;
     color: #666;
@@ -211,7 +211,7 @@ body {
     height: auto;
 }
 
-.close-modal:hover {
+.close-modal:hover, .cerrar-modal-metodo:hover {
     color: #333;
 }
 
