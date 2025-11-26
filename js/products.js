@@ -88,7 +88,7 @@ function showProducts(products, catName) {
         `;
       autoDiv.addEventListener("click", () => {
         localStorage.setItem("productID", products[i].id);
-        window.location.href = "../pages/product-info.html";
+        window.location.href = "product-info.html";
       });
       divCar.appendChild(autoDiv);
     }

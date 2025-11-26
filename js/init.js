@@ -22,11 +22,11 @@ const CART_BUY_URL = atob(
 const EXT_TYPE = atob("Lmpzb24=");
 let todosLosProductos = [];
 
-const paginasSinAuth = ["pages/login.html", "pages/register.html"];
+const paginasSinAuth = ["login.html", "register.html"];
 const paginaActual = window.location.pathname.split("/").pop();
 
 if (!localStorage.getItem("user") && !paginasSinAuth.includes(paginaActual)) {
-  window.location.href = "pages/login.html";
+  window.location.href = "login.html";
 }
 
 //---Usuario en navbar---
@@ -356,7 +356,7 @@ window.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll(".result-item[data-id]").forEach((item) => {
         item.addEventListener("click", function () {
           localStorage.setItem("productID", this.getAttribute("data-id"));
-          window.location.href = "pages/product-info.html";
+          window.location.href = "product-info.html";
         });
       });
     }
@@ -405,7 +405,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const carrito = document.createElement("div");
       carrito.className = "carrito";
       const paginaCarrito = document.createElement("a");
-      paginaCarrito.href = "pages/cart.html";
+      paginaCarrito.href = "cart.html";
       const iconoCarrito = document.createElement("i");
       iconoCarrito.className = "bi bi-cart2";
       //se crea un span para el contador del carrito
@@ -498,7 +498,7 @@ marcasDeTiempo = marcasDeTiempo.filter((marca) => now - marca < 8000);
 marcasDeTiempo.push(now);
 localStorage.setItem("bloqueoDeVisitas", JSON.stringify(marcasDeTiempo));
 if (marcasDeTiempo.length > 10) {
-  window.location.href = "../pages/error.html";
+  window.location.href = "error.html";
 }
 
 // Limpiar localStorage tras 10 min de inactividad
@@ -523,7 +523,7 @@ function resetInactividad() {
       localStorage.setItem("phoneNumber", telefono);
     }
 
-    window.location.href = "../pages/login.html";
+    window.location.href = "login.html";
   }, 10 * 60 * 1000);
 }
 

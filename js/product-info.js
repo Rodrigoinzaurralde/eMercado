@@ -243,7 +243,7 @@ function mostrarProductosRelacionados(product) {
     img.addEventListener("click", function () {
       const id = this.getAttribute("data-id");
       localStorage.setItem("productID", id);
-      window.location.href = `../pages/product-info.html?id=${id}`;
+      window.location.href = `product-info.html?id=${id}`;
     });
   });
 }
@@ -449,7 +449,7 @@ function comprarProducto(producto) {
     showConfirmButton: false,
     timer: 1500,
   }).then(() => {
-    window.location.href = "../pages/cart.html";
+    window.location.href = "cart.html";
   });
 
   actualizarContadorCarrito();

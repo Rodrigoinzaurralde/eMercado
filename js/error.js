@@ -1,4 +1,4 @@
 setTimeout(function () {
   localStorage.clear();
-  window.location.href = "../pages/login.html";
+  window.location.href = "login.html";
 }, 5000);

@@ -554,7 +554,7 @@ function finalizarCompra(datosТarjeta) {
   localStorage.removeItem("carrito");
   sessionStorage.removeItem("compra_pendiente");
   ocultarModalPago();
-  window.location.href = "../pages/completarOrden.html";
+  window.location.href = "completarOrden.html";
 }
 
 async function finalizarCompraTransferencia() {
