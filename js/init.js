@@ -22,7 +22,7 @@ const CART_BUY_URL = atob(
 const EXT_TYPE = atob("Lmpzb24=");
 let todosLosProductos = [];
 
-const paginasSinAuth = ["/pages/login.html", "/pages/register.html"];
+const paginasSinAuth = ["pages/login.html", "pages/register.html"];
 const paginaActual = window.location.pathname.split("/").pop();
 
 if (!localStorage.getItem("user") && !paginasSinAuth.includes(paginaActual)) {
@@ -30,9 +30,7 @@ if (!localStorage.getItem("user") && !paginasSinAuth.includes(paginaActual)) {
 }
 
 //---Usuario en navbar---
-botonMenu.innerHTML = `<i class="bi bi-person"></i><a class="user__mail">${localStorage.getItem(
-  "user"
-)}</a>`;
+document.addEventListener("DOMContentLoaded" , ()=> botonMenu.innerHTML = `<i class="bi bi-person"></i><a class="user__mail">${localStorage.getItem("user")}</a>`)
 const menuUser = document.getElementById("usuario-desplegable");
 const perfilBox = document.querySelector(".perfil-container");
 const botonMenu = document.getElementById("boton-desplegable");
@@ -358,7 +356,7 @@ window.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll(".result-item[data-id]").forEach((item) => {
         item.addEventListener("click", function () {
           localStorage.setItem("productID", this.getAttribute("data-id"));
-          window.location.href = "../pages/product-info.html";
+          window.location.href = "pages/product-info.html";
         });
       });
     }
@@ -407,7 +405,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const carrito = document.createElement("div");
       carrito.className = "carrito";
       const paginaCarrito = document.createElement("a");
-      paginaCarrito.href = "../pages/cart.html";
+      paginaCarrito.href = "pages/cart.html";
       const iconoCarrito = document.createElement("i");
       iconoCarrito.className = "bi bi-cart2";
       //se crea un span para el contador del carrito
