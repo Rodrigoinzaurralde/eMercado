@@ -147,7 +147,7 @@ function showProducts(products) {
   imagenes.innerHTML = products.images
     .map(
       (element, index) =>
-        `<img src='/${element}' class='${
+        `<img src='../${element}' class='${
           index === 0 ? "imagen-principal" : "imagen"
         }'>`
     )
@@ -214,7 +214,7 @@ function mostrarComentarios(comments) {
     resenias.innerHTML += `
             <div class="comentario">
                 <div class="comentario-header">
-                    <img src="/${imgSrc}" class="comentario-avatar">
+                    <img src="../${imgSrc}" class="comentario-avatar">
                     <p><strong>${comment.user}</strong> - ${comment.dateTime}</p>
                 </div>
                 <p>${comment.description}</p>
@@ -234,7 +234,7 @@ function mostrarProductosRelacionados(product) {
   product.relatedProducts.forEach((prod) => {
     related_products.innerHTML += `
             <div class='relacionados'>
-                <img src='/${prod.image}' class='relacionados_imagen' alt='Imagen de ${prod.name}' data-id='${prod.id}'>
+                <img src='../${prod.image}' class='relacionados_imagen' alt='Imagen de ${prod.name}' data-id='${prod.id}'>
                 <p>${prod.name}</p>
             </div>
         `;
@@ -268,7 +268,7 @@ function mostrarCarruselBootstrap(imagenes) {
 
     const itemClase = esActivo ? "carousel-item active" : "carousel-item";
     items += `<div class="${itemClase}">
-        <img src="/${img}" class="d-block w-100" alt="Imagen ${idx + 1}">
+        <img src="../${img}" class="d-block w-100" alt="Imagen ${idx + 1}">
     </div>`;
   });
 

@@ -22,17 +22,15 @@ const CART_BUY_URL = atob(
 const EXT_TYPE = atob("Lmpzb24=");
 let todosLosProductos = [];
 
-const paginasSinAuth = ["../pages/login.html", "../pages/register.html"];
+const paginasSinAuth = ["/pages/login.html", "/pages/register.html"];
 const paginaActual = window.location.pathname.split("/").pop();
 
 if (!localStorage.getItem("user") && !paginasSinAuth.includes(paginaActual)) {
-  window.location.href = "../pages/login.html";
+  window.location.href = "../login.html";
 }
 
 //---Usuario en navbar---
-document.getElementById(
-  "boton-desplegable"
-).innerHTML = `<i class="bi bi-person"></i><a class="user__mail">${localStorage.getItem(
+botonMenu.innerHTML = `<i class="bi bi-person"></i><a class="user__mail">${localStorage.getItem(
   "user"
 )}</a>`;
 const menuUser = document.getElementById("usuario-desplegable");
