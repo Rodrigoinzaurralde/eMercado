@@ -26,7 +26,7 @@ const paginasSinAuth = ["/pages/login.html", "/pages/register.html"];
 const paginaActual = window.location.pathname.split("/").pop();
 
 if (!localStorage.getItem("user") && !paginasSinAuth.includes(paginaActual)) {
-  window.location.href = "../login.html";
+  window.location.href = "pages/login.html";
 }
 
 //---Usuario en navbar---
