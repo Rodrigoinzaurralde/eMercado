@@ -1,7 +1,5 @@
 const catID = localStorage.getItem("catID") || "101";
-const URL = `${atob(
-  "aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9jYXRzX3Byb2R1Y3RzLw=="
-)}${catID}.json`;
+const URL = `http://localhost:3001/cats_products/${catID}.json`;
 let productos = [];
 
 function extraerDatos() {

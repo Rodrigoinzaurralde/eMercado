@@ -11,7 +11,5 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("catID", 103);
     window.location = "products.html";
   });
-  setInterval(() => {
-    fetch(atob("aHR0cHM6Ly9lbWVyY2Fkby1iYWNrZW5kLm9ucmVuZGVyLmNvbS9waW5n"));
-  }, 600000); // cada 10 minutos
+  // Removed external API ping - now using local backend
 });

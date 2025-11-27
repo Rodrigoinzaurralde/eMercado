@@ -1,25 +1,12 @@
-const CATEGORIES_URL = atob(
-  "aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9jYXRzL2NhdC5qc29u"
-);
-const PUBLISH_PRODUCT_URL = atob(
-  "aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9zZWxsL3B1Ymxpc2guanNvbg=="
-);
-const PRODUCTS_URL = atob(
-  "aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9jYXRzX3Byb2R1Y3RzLw=="
-);
-const PRODUCT_INFO_URL = atob(
-  "aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9wcm9kdWN0cy8="
-);
-const PRODUCT_INFO_COMMENTS_URL = atob(
-  "aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9wcm9kdWN0c19jb21tZW50cy8="
-);
-const CART_INFO_URL = atob(
-  "aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS91c2VyX2NhcnQv"
-);
-const CART_BUY_URL = atob(
-  "aHR0cHM6Ly9qYXBjZWliYWwuZ2l0aHViLmlvL2VtZXJjYWRvLWFwaS9jYXJ0L2J1eS5qc29u"
-);
-const EXT_TYPE = atob("Lmpzb24=");
+// URLs del backend local eMercado
+const CATEGORIES_URL = "http://localhost:3001/cats/cat.json";
+const PUBLISH_PRODUCT_URL = "http://localhost:3001/sell/publish.json";
+const PRODUCTS_URL = "http://localhost:3001/cats_products/";
+const PRODUCT_INFO_URL = "http://localhost:3001/products/";
+const PRODUCT_INFO_COMMENTS_URL = "http://localhost:3001/products_comments/";
+const CART_INFO_URL = "http://localhost:3001/user_cart/";
+const CART_BUY_URL = "http://localhost:3001/cart/buy.json";
+const EXT_TYPE = ".json";
 let todosLosProductos = [];
 
 const paginasSinAuth = ["login.html", "register.html"];
