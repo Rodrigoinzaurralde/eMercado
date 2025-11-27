@@ -76,7 +76,7 @@ function showProducts(products, catName) {
       let autoDiv = document.createElement("div");
       autoDiv.className = "car__card";
       autoDiv.innerHTML = `
-            <img src='../${products[i].image}' alt='${products[i].name}' class='car__img' loading="lazy">
+            <img src='${products[i].image}' alt='${products[i].name}' class='car__img' loading="lazy">
             <div class="car__info">
                 <h3 class="car__name">${products[i].name}</h3>
                 <p class="car__desc">${products[i].description}</p>
