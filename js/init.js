@@ -28,6 +28,7 @@ const paginaActual = window.location.pathname.split("/").pop();
 if (!localStorage.getItem("user") && !paginasSinAuth.includes(paginaActual)) {
   window.location.href = "login.html";
 }
+
 console.log(paginaActual)
 //---Usuario en navbar---
 document.addEventListener("DOMContentLoaded" , ()=> botonMenu.innerHTML = `<i class="bi bi-person"></i><a class="user__mail">${localStorage.getItem("user")}</a>`)
