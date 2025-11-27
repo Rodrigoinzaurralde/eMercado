@@ -247,7 +247,7 @@ a.custom-card:hover {
   justify-content: center;
   width: 100%;
   height: 55px;
-  background-image: url(/img/nav.png);
+  background-image: url(../img/nav.png);
   background-size: 250px 95px;
   background-repeat: no-repeat;
   background-color: var(--nav-bg-color);
