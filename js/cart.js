@@ -41,7 +41,7 @@ function createProductCard(producto) {
 
   const productImg = document.createElement("div");
   productImg.className = "product-img";
-  productImg.innerHTML = `<img src="/${producto.image}" alt="${producto.name}" class="img__carrito">`;
+  productImg.innerHTML = `<img src="${producto.image}" alt="${producto.name}" class="img__carrito">`;
 
   const product = document.createElement("div");
   product.className = "product";
