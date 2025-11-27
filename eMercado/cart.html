@@ -1,0 +1,381 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>eMercado - Todo lo que busques está aquí</title>
+  <link rel="icon" href="img/favicon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/font-awesome.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/cart.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="box-nav">
+      <div class="nav-container">
+        <ul>
+          <div style="display: flex; justify-content: flex-start;">
+            <button class="navbar-button" type="button">
+              <span class="nav-button">&#9776;</span>
+            </button>
+          </div>
+
+          <li>
+            <a class="navbar-link" href="index.html">Inicio</a>
+          </li>
+          <li>
+            <a class="navbar-link" href="categories.html">Categorías</a>
+          </li>
+          <li>
+            <a class="navbar-link" href="sell.html">Vender</a>
+          </li>
+          <li>
+
+          </li>
+          <div id="product-search" class="input-group flex-nowrap findProduct" style="position:relative;">
+            <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
+            <input id="findProductId" type="text" class="form-control" placeholder="Buscar producto..."
+              aria-label="Buscar producto" aria-describedby="addon-wrapping">
+            <div id="liveResults" class="live-results"></div>
+          </div>
+          <div class="perfil-container">
+            <button id="boton-desplegable"></button>
+            <div id="usuario-desplegable" class="usuario-desplegable" style="display: none;">
+              <a href="my-profile.html" id="perfil">Mi Perfil</a>
+              <a href="" id="closeSession">Cerrar Sesión</a>
+            </div>
+          </div>
+        </ul>
+      </div>
+  </nav>
+  <div id="mobile-p-search" class="input-group flex-nowrap findProduct" style="position:relative;">
+    <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
+    <input type="text" class="form-control" placeholder="Buscar producto..." aria-label="Buscar producto"
+      aria-describedby="addon-wrapping">
+    <div class="mobile-results"></div>
+  </div>
+  <div id="mobile-navbar">
+    <button class="close-mobile"> &times; </button>
+    <div class="mobile-list-links">
+      <li>
+        <a class="navmobile-link" href="index.html">Inicio</a>
+      </li>
+      <li>
+        <a class="navmobile-link" href="categories.html">Categorías</a>
+      </li>
+      <li>
+        <a class="navmobile-link" href="sell.html">Vender</a>
+      </li>
+    </div>
+  </div>
+
+  <main>
+    <!--Modal para seleccionar método de pago-->
+    <dialog id="modal-metodo-pago" class="payment-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Seleccionar Método de Pago</h2>
+          <button class="cerrar-modal-metodo" type="button">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="payment-methods">
+            <button class="payment-method-btn" data-method="transferencia">
+              <i class="bi bi-bank"></i>
+              <span>Transferencia Bancaria</span>
+            </button>
+
+            <button class="payment-method-btn" data-method="credito">
+              <i class="bi bi-credit-card"></i>
+              <span>Tarjeta de Crédito</span>
+            </button>
+
+            <button class="payment-method-btn" data-method="debito">
+              <i class="bi bi-credit-card-2-front"></i>
+              <span>Tarjeta de Débito</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+    <!--Modal de transferencia bancaria-->
+    <dialog id="transfer-modal" class="payment-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Transferencia Bancaria</h2>
+          <button class="close-transfer-modal" type="button">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="bank-info">
+            <h3>Datos bancarios:</h3>
+            <p><strong>Banco:</strong> Banco República</p>
+            <p><strong>Cuenta:</strong> 12345678901</p>
+            <p><strong>Total a transferir:</strong> <span id="transfer-amount"></span></p>
+          </div>
+
+          <div class="transfer-confirmation" id="transfer-confirmation">
+            <h3>Confirmación de transferencia:</h3>
+            <p>Por favor, suba el comprobante de su transferencia bancaria:</p>
+            <div class="file-upload-container">
+              <input type="file" id="transfer-proof" accept="image/*" class="file-input">
+              <label for="transfer-proof" class="file-label">
+                <i class="bi bi-upload"></i>
+                <span>Seleccionar comprobante</span>
+              </label>
+              <div class="file-preview" id="file-preview"></div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-cancel" id="cancel-transfer">Cancelar</button>
+            <button type="button" class="btn-confirm" id="confirm-transfer">Confirmar Transferencia</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+    <div class="main-container">
+      <div class="cart-container">
+        <div class="cart"></div>
+        <div class="cart-summary">
+          <div class="subtotal-container">
+            <h3>Subtotal: <span id="subtotal-amount">$0</span></h3>
+          </div>
+          <div class="checkout-container">
+            <button id="checkout-btn" class="btn-checkout">Finalizar Compra</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="contenedor-envio">
+        <div class="seccion-envio">
+          <h3>Tipo de envío</h3>
+          <div class="opciones-envio">
+            <div class="opcion-envio">
+              <input type="radio" id="premium" name="shipping" value="premium" data-cost="15">
+              <label for="premium">
+                <div class="info-envio">
+                  <div class="nombre-envio">Premium</div>
+                  <div class="tiempo-envio">2 a 5 días</div>
+                </div>
+                <div class="costo-envio">(15%)</div>
+              </label>
+            </div>
+
+            <div class="opcion-envio">
+              <input type="radio" id="express" name="shipping" value="express" data-cost="7" checked>
+              <label for="express">
+                <div class="info-envio">
+                  <div class="nombre-envio">Express</div>
+                  <div class="tiempo-envio">5 a 8 días</div>
+                </div>
+                <div class="costo-envio">(7%)</div>
+              </label>
+            </div>
+
+            <div class="opcion-envio">
+              <input type="radio" id="standard" name="shipping" value="standard" data-cost="5">
+              <label for="standard">
+                <div class="info-envio">
+                  <div class="nombre-envio">Standard</div>
+                  <div class="tiempo-envio">12 a 15 días</div>
+                </div>
+                <div class="costo-envio">(5%)</div>
+              </label>
+            </div>
+          </div>
+          <div class="seccion-direccion-envio">
+            <h3>Dirección de envío</h3>
+
+            <div class="delivery-type-options">
+              <div class="delivery-option">
+                <input type="radio" id="home-delivery" name="delivery-type" value="home" checked>
+                <label for="home-delivery">
+                  <i class="bi bi-house-door"></i>
+                  Envío a domicilio
+                </label>
+              </div>
+
+              <div class="delivery-option">
+                <input type="radio" id="agency-pickup" name="delivery-type" value="agency">
+                <label for="agency-pickup">
+                  <i class="bi bi-shop"></i>
+                  Retiro en agencia
+                </label>
+              </div>
+            </div>
+
+            <!-- Formulario para retiro en agencia -->
+            <div id="agency-form" class="agency-form hidden">
+              <div class="form-group">
+                <label for="agency-city">Ciudad de retiro</label>
+                <input type="text" id="agency-city" name="agency-city" placeholder="Ej: Montevideo, Maldonado">
+                <small class="form-text">Costo: $1000 UYU</small>
+              </div>
+            </div>
+
+            <div id="address-form" class="address-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="departamento">Departamento <span class="required">*</span></label>
+                  <select id="departamento" name="departamento" required>
+                    <option value="">Seleccionar departamento</option>
+                    <option value="montevideo" selected>Montevideo</option>
+                    <option value="artigas">Artigas</option>
+                    <option value="canelones">Canelones</option>
+                    <option value="cerro-largo">Cerro Largo</option>
+                    <option value="colonia">Colonia</option>
+                    <option value="durazno">Durazno</option>
+                    <option value="flores">Flores</option>
+                    <option value="florida">Florida</option>
+                    <option value="lavalleja">Lavalleja</option>
+                    <option value="maldonado">Maldonado</option>
+                    <option value="paysandu">Paysandú</option>
+                    <option value="rio-negro">Río Negro</option>
+                    <option value="rivera">Rivera</option>
+                    <option value="rocha">Rocha</option>
+                    <option value="salto">Salto</option>
+                    <option value="san-jose">San José</option>
+                    <option value="soriano">Soriano</option>
+                    <option value="tacuarembo">Tacuarembó</option>
+                    <option value="treinta-y-tres">Treinta y Tres</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="localidad">Localidad <span class="required">*</span></label>
+                  <input type="text" id="localidad" name="localidad" placeholder="Ej: Pocitos, Ciudad Vieja" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="calle">Calle <span class="required">*</span></label>
+                  <input type="text" id="calle" name="calle" placeholder="Ej: 18 de Julio" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="numero">Número</label>
+                  <input type="text" id="numero" name="numero" placeholder="Ej: 1234">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="esquina">Esquina <span class="required">*</span></label>
+                <input type="text" id="esquina" name="esquina" placeholder="Ej: Ejido" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="resumen-costo-envio">
+            <div class="cost-breakdown">
+              <div class="cost-line">
+                <span>Costo de productos:</span>
+                <span id="products-cost">$0</span>
+              </div>
+              <div class="cost-line">
+                <span>Costo de envío:</span>
+                <span id="costo-envio">$0</span>
+              </div>
+              <div class="cost-line total">
+                <span><strong>Total:</strong></span>
+                <span id="total-cost"><strong>$0</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- Modal para datos de tarjeta de crédito-->
+  <dialog id="payment-modal" class="payment-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Datos de Pago</h2>
+        <button class="close-modal" type="button" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="payment-amount">
+          <h3>Total a pagar: <span id="card-payment-amount"></span></h3>
+        </div>
+        <form id="payment-form" method="dialog">
+          <div class="form-group">
+            <label for="card-type">Tipo de Tarjeta</label>
+            <select id="card-type" name="type" required>
+              <option value="">Seleccionar tipo</option>
+              <option value="Visa">Visa</option>
+              <option value="MasterCard">MasterCard</option>
+              <option value="American Express">American Express</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="card-name">Nombre del Titular</label>
+            <input type="text" id="card-name" name="name" placeholder="William Rogers" required>
+          </div>
+
+          <div class="form-group">
+            <label for="card-number">Número de Tarjeta</label>
+            <input type="text" id="card-number" name="number" placeholder="1234 5678 9012 3456" maxlength="19" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="card-cvv">CVV</label>
+              <input type="text" id="card-cvv" name="cvv" placeholder="123" maxlength="4" required>
+            </div>
+
+            <div class="form-group">
+              <label for="card-expiry">Fecha de Vencimiento</label>
+              <input type="text" id="card-expiry" name="expiry" placeholder="MM/AA" maxlength="5" required>
+            </div>
+          </div>
+          <div class="form-group" id="cuotas-group" style="display: none;">
+            <label for="card-installments">Cuotas:</label>
+            <select id="card-installments" name="installments">
+              <option value="1">1 cuota (sin interés)</option>
+              <option value="3">3 cuotas</option>
+              <option value="6">6 cuotas</option>
+              <option value="12">12 cuotas</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="cancel-payment" class="btn-cancel">Cancelar</button>
+            <button type="submit" id="confirm-payment" class="btn-confirm">Confirmar Pago</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </dialog>
+  <footer class="text-muted">
+    <div class="container">
+      <p class="float-end">
+        <a href="#">Volver arriba</a>
+      </p>
+      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank"
+          rel="noopener noreferrer">Jovenes a Programar</a></p>
+    </div>
+  </footer>
+  <div id="spinner-wrapper">
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <script src='https://unpkg.com/tesseract.js@5.0.3/dist/tesseract.min.js'></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/init.js"></script>
+  <script src="js/cart.js"></script>
+</body>
+
+</html>
