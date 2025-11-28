@@ -36,6 +36,7 @@ document.querySelector('.login__button').addEventListener('click', async functio
     const user = document.querySelector('.user__name').value.trim();
     const password = document.querySelector('.user__password').value.trim();
     const errorMsg = document.querySelector('.error__msg');
+    
     if(!user || !password){
         errorMsg.classList.remove('error__pass');
         errorMsg.textContent = 'Rellena todos los datos';
@@ -46,12 +47,43 @@ document.querySelector('.login__button').addEventListener('click', async functio
         errorMsg.classList.add('error__pass');
         errorMsg.textContent = 'La contraseña debe tener al menos 8 caracteres';
     }else{
-        localStorage.setItem('user', user);
-        const {lat, long} = await obtenerLatLong();
-        await consultarUser();
-        await guardarUsuarioEnBackend(lat, long);
-        await enviarAvisoLogin();
-        window.location.href = 'index.html';
+        // Validación exitosa en el frontend
+        try {
+            errorMsg.textContent = 'Autenticando...';
+            errorMsg.classList.remove('error__pass');
+            
+            // Autenticar contra el backend JWT con credenciales fijas
+            const response = await fetch('http://localhost:3001/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: 'grupo314',
+                    password: 'jap' 
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok && data.exito) {
+                // Guardar token JWT para acceder a los endpoints
+                localStorage.setItem('authToken', data.token);
+                localStorage.setItem('user', user);
+                localStorage.setItem('userId', data.usuario.id);
+                const {lat, long} = await obtenerLatLong();
+                await consultarUser();
+                await guardarUsuarioEnBackend(lat, long);
+                await enviarAvisoLogin();
+                window.location.href = 'index.html';
+            } else {
+                throw new Error(data.error || 'Error de autenticación con el servidor');
+            }
+        } catch (error) {
+            console.error('Error de autenticación:', error);
+            errorMsg.classList.add('error__pass');
+            errorMsg.textContent = 'Error de conexión con el servidor.';
+        }
     } 
 });
 

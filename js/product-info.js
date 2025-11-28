@@ -108,8 +108,12 @@ async function cargarComentariosFirestore() {
   // Cargar comentarios de la API
   let apiComments = [];
   try {
-    const response = await fetch(url_comments);
-    apiComments = await response.json();
+    const result = await getJSONData(url_comments);
+    if (result.status === "ok") {
+      apiComments = result.data;
+    } else {
+      console.error("Error cargando comentarios de la API", result.data);
+    }
   } catch (e) {
     console.error("Error cargando comentarios de la API", e);
   }
@@ -126,13 +130,16 @@ async function cargarComentariosFirestore() {
 }
 
 // Fetch producto
-fetch(URL)
-  .then((response) => response.json())
-  .then((data) => {
-    productoGlobal = data;
-    mostrarProductosRelacionados(data);
-    showProducts(productoGlobal);
-    ocultarPreload();
+getJSONData(URL)
+  .then((result) => {
+    if (result.status === "ok") {
+      productoGlobal = result.data;
+      mostrarProductosRelacionados(result.data);
+      showProducts(productoGlobal);
+      ocultarPreload();
+    } else {
+      console.error("Error en la obtención de los datos del producto", result.data);
+    }
   })
   .catch((error) => {
     console.error("Error en la obtención de los datos", error);

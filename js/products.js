@@ -3,11 +3,14 @@ const URL = `http://localhost:3001/cats_products/${catID}.json`;
 let productos = [];
 
 function extraerDatos() {
-  fetch(URL)
-    .then((response) => response.json())
-    .then((data) => {
-      productos = data.products;
-      showProducts(productos, data.catName);
+  getJSONData(URL)
+    .then((result) => {
+      if (result.status === "ok") {
+        productos = result.data.products;
+        showProducts(productos, result.data.catName);
+      } else {
+        console.error("Error en la obtención de los datos", result.data);
+      }
     })
     .catch((error) => {
       console.error("Error en la obtención de los datos", error);

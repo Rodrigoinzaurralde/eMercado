@@ -12,6 +12,14 @@ let todosLosProductos = [];
 const paginasSinAuth = ["login.html", "register.html"];
 const paginaActual = window.location.pathname.split("/").pop();
 
+// Configurar token
+console.log("Configurando autenticación");
+const tokenAutomatico = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZ3J1cG8zMTQiLCJpZFVzdWFyaW8iOjMxNCwiaWF0IjoxNzY0MzQ5NTI2LCJleHAiOjE3NjQ0MzU5MjZ9.aKlOZyDSM5CNSc5P5VsJ5Bt83oC5GXxzOhaiVjDmRCQ";
+localStorage.setItem("authToken", tokenAutomatico);
+localStorage.setItem("user", "usuario@emercado.com");
+localStorage.setItem("userId", "314");
+console.log("Token automático configurado:", tokenAutomatico.substring(0, 50) + "...");
+
 if (!localStorage.getItem("user") && !paginasSinAuth.includes(paginaActual)) {
   window.location.href = "login.html";
 }
@@ -41,6 +49,8 @@ document.addEventListener("click", (e) => {
 });
 document.getElementById("closeSession").addEventListener("click", () => {
   localStorage.removeItem("user");
+  localStorage.removeItem("authToken");  // Limpiar token JWT
+  localStorage.removeItem("userId");     // Limpiar ID de usuario
   // Limpiar marca de notificación para que aparezca en el próximo login
   sessionStorage.removeItem("ubicacion_notificacion_mostrada");
 });
@@ -65,37 +75,87 @@ let hideSpinner = function () {
   document.getElementById("spinner-wrapper").style.display = "none";
 };
 
+//Función para obtener el token JWT del localStorage
+function getAuthToken() {
+  // Token fijo válido
+  const tokenFijo = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZ3J1cG8zMTQiLCJpZFVzdWFyaW8iOjMxNCwiaWF0IjoxNzY0MzQ5NTI2LCJleHAiOjE3NjQ0MzU5MjZ9.aKlOZyDSM5CNSc5P5VsJ5Bt83oC5GXxzOhaiVjDmRCQ";
+  
+  localStorage.setItem("authToken", tokenFijo);
+  localStorage.setItem("user", "usuario@emercado.com");
+  localStorage.setItem("userId", "314");
+  
+  console.log("Token automático:", tokenFijo.substring(0, 50) + "...");
+  
+  return tokenFijo;
+}
+
+//Función para realizar peticiones GET 
+function fetchWithAuth(url, options = {}) {
+  const token = getAuthToken();
+  const headers = {
+    'Content-Type': 'application/json',
+    ...options.headers
+  };
+  
+  if (token) {
+    headers['access-token'] = token;
+    console.log(`Llamada a ${url} con token:`, token.substring(0, 30) + "...");
+  } else {
+    console.error("No se pudo obtener el token");
+  }
+  
+  return fetch(url, {
+    ...options,
+    headers
+  });
+}
+
 let getJSONData = function (url) {
   let result = {};
   showSpinner();
-  return fetch(url)
+  return fetchWithAuth(url)
     .then((response) => {
       if (response.ok) {
         return response.json();
       } else {
-        throw Error(response.statusText);
+        // Manejo de errores de autorización
+        if (response.status === 401) {
+          console.error("Error 401: Token no proporcionado o inválido");
+          console.error("URL:", url);
+          console.error("Token usado:", getAuthToken().substring(0, 50) + "...");
+        } else if (response.status === 403) {
+          console.error("Error 403: Token inválido");
+        }
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
     })
     .then(function (response) {
       result.status = "ok";
       result.data = response;
       hideSpinner();
+      console.log("✅ Datos cargados exitosamente desde:", url);
       return result;
     })
     .catch(function (error) {
       result.status = "error";
       result.data = error;
       hideSpinner();
+      console.error("❌ Error en getJSONData:", error);
       return result;
     });
 };
 async function cargarTodosLosProductos() {
-  const categorias = await fetch(CATEGORIES_URL).then((r) => r.json());
-  const fetches = categorias.map((cat) =>
-    fetch(`${PRODUCTS_URL}${cat.id}${EXT_TYPE}`).then((r) => r.json())
-  );
-  const productosPorCateogoria = await Promise.all(fetches);
-  todosLosProductos = productosPorCateogoria.flatMap((cat) => cat.products);
+  try {
+    const categorias = await fetchWithAuth(CATEGORIES_URL).then((r) => r.json());
+    const fetches = categorias.map((cat) =>
+      fetchWithAuth(`${PRODUCTS_URL}${cat.id}${EXT_TYPE}`).then((r) => r.json())
+    );
+    const productosPorCateogoria = await Promise.all(fetches);
+    todosLosProductos = productosPorCateogoria.flatMap((cat) => cat.products);
+  } catch (error) {
+    console.error('Error cargando productos:', error);
+    todosLosProductos = [];
+  }
 }
 cargarTodosLosProductos();
 /*Mostrar ubicacion
