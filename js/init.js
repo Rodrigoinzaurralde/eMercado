@@ -12,13 +12,13 @@ let todosLosProductos = [];
 const paginasSinAuth = ["login.html", "register.html"];
 const paginaActual = window.location.pathname.split("/").pop();
 
-// Configurar token
-console.log("Configurando autenticación");
-const tokenAutomatico = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZ3J1cG8zMTQiLCJpZFVzdWFyaW8iOjMxNCwiaWF0IjoxNzY0MzQ5NTI2LCJleHAiOjE3NjQ0MzU5MjZ9.aKlOZyDSM5CNSc5P5VsJ5Bt83oC5GXxzOhaiVjDmRCQ";
-localStorage.setItem("authToken", tokenAutomatico);
-localStorage.setItem("user", "usuario@emercado.com");
-localStorage.setItem("userId", "314");
-console.log("Token automático configurado:", tokenAutomatico.substring(0, 50) + "...");
+// Verificar autenticación
+console.log("Verificando autenticación existente");
+if (localStorage.getItem("authToken")) {
+    console.log("Token encontrado para usuario:", localStorage.getItem("user"));
+} else {
+    console.log("No hay token de autenticación");
+}
 
 if (!localStorage.getItem("user") && !paginasSinAuth.includes(paginaActual)) {
   window.location.href = "login.html";
@@ -77,32 +77,34 @@ let hideSpinner = function () {
 
 //Función para obtener el token JWT del localStorage
 function getAuthToken() {
-  // Token fijo válido
-  const tokenFijo = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZ3J1cG8zMTQiLCJpZFVzdWFyaW8iOjMxNCwiaWF0IjoxNzY0MzQ5NTI2LCJleHAiOjE3NjQ0MzU5MjZ9.aKlOZyDSM5CNSc5P5VsJ5Bt83oC5GXxzOhaiVjDmRCQ";
+  // Obtener token del localStorage
+  const token = localStorage.getItem("authToken");
   
-  localStorage.setItem("authToken", tokenFijo);
-  localStorage.setItem("user", "usuario@emercado.com");
-  localStorage.setItem("userId", "314");
+  if (!token) {
+    console.warn("No hay token de autenticación disponible");
+    return null;
+  }
   
-  console.log("Token automático:", tokenFijo.substring(0, 50) + "...");
-  
-  return tokenFijo;
+  return token;
 }
 
 //Función para realizar peticiones GET 
 function fetchWithAuth(url, options = {}) {
   const token = getAuthToken();
+  
+  if (!token) {
+    console.error("No hay token de autenticación - redirigiendo al login");
+    window.location.href = "login.html";
+    return Promise.reject("No hay token de autenticación");
+  }
+  
   const headers = {
     'Content-Type': 'application/json',
+    'access-token': token,
     ...options.headers
   };
   
-  if (token) {
-    headers['access-token'] = token;
-    console.log(`Llamada a ${url} con token:`, token.substring(0, 30) + "...");
-  } else {
-    console.error("No se pudo obtener el token");
-  }
+  console.log(`Llamada a ${url} con token para usuario:`, localStorage.getItem("user"));
   
   return fetch(url, {
     ...options,

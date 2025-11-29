@@ -55,8 +55,8 @@ document.querySelector('.login__button').addEventListener('click', async functio
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    username: 'grupo314',
-                    password: 'jap' 
+                    username: user,
+                    password: password 
                 })
             });
             

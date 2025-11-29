@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 const mariadb = require('mariadb');
 const pool = mariadb.createPool({
     host: 'localhost',
-    user: 'root',
-    password: '1234',
+    user: 'emercado',
+    password: 'jap',
     database: 'emercado',
     connectionLimit: 5
 });
@@ -58,33 +58,42 @@ app.post('/login', (req, res) => {
         return res.status(400).json({ error: 'Usuario y contraseña son requeridos' });
     }
     
-    //Credenciales
-    const usuarioValido = 'grupo314';
-    const contrasenaValida = 'jap';
-    
-    if (username === usuarioValido && password === contrasenaValida) {
-        //Generar token JWT
-        const token = jwt.sign(
-            { 
-                usuario: username,
-                idUsuario: 314
-            },
-            JWT_SECRET,
-            { expiresIn: '24h' }
-        );
-        
-        res.json({
-            exito: true,
-            mensaje: 'Autenticación exitosa',
-            token: token,
-            usuario: {
-                nombre: username,
-                id: 314
-            }
-        });
-    } else {
-        return res.status(401).json({ error: 'Usuario o contraseña incorrecto' });
+    //Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(username)) {
+        return res.status(400).json({ error: 'El formato de email no es válido' });
     }
+    
+    //Validar contraseña mínima de 8 caracteres
+    if (password.length < 8) {
+        return res.status(400).json({ error: 'La contraseña debe tener al menos 8 caracteres' });
+    }
+    
+    //Si los formatos son válidos, generar token automáticamente
+    //Generar ID único basado en el email
+    const userId = Math.abs(username.split('').reduce((a, b) => {
+        a = ((a << 5) - a) + b.charCodeAt(0);
+        return a & a;
+    }, 0));
+    
+    const token = jwt.sign(
+        { 
+            usuario: username,
+            idUsuario: userId
+        },
+        JWT_SECRET,
+        { expiresIn: '24h' }
+    );
+    
+    res.json({
+        exito: true,
+        mensaje: 'Autenticación exitosa',
+        token: token,
+        usuario: {
+            nombre: username,
+            id: userId
+        }
+    });
 });
 
 //Endpoint para verificar token
@@ -295,7 +304,7 @@ app.post('/productos', async(req, res) => {
       });
     }
 
-    // ✅ Insertar usando el id_producto original del JSON
+    // Insertar usando el id_producto original del JSON
     const response = await conn.query(
       "INSERT INTO productos(id_producto, name, description, precio, vendidos, id_categoria) VALUES (?, ?, ?, ?, ?, ?)",
       [id_producto, name, description, precio, vendidos, id_categoria]
@@ -399,10 +408,11 @@ app.get('/', (req, res) => {
         ],
         authentication: {
             loginEndpoint: 'POST /login',
-            requiredFields: ['username', 'password'],
-            credenciales: {
-                usuario: 'grupo314',
-                contraseña: 'jap'
+            requiredFields: ['username (email válido)', 'password (mín. 8 caracteres)'],
+            sistema: 'Autenticación automática con formato válido',
+            validaciones: {
+                email: 'Formato: usuario@dominio.com',
+                contraseña: 'Mínimo 8 caracteres'
             },
             protected: 'Todos los endpoints del eCommerce requieren header access-token con JWT válido'
         }
@@ -426,9 +436,10 @@ app.listen(PORT, () => {
     console.log('- POST /sell/publish.json');
     console.log('\nMiddleware de autorización:');
     console.log('- Se requiere header: access-token: <token>');
-    console.log('\nCredenciales de autenticación:');
-    console.log('- Usuario: grupo314');
-    console.log('- Contraseña: jap');
+    console.log('\nSistema de autenticación:');
+    console.log('- Acepta cualquier email válido (usuario@dominio.com)');
+    console.log('- Contraseña mínima: 8 caracteres');
+    console.log('- Genera token automáticamente si los formatos son válidos');
     console.log('- Endpoint: POST /login');
 });
 
