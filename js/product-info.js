@@ -87,6 +87,28 @@ function getProductId() {
 const productID = getProductId();
 localStorage.setItem("productID", productID);
 
+let userId = null;
+
+// Función para obtener y guardar el userId
+async function inicializarUsuario() {
+  const email = localStorage.getItem("user");
+  if (!email) {
+    console.warn("No hay usuario logueado");
+    return null;
+  }
+  
+  try {
+    const id = await obtenerIdPorEmail(email);
+    userId = id;
+    localStorage.setItem("userId", id);
+    console.log("✅ Usuario inicializado:", userId);
+    return id;
+  } catch (error) {
+    console.error("Error inicializando usuario:", error);
+    return null;
+  }
+}
+
 const URL = `http://localhost:3001/products/${productID}.json`;
 const url_comments = `http://localhost:3001/products_comments/${productID}.json`;
 
@@ -300,7 +322,8 @@ window.addEventListener("resize", () => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+  await inicializarUsuario();
   const stars = document.querySelectorAll(".resenias .bi-star");
   let comentarioScore = 0;
   stars.forEach((star, idx) => {
@@ -372,16 +395,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // Al cargar la página, carga los comentarios desde Firestore
   cargarComentariosFirestore();
   //listener para el boton del carrito
-  document.getElementById("botonAniadirID").addEventListener("click", () => {
+  document.getElementById("botonAniadirID").addEventListener("click", async () => {
     if (productoGlobal) {
-      agregarAlCarrito(productoGlobal);
+      await agregarAlCarrito(productoGlobal);
     }
   });
 
   //listener para el boton de comprar
-  document.getElementById("botonComprarID").addEventListener("click", () => {
+document.getElementById("botonComprarID").addEventListener("click", async () => {
     if (productoGlobal) {
-      comprarProducto(productoGlobal);
+      await comprarProducto(productoGlobal);
     }
   });
 
@@ -397,14 +420,16 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 });
-function agregarAlCarrito(producto) {
-  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+async function agregarAlCarrito(producto) {
+  let carritoActual = JSON.parse(localStorage.getItem("carrito")) || [];
 
-  const existeProducto = carrito.find((item) => item.id === producto.id);
-  if (existeProducto) {
-    existeProducto.cantidad += 1;
+  const productoExistente = carritoActual.find(
+    (item) => item.id === producto.id
+  );
+  if (productoExistente) {
+    productoExistente.cantidad += 1;
   } else {
-    carrito.push({
+    carritoActual.push({
       id: producto.id,
       name: producto.name,
       cost: producto.cost,
@@ -413,18 +438,29 @@ function agregarAlCarrito(producto) {
       cantidad: 1,
     });
   }
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-  Swal.fire({
-    icon: "success",
-    title: "¡Producto agregado!",
-    text: "Producto agregado al carrito",
-    showConfirmButton: false,
-    timer: 1500,
-  });
-  actualizarContadorCarrito();
+  localStorage.setItem("carrito", JSON.stringify(carritoActual));
+  try {
+    await guardarEnBD(producto.id, 1);
+    
+    Swal.fire({
+      icon: "success",
+      title: "¡Producto agregado!",
+      text: "Producto agregado al carrito",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    actualizarContadorCarrito()
+  } catch (error) {
+    console.error("Error guardando en BD:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No se pudo guardar en la base de datos",
+    });
+  }
 }
 
-function comprarProducto(producto) {
+async function comprarProducto(producto) {
   let carritoActual = JSON.parse(localStorage.getItem("carrito")) || [];
 
   const productoExistente = carritoActual.find(
@@ -444,18 +480,24 @@ function comprarProducto(producto) {
   }
   localStorage.setItem("carrito", JSON.stringify(carritoActual));
 
-  // Mostrar mensaje de confirmación y redirigir al carrito
-  Swal.fire({
-    icon: "success",
-    title: "¡Producto agregado al carrito!",
-    text: "Redirigiendo al carrito...",
-    showConfirmButton: false,
-    timer: 1500,
-  }).then(() => {
-    window.location.href = "cart.html";
-  });
+ try {
+    await guardarEnBD(producto.id, 1);
+    
+    Swal.fire({
+      icon: "success",
+      title: "¡Producto agregado al carrito!",
+      text: "Redirigiendo al carrito...",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then(() => {
+      window.location.href = "cart.html";
+    });
 
-  actualizarContadorCarrito();
+    actualizarContadorCarrito()
+  } catch (error) {
+    console.error("Error guardando en BD:", error);
+  }
+  
 }
 
 function ocultarPreload() {
@@ -465,3 +507,73 @@ function ocultarPreload() {
   });
 }
 console.log(localStorage.getItem("profileImg"));
+
+
+async function obtenerIdPorEmail(email) {
+  try {
+    const response = await fetch(`http://localhost:3001/user/${email}`);
+    
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.log('Usuario no encontrado');
+        return null;
+      }
+      throw new Error('Error al obtener usuario');
+    }
+
+    const usuario = await response.json();
+    console.log('Usuario encontrado:', usuario);
+    return usuario.id_usuario;
+    
+  } catch (error) {
+    console.error('Error:', error);
+    return null;
+  }
+}
+
+async function guardarEnBD(id_producto, cantidad) {
+  try {
+    const response = await fetch('http://localhost:3001/cart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        cantidad: cantidad,
+        id_usuario: userId,
+        id_producto: id_producto
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Error al agregar al carrito');
+    }
+
+    const data = await response.json();
+    console.log('✅ Guardado en BD:', data);
+    return data;
+    
+  } catch (error) {
+    console.error('❌ Error guardando en BD:', error);
+    throw error;
+  }
+}
+
+function actualizarContadorCarrito() {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    const totalProductos = carrito.reduce(
+      (total, producto) => total + producto.cantidad,
+      0
+    );
+    const contador = document.getElementById("cart-count");
+
+    if (contador) {
+      if (totalProductos > 0) {
+        contador.textContent = totalProductos;
+        contador.classList.remove("hidden");
+      } else {
+        contador.classList.add("hidden");
+      }
+    }
+  }

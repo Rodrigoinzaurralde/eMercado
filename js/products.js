@@ -2,19 +2,42 @@ const catID = localStorage.getItem("catID") || "101";
 const URL = `http://localhost:3001/cats_products/${catID}.json`;
 let productos = [];
 
-function extraerDatos() {
-  getJSONData(URL)
-    .then((result) => {
-      if (result.status === "ok") {
-        productos = result.data.products;
-        showProducts(productos, result.data.catName);
-      } else {
-        console.error("Error en la obtención de los datos", result.data);
+async function extraerDatos() {
+  try {
+    const result = await getJSONData(URL);
+    
+    if (result.status !== "ok") {
+      console.error("Error en la obtención de los datos", result.data);
+      return;
+    }
+    
+    productos = result.data.products;
+    showProducts(productos, result.data.catName);
+    
+    // Obtener productos de la BD
+    const productosEnBD = await obtenerProductos();
+    
+    // Crear un Set de IDs para búsqueda más rápida
+    const idsExistentes = new Set(productosEnBD.map(p => p.id_producto));
+    
+    // Filtrar solo los productos nuevos
+    const productosNuevos = productos.filter(p => !idsExistentes.has(p.id));
+    
+    // Agregar solo los nuevos
+    for (const producto of productosNuevos) {
+      try {
+        await agregarProducto(producto, catID);
+        console.log(`✅ Agregado: ${producto.name}`);
+      } catch (error) {
+        console.error(`❌ Error agregando ${producto.name}:`, error);
       }
-    })
-    .catch((error) => {
-      console.error("Error en la obtención de los datos", error);
-    });
+    }
+    
+    console.log('Proceso completado');
+    
+  } catch (error) {
+    console.error("Error en la obtención de los datos", error);
+  }
 }
 extraerDatos();
 
@@ -93,5 +116,55 @@ function showProducts(products, catName) {
       });
       divCar.appendChild(autoDiv);
     }
+  }
+}
+
+
+async function agregarProducto(producto, catId) {
+  try {
+    const response = await fetch('http://localhost:3001/productos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id_producto: producto.id,
+        name: producto.name,
+        description: producto.description,
+        precio: producto.cost,
+        vendidos: producto.soldCount,
+        id_categoria: catId
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Error al agregar producto');
+    }
+
+    const data = await response.json();
+    console.log('✅ Producto agregado:', data.mensaje);
+    return data;
+    
+  } catch (error) {
+    console.error('❌ Error:', error.message);
+    throw error;
+  }
+}
+
+async function obtenerProductos() {
+  try {
+    const response = await fetch('http://localhost:3001/productos'); // ← Cambiar aquí
+    
+    if (!response.ok) {
+      throw new Error('Error al obtener productos');
+    }
+
+    const productos = await response.json();
+    return productos;
+    
+  } catch (error) {
+    console.error('Error:', error);
+    return [];
   }
 }

@@ -47,17 +47,13 @@ document.querySelector('.login__button').addEventListener('click', async functio
         errorMsg.classList.add('error__pass');
         errorMsg.textContent = 'La contraseña debe tener al menos 8 caracteres';
     }else{
-        // Validación exitosa en el frontend
         try {
             errorMsg.textContent = 'Autenticando...';
             errorMsg.classList.remove('error__pass');
             
-            // Autenticar contra el backend JWT con credenciales fijas
             const response = await fetch('http://localhost:3001/login', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     username: 'grupo314',
                     password: 'jap' 
@@ -67,26 +63,35 @@ document.querySelector('.login__button').addEventListener('click', async functio
             const data = await response.json();
             
             if (response.ok && data.exito) {
-                // Guardar token JWT para acceder a los endpoints
                 localStorage.setItem('authToken', data.token);
                 localStorage.setItem('user', user);
                 localStorage.setItem('userId', data.usuario.id);
-                const {lat, long} = await obtenerLatLong();
-                await consultarUser();
+                
+                // Ejecutar en paralelo las tareas de ubicación
+                const [{lat, long}] = await Promise.all([
+                    obtenerLatLong(),
+                    consultarUser()
+                ]);
+                
                 await guardarUsuarioEnBackend(lat, long);
+                
+                //Verificar y guardar usuario si es necesario
+                await verificarYGuardarUsuario(user);
+                
                 await enviarAvisoLogin();
+                
                 window.location.href = 'index.html';
+                
             } else {
-                throw new Error(data.error || 'Error de autenticación con el servidor');
+                throw new Error(data.error || 'Error de autenticación');
             }
         } catch (error) {
             console.error('Error de autenticación:', error);
             errorMsg.classList.add('error__pass');
             errorMsg.textContent = 'Error de conexión con el servidor.';
         }
-    } 
+    }
 });
-
 // Pre-llenar email si viene del registro
 document.addEventListener('DOMContentLoaded', function() {
     const emailRegistrado = sessionStorage.getItem('emailRegistrado');
@@ -234,7 +239,81 @@ function guardarUsuarioEnBackend(lat , long) {
 }
 
 
+async function guardarUsuarioMariaDb(){
+    const usuario = localStorage.getItem("user");
+    const ciudad = localStorage.getItem("city"); 
+  if (!usuario || !ciudad) {
+    console.error("No se encontró usuario o ciudad en localStorage");
+    return;
+  }
 
+  try {
+    const response = await fetch('http://localhost:3001/user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: usuario,
+        ciudad: ciudad
+      })
+    });
 
+    if (!response.ok) {
+      throw new Error('Error al guardar usuario');
+    }
 
+    const data = await response.json();
+    console.log('Usuario guardado:', data);
+    console.log('ID insertado:', data.id);
+    return data;
+    
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+}
 
+async function obtenerUsuarios() {
+  try {
+    const response = await fetch('http://localhost:3001/user', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Error al obtener usuarios');
+    }
+
+    const usuarios = await response.json();
+    console.log('Usuarios:', usuarios);
+    return usuarios;
+    
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+}
+
+async function verificarYGuardarUsuario(email) {
+    try {
+        const usuarios = await obtenerUsuarios();
+        const usuarioExiste = usuarios.some(u => u.email === email);
+        
+        if (!usuarioExiste) {
+            console.log("✅ Nuevo usuario, guardando en BD...");
+            await guardarUsuarioMariaDb();
+            console.log("✅ Usuario guardado exitosamente");
+        } else {
+            console.log("ℹ️ Usuario ya existe en BD");
+        }
+        
+        return usuarioExiste;
+        
+    } catch (error) {
+        console.error("❌ Error al verificar/guardar usuario:", error);
+        throw error;
+    }
+}
