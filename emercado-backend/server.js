@@ -3,6 +3,14 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const jwt = require('jsonwebtoken');
+const mariadb = require('mariadb');
+const pool = mariadb.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: '1234',
+    database: 'emercado',
+    connectionLimit: 5
+});
 
 const app = express();
 const PORT = 3001;
@@ -181,6 +189,196 @@ app.post('/sell/publish.json', verificarToken, (req, res) => {
         res.status(500).json({ error: 'Error procesando la publicación' });
     }
 });
+//Obtener usuarios
+app.get("/user", async (req, res) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const rows = await conn.query(
+      "SELECT id_usuario, email, ciudad FROM usuarios"
+    );
+
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ message: "Se rompió el servidor" });
+  } finally {
+    if (conn) conn.release(); //release to pool
+  }
+});
+// Obtener usuario por email
+app.get("/user/:email", async (req, res) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const rows = await conn.query(
+      "SELECT id_usuario, email, ciudad FROM usuarios WHERE email = ?",
+      [req.params.email]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.json(rows[0]); // Retornar solo el primer resultado
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error al buscar usuario" });
+  } finally {
+    if (conn) conn.release();
+  }
+});
+//Guardar usuario en base de datos
+app.post('/user', async(req, res) => {
+    let conn;
+  try {
+
+	conn = await pool.getConnection();
+
+	const response = await conn.query(
+        "INSERT INTO usuarios(email, ciudad) VALUE (?, ?)",
+        [req.body.email, req.body.ciudad]
+    );
+	
+    res.json({ id: parseInt(response.insertId), ...req.body });
+
+  }catch(error){
+    console.log(error);
+    res.status(500).json({error : 'Problema enviando usuario'})
+  }
+   finally {
+	if (conn) conn.release(); //release to pool
+  }
+});
+
+//Obtener productos
+app.get("/productos", async (req, res) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const rows = await conn.query(
+      "SELECT id_producto, name, description, precio, vendidos, id_categoria FROM productos"
+    );
+
+    res.json(rows);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Se rompió el servidor" });
+  } finally {
+    if (conn) conn.release();
+  }
+});
+
+//Guardar productos en base de datos
+app.post('/productos', async(req, res) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    const {id_producto, name, description, precio, vendidos, id_categoria} = req.body;
+    
+    if (!id_producto || !name || !description || !precio || !id_categoria) {
+      return res.status(400).json({ 
+        error: 'Faltan datos requeridos' 
+      });
+    }
+
+    // Verificar si el producto ya existe
+    const existe = await conn.query(
+      "SELECT id_producto FROM productos WHERE id_producto = ?",
+      [id_producto]
+    );
+
+    if (existe.length > 0) {
+      return res.status(409).json({ 
+        error: 'El producto ya existe en la base de datos' 
+      });
+    }
+
+    // ✅ Insertar usando el id_producto original del JSON
+    const response = await conn.query(
+      "INSERT INTO productos(id_producto, name, description, precio, vendidos, id_categoria) VALUES (?, ?, ?, ?, ?, ?)",
+      [id_producto, name, description, precio, vendidos, id_categoria]
+    );
+    
+    res.json({
+      id_producto: id_producto, // ← Retornar el ID original
+      mensaje: 'Producto agregado a base de datos'
+    });
+
+  } catch(error) {
+    console.log(error);
+    
+    if (error.code === 'ER_DUP_ENTRY') {
+      res.status(409).json({error: 'El producto ya existe'});
+    } else {
+      res.status(500).json({error: 'Error al agregar producto'});
+    }
+  } finally {
+    if (conn) conn.release();
+  }
+});
+//Guardar carrito en base de datos
+app.post('/cart', async(req, res) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    const { cantidad, id_usuario, id_producto } = req.body;
+    
+    if (!cantidad || !id_usuario || !id_producto) {
+      return res.status(400).json({ 
+        error: 'Faltan datos requeridos' 
+      });
+    }
+
+    // Verificar si el producto ya está en el carrito
+    const existente = await conn.query(
+      "SELECT id, cantidad FROM carrito WHERE id_usuario = ? AND id_producto = ?",
+      [id_usuario, id_producto]
+    );
+
+    if (existente.length > 0) {
+      // Actualizar cantidad
+      const nuevaCantidad = existente[0].cantidad + cantidad;
+      await conn.query(
+        "UPDATE carrito SET cantidad = ? WHERE id = ?",
+        [nuevaCantidad, existente[0].id]
+      );
+      
+      res.json({ 
+        id: existente[0].id,
+        cantidad: nuevaCantidad,
+        mensaje: 'Cantidad actualizada en el carrito'
+      });
+    } else {
+      // Insertar nuevo
+      const response = await conn.query(
+        "INSERT INTO carrito(cantidad, id_usuario, id_producto) VALUES (?, ?, ?)",
+        [cantidad, id_usuario, id_producto]
+      );
+      
+      res.json({ 
+        id: parseInt(response.insertId),
+        mensaje: 'Producto agregado al carrito'
+      });
+    }
+
+  } catch(error) {
+    console.log(error);
+    
+    if (error.code === 'ER_NO_REFERENCED_ROW_2') {
+      res.status(400).json({ error: 'Usuario o producto no existe en la base de datos' });
+    } else {
+      res.status(500).json({ error: 'Error al guardar en el carrito' });
+    }
+  } finally {
+    if (conn) conn.release();
+  }
+});
+
+
+
 
 //Ruta de prueba
 app.get('/', (req, res) => {

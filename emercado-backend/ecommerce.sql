@@ -21,27 +21,23 @@ USE `emercado`;
 
 -- Volcando estructura para tabla emercado.carrito
 CREATE TABLE IF NOT EXISTS `carrito` (
-  `id_carrito` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `cantidad` int(11) NOT NULL,
-  `fecha_agregado` datetime DEFAULT current_timestamp(),
   `id_usuario` int(11) NOT NULL,
   `id_producto` int(11) NOT NULL,
-  PRIMARY KEY (`id_carrito`),
-  UNIQUE KEY `uk_usuario_producto` (`id_usuario`,`id_producto`),
-  KEY `idx_usuario` (`id_usuario`),
-  KEY `idx_producto` (`id_producto`),
-  KEY `idx_fecha_agregado` (`fecha_agregado`),
-  CONSTRAINT `carrito_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `carrito_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `CONSTRAINT_1` CHECK (`cantidad` > 0)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Items en el carrito de compras';
+  PRIMARY KEY (`id`),
+  KEY `id_usuario` (`id_usuario`),
+  KEY `id_producto` (`id_producto`),
+  CONSTRAINT `carrito_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
+  CONSTRAINT `carrito_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Volcando datos para la tabla emercado.carrito: ~0 rows (aproximadamente)
 
 -- Volcando estructura para tabla emercado.categorias
 CREATE TABLE IF NOT EXISTS `categorias` (
   `id_categoria` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
   `description` text DEFAULT NULL,
   `productCount` int(11) DEFAULT NULL,
   `imgSrc` text DEFAULT NULL,
@@ -49,7 +45,17 @@ CREATE TABLE IF NOT EXISTS `categorias` (
   KEY `idx_nombre` (`name`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Categorías de productos';
 
--- Volcando datos para la tabla emercado.categorias: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla emercado.categorias: ~9 rows (aproximadamente)
+INSERT IGNORE INTO `categorias` (`id_categoria`, `name`, `description`, `productCount`, `imgSrc`) VALUES
+	(101, NULL, NULL, NULL, NULL),
+	(102, NULL, NULL, NULL, NULL),
+	(103, NULL, NULL, NULL, NULL),
+	(104, NULL, NULL, NULL, NULL),
+	(105, NULL, NULL, NULL, NULL),
+	(106, NULL, NULL, NULL, NULL),
+	(107, NULL, NULL, NULL, NULL),
+	(108, NULL, NULL, NULL, NULL),
+	(109, NULL, NULL, NULL, NULL);
 
 -- Volcando estructura para tabla emercado.comentarios
 CREATE TABLE IF NOT EXISTS `comentarios` (
@@ -115,13 +121,13 @@ CREATE TABLE IF NOT EXISTS `pedido_detalles` (
 
 -- Volcando estructura para tabla emercado.productos
 CREATE TABLE IF NOT EXISTS `productos` (
-  `id_producto` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `precio` decimal(10,2) NOT NULL,
-  `stock` int(11) NOT NULL DEFAULT 0,
-  `vendidos` int(11) NOT NULL DEFAULT 0,
-  `id_categoria` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `precio` decimal(10,2) DEFAULT NULL,
+  `stock` int(11) DEFAULT 0,
+  `vendidos` int(11) DEFAULT 0,
+  `id_categoria` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_producto`),
   KEY `idx_categoria` (`id_categoria`),
   KEY `idx_nombre` (`name`) USING BTREE,
@@ -130,16 +136,16 @@ CREATE TABLE IF NOT EXISTS `productos` (
   CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id_categoria`) ON UPDATE CASCADE,
   CONSTRAINT `CONSTRAINT_1` CHECK (`precio` >= 0),
   CONSTRAINT `CONSTRAINT_3` CHECK (`vendidos` >= 0)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Productos disponibles en la plataforma';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Productos disponibles en la plataforma';
 
 -- Volcando datos para la tabla emercado.productos: ~0 rows (aproximadamente)
 
 -- Volcando estructura para tabla emercado.usuarios
 CREATE TABLE IF NOT EXISTS `usuarios` (
   `id_usuario` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `nombre_completo` varchar(255) NOT NULL,
-  `password_hash` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `nombre_completo` varchar(255) DEFAULT NULL,
+  `password_hash` varchar(255) DEFAULT NULL,
   `fecha_registro` datetime DEFAULT current_timestamp(),
   `ciudad` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id_usuario`),
@@ -149,9 +155,11 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   KEY `idx_ciudad` (`ciudad`),
   KEY `idx_fecha_registro` (`fecha_registro`),
   KEY `nombre_completo` (`nombre_completo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Usuarios registrados en la plataforma';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Usuarios registrados en la plataforma';
 
--- Volcando datos para la tabla emercado.usuarios: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla emercado.usuarios: ~1 rows (aproximadamente)
+INSERT IGNORE INTO `usuarios` (`id_usuario`, `email`, `nombre_completo`, `password_hash`, `fecha_registro`, `ciudad`) VALUES
+	(1, 'usuario@emercado.com', NULL, NULL, '2025-11-29 02:32:48', 'Maldonado');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
