@@ -79,6 +79,36 @@ const firebaseConfig = {
   app = initializeApp(firebaseConfig),
   db = getFirestore(app);
 
+function getAuthToken() {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    console.warn("No hay token de autenticación disponible");
+    return null;
+  }
+  return token;
+}
+
+function fetchWithAuth(url, options = {}) {
+  const token = getAuthToken();
+  
+  if (!token) {
+    console.error("No hay token de autenticación - redirigiendo al login");
+    window.location.href = "login.html";
+    return Promise.reject("No hay token de autenticación");
+  }
+  
+  const headers = {
+    'Content-Type': 'application/json',
+    'access-token': token,
+    ...options.headers
+  };
+  
+  return fetch(url, {
+    ...options,
+    headers
+  });
+}
+
 // Obtener el productID desde la URL o localStorage
 function getProductId() {
   const params = new URLSearchParams(window.location.search);
@@ -511,7 +541,7 @@ console.log(localStorage.getItem("profileImg"));
 
 async function obtenerIdPorEmail(email) {
   try {
-    const response = await fetch(`http://localhost:3001/user/${email}`);
+    const response = await fetchWithAuth(`http://localhost:3001/user/${email}`);
     
     if (!response.ok) {
       if (response.status === 404) {
@@ -526,18 +556,15 @@ async function obtenerIdPorEmail(email) {
     return usuario.id_usuario;
     
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error obteniendo ID:', error);
     return null;
   }
 }
 
 async function guardarEnBD(id_producto, cantidad) {
   try {
-    const response = await fetch('http://localhost:3001/cart', {
+    const response = await fetchWithAuth('http://localhost:3001/cart', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         cantidad: cantidad,
         id_usuario: userId,

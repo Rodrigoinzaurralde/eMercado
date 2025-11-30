@@ -119,14 +119,41 @@ function showProducts(products, catName) {
   }
 }
 
+function getAuthToken() {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    console.warn("No hay token de autenticación disponible");
+    return null;
+  }
+  return token;
+}
+
+function fetchWithAuth(url, options = {}) {
+  const token = getAuthToken();
+  
+  if (!token) {
+    console.error("No hay token de autenticación");
+    window.location.href = "login.html";
+    return Promise.reject("No hay token de autenticación");
+  }
+  
+  const headers = {
+    'Content-Type': 'application/json',
+    'access-token': token,
+    ...options.headers
+  };
+  
+  return fetch(url, {
+    ...options,
+    headers
+  });
+}
+
 
 async function agregarProducto(producto, catId) {
   try {
-    const response = await fetch('http://localhost:3001/productos', {
+    const response = await fetchWithAuth('http://localhost:3001/productos', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         id_producto: producto.id,
         name: producto.name,
@@ -139,6 +166,13 @@ async function agregarProducto(producto, catId) {
 
     if (!response.ok) {
       const errorData = await response.json();
+      
+      // Si el producto ya existe, no es un error crítico
+      if (response.status === 409) {
+        console.log(`ℹ️ Producto ya existe: ${producto.name}`);
+        return { existe: true };
+      }
+      
       throw new Error(errorData.error || 'Error al agregar producto');
     }
 
@@ -147,24 +181,25 @@ async function agregarProducto(producto, catId) {
     return data;
     
   } catch (error) {
-    console.error('❌ Error:', error.message);
+    console.error('❌ Error agregando producto:', error.message);
     throw error;
   }
 }
 
 async function obtenerProductos() {
   try {
-    const response = await fetch('http://localhost:3001/productos'); // ← Cambiar aquí
+    const response = await fetchWithAuth('http://localhost:3001/productos');
     
     if (!response.ok) {
       throw new Error('Error al obtener productos');
     }
 
     const productos = await response.json();
+    console.log(`✅ ${productos.length} productos obtenidos de la BD`);
     return productos;
     
   } catch (error) {
-    console.error('Error:', error);
+    console.error('❌ Error obteniendo productos:', error);
     return [];
   }
 }

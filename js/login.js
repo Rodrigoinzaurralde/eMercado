@@ -73,12 +73,21 @@ document.querySelector('.login__button').addEventListener('click', async functio
                     consultarUser()
                 ]);
                 
-                await guardarUsuarioEnBackend(lat, long);
+                    await guardarUsuarioEnBackend(lat, long);
                 
-                //Verificar y guardar usuario si es necesario
-                await verificarYGuardarUsuario(user);
+                // Intentar verificar y guardar usuario (no bloquear login si falla)
+                try {
+                    await verificarYGuardarUsuario(user);
+                } catch (error) {
+                    console.warn("No se pudo verificar/guardar usuario en BD, pero el login continuará:", error);
+                }
                 
-                await enviarAvisoLogin();
+                // Enviar aviso de login
+                try {
+                    await enviarAvisoLogin();
+                } catch (error) {
+                    console.warn("No se pudo enviar aviso de login:", error);
+                }
                 
                 window.location.href = 'index.html';
                 
@@ -239,66 +248,86 @@ function guardarUsuarioEnBackend(lat , long) {
 }
 
 
+async function fetchWithToken(url, options = {}) {
+    const token = localStorage.getItem('authToken');
+    
+    const headers = {
+        'Content-Type': 'application/json',
+        ...options.headers
+    };
+    
+    // Solo agregar token si existe
+    if (token) {
+        headers['access-token'] = token;
+    }
+    
+    return fetch(url, {
+        ...options,
+        headers
+    });
+}
+
 async function guardarUsuarioMariaDb(){
     const usuario = localStorage.getItem("user");
     const ciudad = localStorage.getItem("city"); 
-  if (!usuario || !ciudad) {
-    console.error("No se encontró usuario o ciudad en localStorage");
-    return;
-  }
-
-  try {
-    const response = await fetch('http://localhost:3001/user', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: usuario,
-        ciudad: ciudad
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error('Error al guardar usuario');
+    
+    if (!usuario || !ciudad) {
+        console.error("No se encontró usuario o ciudad en localStorage");
+        return;
     }
 
-    const data = await response.json();
-    console.log('Usuario guardado:', data);
-    console.log('ID insertado:', data.id);
-    return data;
-    
-  } catch (error) {
-    console.error('Error:', error);
-    throw error;
-  }
+    try {
+        // Usar fetchWithToken en lugar de fetch directo
+        const response = await fetchWithToken('http://localhost:3001/user', {
+            method: 'POST',
+            body: JSON.stringify({
+                email: usuario,
+                ciudad: ciudad
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(`Error al guardar usuario: ${response.status} - ${errorData.error || response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log('Usuario guardado:', data);
+        console.log('ID insertado:', data.id);
+        return data;
+        
+    } catch (error) {
+        console.error('Error al guardar usuario en MariaDB:', error);
+        throw error;
+    }
 }
 
 async function obtenerUsuarios() {
-  try {
-    const response = await fetch('http://localhost:3001/user', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    try {
+        // Usar fetchWithToken en lugar de fetch directo
+        const response = await fetchWithToken('http://localhost:3001/user', {
+            method: 'GET'
+        });
 
-    if (!response.ok) {
-      throw new Error('Error al obtener usuarios');
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(`Error al obtener usuarios: ${response.status} - ${errorData.error || response.statusText}`);
+        }
+
+        const usuarios = await response.json();
+        console.log('Usuarios obtenidos:', usuarios.length);
+        return usuarios;
+        
+    } catch (error) {
+        console.error('Error al obtener usuarios:', error);
+        throw error;
     }
-
-    const usuarios = await response.json();
-    console.log('Usuarios:', usuarios);
-    return usuarios;
-    
-  } catch (error) {
-    console.error('Error:', error);
-    throw error;
-  }
 }
 
 async function verificarYGuardarUsuario(email) {
     try {
+        console.log("Verificando usuario:", email);
+        
         const usuarios = await obtenerUsuarios();
         const usuarioExiste = usuarios.some(u => u.email === email);
         
@@ -314,6 +343,7 @@ async function verificarYGuardarUsuario(email) {
         
     } catch (error) {
         console.error("❌ Error al verificar/guardar usuario:", error);
-        throw error;
+        // No lanzar el error para que el login continúe incluso si falla esto
+        return null;
     }
 }
