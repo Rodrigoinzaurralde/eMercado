@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `carrito` (
   `cantidad` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `id_producto` int(11) NOT NULL,
+  `fecha_agregado` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `id_usuario` (`id_usuario`),
   KEY `id_producto` (`id_producto`),

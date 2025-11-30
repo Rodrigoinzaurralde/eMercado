@@ -5,11 +5,13 @@ Backend en Node.js y Express.js para el proyecto eMercado.
 ## 🚀 Inicio Rápido
 
 ### Opción 1: Script de inicio (Recomendado)
+
 ```bash
 ./start.sh
 ```
 
 ### Opción 2: Comandos manuales
+
 ```bash
 # Instalar dependencias
 npm install
@@ -54,6 +56,16 @@ curl http://localhost:3001/products_comments/50921.json
 - `GET /sell/publish.json` - Respuesta de publicación exitosa
 - `POST /sell/publish.json` - Procesar publicación de producto
 
+## Endpoints con Base de Datos (MariaDB)
+
+- `GET /user` - Obtener todos los usuarios guardados
+- `GET /user/:email` - Obtener los usuarios por su email registrado
+- `POST /user` - Agregar usuario a DB
+- `GET /productos` - Obtener todos los productos
+- `POST /productos` - Agregar productos a DB
+- `POST /cart` - Agregar productos al carrito
+- `GET /cart/:id_usuario` - Obtener los productos guardados de un usuario
+
 ## Estructura de archivos
 
 ```
@@ -62,7 +74,7 @@ emercado-backend/
 ├── package.json       # Configuración del proyecto
 └── data/              # Archivos JSON
     ├── cats/          # Categorías
-    ├── cats_products/ # Productos por categoría  
+    ├── cats_products/ # Productos por categoría
     ├── products/      # Información detallada de productos
     ├── products_comments/ # Comentarios de productos
     ├── user_cart/     # Carritos de usuario
